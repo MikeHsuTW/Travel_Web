@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>❄️ 北國雪見・食旅手帖 (完整版)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* * 🎨 V6.0 風格：各種繽紛、貼紙滿滿、細節滿滿
+         */
+        :root {
+            --c-bg-top: #dff9fb;
+            --c-bg-bot: #c7ecee;
+            --c-primary: #2d3436;
+            
+            /* 分類色 */
+            --c-food: #ff9f43;    /* 橘：吃 */
+            --c-spot: #54a0ff;    /* 藍：玩 */
+            --c-move: #8395a7;    /* 灰：行 */
+            --c-shop: #fd79a8;    /* 粉：買 */
+            --c-hotel: #a29bfe;   /* 紫：住 */
+
+            --shadow-card: 5px 5px 0px rgba(0,0,0,0.15);
+            --font-main: 'Zen Maru Gothic', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--c-primary);
+            background: linear-gradient(135deg, var(--c-bg-top) 0%, #81ecec 100%);
+            min-height: 100vh;
+            padding-bottom: 120px;
+            overflow-x: hidden;
+        }
+
+        /* ❄️ 背景雪花 (維持完美設定) */
+        .snow-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+        .snowflake {
+            position: absolute; top: -20px; color: #fff; 
+            text-shadow: 0 0 5px rgba(255,255,255,0.8);
+            animation: fall linear infinite;
+        }
+        @keyframes fall { to { transform: translateY(110vh) rotate(360deg); } }
+
+        /* 導航 */
+        .navbar {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            width: 92%; max-width: 420px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 3px solid #fff; border-radius: 60px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            z-index: 999;
+            display: flex; justify-content: space-evenly; padding: 10px 0;
+        }
+        .nav-item {
+            text-align: center; text-decoration: none; color: var(--c-primary);
+            font-size: 0.8rem; font-weight: 800;
+            display: flex; flex-direction: column; align-items: center;
+            padding: 5px; border-radius: 10px; transition: background 0.2s;
+        }
+        .nav-item:active { background: #f1f2f6; transform: scale(0.95); }
+        .nav-icon { font-size: 1.5rem; margin-bottom: 2px; }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 20px 20px 60px; position: relative; z-index: 1; }
+
+        /* Header */
+        header { text-align: center; padding: 50px 0 30px; }
+        .main-title {
+            font-size: 2.2rem; font-weight: 900; color: #2d3436;
+            text-shadow: 4px 4px 0px #fff; margin-bottom: 10px; letter-spacing: 2px;
+        }
+        .sub-title {
+            background: #fff; padding: 8px 20px; border-radius: 30px;
+            font-size: 1rem; font-weight: 800; color: var(--c-spot);
+            box-shadow: var(--shadow-card); transform: rotate(-2deg); display: inline-block;
+        }
+
+        /* 天氣卡 (維持好讀版) */
+        .weather-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px; padding: 20px; margin-bottom: 30px;
+            border: 4px solid #fff; box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .weather-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px dashed #dfe6e9; padding-bottom: 15px; }
+        .w-icon { font-size: 3.5rem; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1)); }
+        .w-temp-group { text-align: right; display: flex; align-items: center; gap: 15px; }
+        .temp-box { text-align: center; }
+        .temp-val { font-size: 2rem; font-weight: 900; line-height: 1; }
+        .temp-label { font-size: 0.9rem; font-weight: 700; opacity: 0.7; margin-top: 5px; }
+        .t-high { color: #ff6b6b; } .t-low { color: #54a0ff; }
+        .weather-info { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+        .w-badge {
+            background: #f1f2f6; padding: 8px 12px; border-radius: 10px;
+            font-size: 1rem; font-weight: 700; color: #636e72; flex: 1; text-align: center;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+
+        /* * 📅 行程時間軸 (細節版) */
+        .day-section { margin-bottom: 60px; }
+        .day-title {
+            background: var(--c-primary); color: #fff; padding: 12px 25px;
+            border-radius: 15px; font-size: 1.3rem; font-weight: 900;
+            display: inline-block; margin-bottom: 25px; box-shadow: 5px 5px 0 rgba(0,0,0,0.3);
+            transform: rotate(-1deg);
+        }
+
+        .timeline-container { padding-left: 25px; border-left: 6px dashed rgba(255,255,255,0.7); margin-left: 15px; }
+        
+        .timeline-card {
+            position: relative; background: #fff; border-radius: 18px; padding: 18px; margin-bottom: 25px;
+            border: 3px solid transparent; box-shadow: var(--shadow-card);
+            transition: transform 0.1s; cursor: pointer; overflow: visible; /* 讓貼紙凸出去 */
+        }
+        .timeline-card:active { transform: scale(0.98); box-shadow: 2px 2px 0 rgba(0,0,0,0.1); }
+
+        /* 左側連結球 */
+        .timeline-card::before {
+            content: ''; position: absolute; left: -37px; top: 25px;
+            width: 18px; height: 18px; border-radius: 50%;
+            background: #fff; border: 4px solid var(--c-primary); z-index: 1;
+        }
+
+        /* 類型樣式 */
+        .c-food { border-color: var(--c-food); } .c-food::before { border-color: var(--c-food); background: #ffeaa7; }
+        .c-spot { border-color: var(--c-spot); } .c-spot::before { border-color: var(--c-spot); background: #74b9ff; }
+        .c-move { border-color: var(--c-move); } .c-move::before { border-color: var(--c-move); background: #dfe6e9; }
+        .c-shop { border-color: var(--c-shop); } .c-shop::before { border-color: var(--c-shop); background: #ffcccc; }
+        .c-hotel { border-color: var(--c-hotel); } .c-hotel::before { border-color: var(--c-hotel); background: #e0d4fc; }
+
+        .card-inner { display: flex; align-items: flex-start; gap: 15px; }
+        .t-time-group { display: flex; flex-direction: column; align-items: center; min-width: 65px; }
+        .t-time-big { font-size: 1.8rem; font-weight: 900; color: #2d3436; line-height: 1; }
+        .t-ampm { font-size: 1.4rem; font-weight: 700; color: #2d3436; }
+        
+        .t-detail { flex: 1; z-index: 2; position: relative; } /* 確保文字在貼紙上層 */
+        .t-head { font-size: 1.25rem; font-weight: 800; color: #2d3436; margin-bottom: 8px; line-height: 1.3; }
+        .t-desc { font-size: 1rem; color: #636e72; line-height: 1.6; font-weight: 500; }
+        .t-note-mini { 
+            display: inline-block; background: #ffeaa7; color: #d63031; 
+            font-size: 0.8rem; padding: 2px 8px; border-radius: 4px; margin-top: 6px; font-weight: 700;
+        }
+
+        /* * 🎀 貼圖系統 (Stickers) */
+        .sticker-box { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; overflow: hidden; border-radius: 15px; }
+        .sticker {
+            position: absolute; font-size: 2.2rem; 
+            filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.1));
+            opacity: 0.9;
+        }
+        /* 隨機位置與動畫 */
+        .s-pos-1 { top: -15px; right: -10px; transform: rotate(15deg); }
+        .s-pos-2 { bottom: -10px; right: 10px; transform: rotate(-10deg) scale(0.8); }
+        .s-pos-3 { top: 5px; right: 40px; transform: rotate(5deg) scale(0.6); opacity: 0.5; }
+
+        /* * 🎒 行李清單 (分類版) */
+        .checklist-wrapper { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .cl-category { background: #fff; border-radius: 15px; padding: 20px; box-shadow: var(--shadow-card); border-top: 5px solid #bdc3c7; }
+        .cl-title { font-size: 1.2rem; font-weight: 900; margin-bottom: 15px; color: #2d3436; display: flex; align-items: center; gap: 8px; }
+        
+        .cl-item {
+            display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px dashed #eee;
+            font-size: 1rem; cursor: pointer; color: #636e72; font-weight: 500;
+        }
+        .cl-item.checked { color: #00b894; text-decoration: line-through; }
+        .cl-checkbox { font-size: 1.2rem; }
+
+        /* 🚨 總叮嚀 */
+        .tips-section { background: #fff; border-radius: 20px; padding: 25px; border: 4px solid #ff7675; margin-top: 40px; box-shadow: var(--shadow-card); }
+        .tips-title { color: #ff7675; font-size: 1.5rem; font-weight: 900; text-align: center; margin-bottom: 20px; border-bottom: 2px dashed #ffeaa7; padding-bottom: 15px; }
+        .tip-item { margin-bottom: 12px; font-size: 1rem; line-height: 1.6; padding-left: 25px; position: relative; font-weight: 500; }
+        .tip-item::before { content: '💡'; position: absolute; left: 0; top: 0; }
+
+        /* Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(45,52,54,0.9); z-index: 2000; display: none; justify-content: center; align-items: center; padding: 20px; }
+        .modal-box { background: #fff; width: 100%; max-width: 500px; border-radius: 24px; padding: 30px; position: relative; animation: popUp 0.3s; }
+        @keyframes popUp { from{transform:scale(0.8); opacity:0;} to{transform:scale(1); opacity:1;} }
+        .m-map-btn { display:block; background:#54a0ff; color:#fff; text-align:center; padding:15px; border-radius:15px; text-decoration:none; font-weight:900; font-size:1.1rem; margin-top: 20px; box-shadow: 0 4px 0 #2e86de; }
+        .m-map-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #2e86de; }
+
+    </style>
+</head>
+<body>
+
+    <div class="snow-container" id="snowContainer"></div>
+
+    <div class="container">
+        <header>
+            <div class="main-title">❄️ 北國雪見・食旅手帖</div>
+            <div class="sub-title">12/5 - 12/13・吃貨小隊・完全版</div>
+        </header>
+
+        <div id="itinerary-root"></div>
+
+        <section id="checklist-section" style="margin-top: 60px;">
+            <div class="day-title" style="background: #6c5ce7; transform: rotate(1deg);">🎒 終極行李清單</div>
+            <div class="checklist-wrapper" id="checklist-root"></div>
+        </section>
+
+        <section class="tips-section" id="general-tips">
+            <div class="tips-title">📝 北海道旅遊總叮嚀</div>
+            <div class="tip-item"><strong>雪地自駕：</strong>與前車保持 3 倍距離，不急煞、不急加速。看到「停止」標誌務必完全停下。</div>
+            <div class="tip-item"><strong>日落時間：</strong>冬天約 16:00 天黑，長途移動請安排在白天，山路夜間危險。</div>
+            <div class="tip-item"><strong>穿著建議：</strong>洋蔥式穿法（發熱衣+毛衣+防風外套），室內暖氣很強。鞋子要有防滑紋路。</div>
+            <div class="tip-item"><strong>必備小物：</strong>護唇膏（非常乾）、墨鏡（雪地反光）、行動電源（天冷耗電快）。</div>
+            <div class="tip-item"><strong>禮儀：</strong>進入室內請拍掉身上的雪，部分餐廳需脫鞋。</div>
+        </section>
+
+        <div style="text-align: center; margin-top: 50px; color: #636e72; font-size: 0.9rem; font-weight: 700;">
+            Created for MikeHsu & Friends 2025
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <a href="#itinerary-root" class="nav-item"><span class="nav-icon">📅</span>行程</a>
+        <a href="#checklist-section" class="nav-item"><span class="nav-icon">🎒</span>清單</a>
+        <a href="#general-tips" class="nav-item"><span class="nav-icon">💡</span>叮嚀</a>
+        <a href="#" class="nav-item" onclick="window.scrollTo(0,0)"><span class="nav-icon">🔝</span>TOP</a>
+    </nav>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal-box">
+            <button onclick="closeModal()" style="position:absolute; right:20px; top:20px; border:none; background:none; font-size:1.5rem; cursor:pointer;">✕</button>
+            <h2 id="m-title" style="color:#2d3436; margin-bottom:5px; font-size:1.6rem;">標題</h2>
+            <div id="m-time" style="color:#636e72; font-weight:700; margin-bottom:15px; font-size:0.9rem;"></div>
+            
+            <div style="background:#f1f2f6; padding:15px; border-radius:12px; margin-bottom:15px; font-size:1.05rem; line-height:1.6;" id="m-desc">內容</div>
+            
+            <div id="m-note-box" style="display:none; margin-bottom:15px;">
+                <span style="background:#ff7675; color:#fff; padding:4px 10px; border-radius:8px; font-size:0.85rem; font-weight:bold;">重點筆記</span>
+                <p id="m-note" style="margin-top:8px; font-weight:700; color:#d63031;"></p>
+            </div>
+
+            <a id="m-map" href="#" target="_blank" class="m-map-btn">📍 Google Maps 導航</a>
+        </div>
+    </div>
+
+    <script>
+        // ❄️ 暴風雪製造機
+        const snowContainer = document.getElementById('snowContainer');
+        for(let i=0; i<60; i++){ 
+            const div = document.createElement('div');
+            div.className = 'snowflake';
+            div.textContent = ['❄','❅','❆','•'][Math.floor(Math.random()*4)];
+            div.style.left = Math.random()*100 + 'vw';
+            div.style.fontSize = (Math.random()*1.5+0.8)+'em';
+            div.style.animationDuration = (Math.random()*5+4)+'s';
+            div.style.animationDelay = Math.random()*5+'s';
+            div.style.opacity = Math.random()*0.6 + 0.4;
+            snowContainer.appendChild(div);
+        }
+
+        // 📅 行程資料庫 (完全恢復細節 + 貼圖定義)
+        const itineraryDB = [
+            {
+                date: "12/5 (五)", location: "函館",
+                weather: { high: "2°", low: "-3°", feel: "-6°", icon: "🌥️", desc: "多雲", sun: "06:55 / 16:00" },
+                events: [
+                    { time: "12:30", type: "move", title: "抵達函館機場", desc: "JX860 抵達 HKD。出關找租車櫃台。", note: "記得拿 Expressway Pass", stickers: ["✈️","🇯🇵"] },
+                    { time: "17:00", type: "move", title: "機場租車 & Check-in", desc: "開車前往住宿 (約18分)。天黑請慢行。", stickers: ["🚗","💨"] },
+                    { time: "20:00", type: "food", title: "幸運小丑漢堡", desc: "函館必吃！推薦中華炸雞漢堡。", stickers: ["🍔","🤡","😋"] },
+                    { time: "22:00", type: "shop", title: "MaxValu 超市", desc: "採買這幾天的水、零食、飲料。", stickers: ["🛒","🛍️","🍓"] }
+                ]
+            },
+            {
+                date: "12/6 (六)", location: "函館",
+                weather: { high: "7°", low: "1°", feel: "-1°", icon: "🌤️", desc: "晴時多雲", sun: "06:56 / 16:00" },
+                events: [
+                    { time: "07:00", type: "food", title: "函館朝市", desc: "早餐吃海鮮丼，體驗釣烏賊。", stickers: ["🦑","🍱","🌅"] },
+                    { time: "09:00", type: "spot", title: "八幡坂 & 金森倉庫", desc: "超美坡道散步，紅磚倉庫逛街拍照。", stickers: ["📸","🧱"] },
+                    { time: "10:30", type: "food", title: "Pastry Snaffles", desc: "必吃：起司蛋糕 (Catchcakes)！", stickers: ["🍰","🧀"] },
+                    { time: "12:00", type: "move", title: "湯の浜ホテル", desc: "備案：如果累了可以去泡日歸溫泉。", stickers: ["♨️","💆"] },
+                    { time: "15:00", type: "spot", title: "五稜郭塔", desc: "看星之夢點燈 (17:00起)。", note: "建議黃昏時段上去", stickers: ["⭐","🗼","✨"] },
+                    { time: "17:00", type: "food", title: "阿佐利壽喜燒", desc: "百年老店 A5 和牛壽喜燒。", note: "已預約！", stickers: ["🥩","🍲","🔥"] },
+                    { time: "19:00", type: "spot", title: "函館山夜景", desc: "搭纜車看百萬夜景，注意保暖。", stickers: ["🌃","🚠","🥶"] }
+                ]
+            },
+            {
+                date: "12/7 (日)", location: "洞爺湖 → 札幌",
+                weather: { high: "9°", low: "3°", feel: "1°", icon: "☁️", desc: "多雲", sun: "06:58 / 16:00" },
+                events: [
+                    { time: "07:00", type: "food", title: "麥當勞", desc: "快速早餐，準備長途移動。", stickers: ["🍟","☕"] },
+                    { time: "08:00", type: "move", title: "前往洞爺湖", desc: "車程約 2.5 小時 (MapCode: 321 518 465*81)。", stickers: ["🚙","🗺️"] },
+                    { time: "11:00", type: "food", title: "仙堂庵 (午餐)", desc: "洞爺湖周邊用餐。", stickers: ["🍜","🥢"] },
+                    { time: "13:00", type: "spot", title: "昭和新山熊牧場", desc: "可以買蘋果餵熊！超可愛。", stickers: ["🐻","🍎"] },
+                    { time: "15:00", type: "spot", title: "洞爺湖散策", desc: "備案：有珠山口纜車 (視天氣決定)。", stickers: ["🌊","🚠"] },
+                    { time: "18:00", type: "move", title: "前往札幌", desc: "開車回札幌 Check-in。", stickers: ["🏨","🔑"] },
+                    { time: "20:00", type: "food", title: "鳥貴族 / 串鳥", desc: "晚餐吃串燒居酒屋，放鬆一下。", stickers: ["🍺","🍢","🍻"] },
+                    { time: "22:00", type: "shop", title: "MaxValu 補貨", desc: "如果你們還逛得動的話。", stickers: ["🛒"] }
+                ]
+            },
+            {
+                date: "12/8 (一)", location: "札幌",
+                weather: { high: "5°", low: "0°", feel: "-4°", icon: "🌨️", desc: "雨夾雪", sun: "07:00 / 16:00" },
+                events: [
+                    { time: "09:00", type: "spot", title: "北海道神宮", desc: "參拜、買 Hello Kitty 御守、六花亭判官餅。", stickers: ["⛩️","🙏","🍘"] },
+                    { time: "10:30", type: "spot", title: "白色戀人公園", desc: "參觀餅乾工廠，拍照打卡。", stickers: ["🍪","🏰","❄️"] },
+                    { time: "12:00", type: "food", title: "狸小路湯咖哩", desc: "午餐：札幌必吃香料湯咖哩。", stickers: ["🍛","🌶️"] },
+                    { time: "14:00", type: "shop", title: "狸小路逛街", desc: "藥妝、唐吉訶德。推薦：BARISTART COFFEE。", stickers: ["🛍️","☕","🥛"] },
+                    { time: "16:00", type: "spot", title: "札幌啤酒博物館", desc: "紅磚建築拍照，了解啤酒歷史。", stickers: ["🍺","🧱"] },
+                    { time: "18:00", type: "food", title: "成吉思汗燒肉", desc: "啤酒園吃羊肉燒烤！", note: "訂位代碼：4VFSMQ", stickers: ["🥩","🔥","🐑"] },
+                    { time: "22:00", type: "food", title: "Sandria 本店", desc: "24hr 三明治店，買明天早餐！", stickers: ["🥪","🍳"] }
+                ]
+            },
+            {
+                date: "12/9 (二)", location: "旭川",
+                weather: { high: "1°", low: "-2°", feel: "-7°", icon: "❄️", desc: "下雪", sun: "07:02 / 15:58" },
+                events: [
+                    { time: "07:00", type: "move", title: "前往旭川", desc: "早起出發！車程約 2 小時 10 分。", stickers: ["🚙","🥱","❄️"] },
+                    { time: "09:00", type: "spot", title: "旭山動物園", desc: "重點：11:00 企鵝散步！提早卡位。", stickers: ["🐧","🐾","🤩"] },
+                    { time: "12:00", type: "food", title: "午餐：Donya", desc: "動物園附近用餐。", stickers: ["🍱"] },
+                    { time: "13:00", type: "spot", title: "Ken & Mary 之樹", desc: "美瑛拼布之路拍照。", stickers: ["🌲","📷"] },
+                    { time: "14:00", type: "spot", title: "青池 & 白鬚瀑布", desc: "夢幻雪景與藍色池水。", stickers: ["💎","🌊","🧊"] },
+                    { time: "17:00", type: "move", title: "回札幌", desc: "長途駕駛回札幌 (約 2.5hr)。", stickers: ["🚙","🌙"] },
+                    { time: "20:00", type: "food", title: "元祖拉麵橫丁", desc: "晚餐：在薄野吃暖呼呼的拉麵。", stickers: ["🍜","🍥"] }
+                ]
+            },
+            {
+                date: "12/10 (三)", location: "小樽",
+                weather: { high: "3°", low: "-2°", feel: "-6°", icon: "❄️", desc: "下雪", sun: "07:01 / 16:00" },
+                events: [
+                    { time: "08:00", type: "move", title: "前往小樽", desc: "車程約 45 分鐘。", stickers: ["🚗"] },
+                    { time: "10:00", type: "food", title: "三角市場", desc: "早餐吃爆帝王蟹、海鮮丼。", stickers: ["🦀","🐟","🍚"] },
+                    { time: "12:00", type: "spot", title: "小樽運河散策", desc: "散步拍照。", stickers: ["🚶","🌉"] },
+                    { time: "13:00", type: "food", title: "甜點巡禮", desc: "北果樓(泡芙)、LeTAO(紅茶巧克力)、北一硝子(冰淇淋)。", stickers: ["🍦","🍰","🧁"] },
+                    { time: "16:00", type: "spot", title: "朝里車站", desc: "無人車站拍海景雪景。", stickers: ["🚉","🌊"] },
+                    { time: "19:00", type: "food", title: "焼肉割烹 はじめ", desc: "回札幌吃高級燒肉。", note: "已訂位", stickers: ["🥩","🍷","✨"] }
+                ]
+            },
+            {
+                date: "12/11 (四)", location: "留壽都",
+                weather: { high: "-5°", low: "-8°", feel: "-12°", icon: "⛷️", desc: "多雲/冷", sun: "07:02 / 16:00" },
+                events: [
+                    { time: "07:00", type: "move", title: "前往留壽都", desc: "移動日 (約 90 分鐘)。", stickers: ["🏔️","🚙"] },
+                    { time: "10:00", type: "spot", title: "租雪具", desc: "裝備單號：25110600014。", stickers: ["🎿","🏂"] },
+                    { time: "11:00", type: "spot", title: "滑雪教練課", desc: "初學者課程開始！注意安全。", stickers: ["⛷️","🎓","🤕"] },
+                    { time: "17:00", type: "food", title: "Yo-chan", desc: "周邊人氣食堂晚餐。", stickers: ["🍲","🥢"] },
+                    { time: "19:00", type: "hotel", title: "飯店溫泉", desc: "北翼 6F，滑雪後泡湯是天堂。", stickers: ["♨️","🧖‍♀️","🧖‍♂️"] }
+                ]
+            },
+            {
+                date: "12/12 (五)", location: "新千歲",
+                weather: { high: "0°", low: "-5°", feel: "-9°", icon: "🌨️", desc: "短暫雪", sun: "07:02 / 16:00" },
+                events: [
+                    { time: "11:00", type: "spot", title: "自由滑雪", desc: "把握最後 5 小時滑雪時光。", stickers: ["⛷️","🏂","❄️"] },
+                    { time: "17:00", type: "food", title: "市區火鍋", desc: "千歲市區找火鍋店暖暖身。", stickers: ["🍲","🥬"] },
+                    { time: "19:00", type: "move", title: "機場住宿", desc: "住機場附近方便明天搭機。", stickers: ["🛏️","💤"] }
+                ]
+            },
+            {
+                date: "12/13 (六)", location: "返家",
+                weather: { high: "-1°", low: "-7°", feel: "-10°", icon: "🛫", desc: "多雲/雪", sun: "07:03 / 16:00" },
+                events: [
+                    { time: "09:00", type: "shop", title: "Aeon & Rera", desc: "最後衝刺買伴手禮、補貨。", stickers: ["🛍️","🎁"] },
+                    { time: "12:00", type: "move", title: "還車", desc: "前往租車公司還車，搭接駁車去機場。", stickers: ["🚗","👋"] },
+                    { time: "15:20", type: "move", title: "BR115 飛台北", desc: "滿載回憶回家囉！", stickers: ["✈️","🇹🇼","❤️"] }
+                ]
+            }
+        ];
+
+        // 🎒 完整行李清單資料
+        const checklistData = {
+            "📂 重要文件": ["護照", "機票證明", "飯店訂單", "保險文書", "健保卡", "駕照", "駕照日文譯本", "Visit Japan Web QR"],
+            "🔌 電子 3C": ["行動電源", "充電器 (手機/相機)", "各種充電線", "網卡 / eSIM", "耳機", "防水袋 (雪地用)"],
+            "🧣 衣物配件": ["口罩", "毛帽", "發熱衣 (多件)", "防風厚外套", "貼身衣物", "厚襪子 (重要)", "睡衣", "一般衣褲", "太陽眼鏡 (防雪盲)", "滑雪護具"],
+            "🧴 盥洗保養": ["牙刷牙膏", "刮鬍刀", "梳子", "隱形眼鏡+藥水", "生理食鹽水", "護唇膏 (必備!)", "保濕乳液", "護手霜", "洗面乳", "面膜", "常備藥品"],
+            "💰 錢包雜項": ["台幣", "信用卡 (海外回饋)", "提款卡", "日幣現金", "小皮夾", "酒精/乾洗手", "濕紙巾", "髒衣袋", "行李秤", "雨傘/雨衣"]
+        };
+
+        // 🚀 渲染行程
+        const root = document.getElementById('itinerary-root');
+
+        itineraryDB.forEach(day => {
+            const section = document.createElement('div');
+            section.className = 'day-section';
+
+            // 日期
+            const header = document.createElement('div');
+            header.className = 'day-title';
+            header.innerText = `${day.date} @${day.location}`;
+            section.appendChild(header);
+
+            // 天氣
+            const w = day.weather;
+            const weatherCard = document.createElement('div');
+            weatherCard.className = 'weather-card';
+            weatherCard.innerHTML = `
+                <div class="weather-top">
+                    <div class="w-icon">${w.icon}</div>
+                    <div class="w-temp-group">
+                        <div class="temp-box"><div class="temp-val t-high">${w.high}</div><div class="temp-label">High</div></div>
+                        <div style="font-size:1.5rem; opacity:0.3;">/</div>
+                        <div class="temp-box"><div class="temp-val t-low">${w.low}</div><div class="temp-label">Low</div></div>
+                    </div>
+                </div>
+                <div class="weather-info">
+                    <div class="w-badge">🌡️ 體感 ${w.feel}</div>
+                    <div class="w-badge">☁️ ${w.desc}</div>
+                    <div class="w-badge">🌅 ${w.sun}</div>
+                </div>
+            `;
+            section.appendChild(weatherCard);
+
+            // 時間軸
+            const timeline = document.createElement('div');
+            timeline.className = 'timeline-container';
+            day.events.forEach(ev => {
+                const card = document.createElement('div');
+                let cType = 'c-spot';
+                if(ev.type === 'food') cType = 'c-food';
+                if(ev.type === 'move') cType = 'c-move';
+                if(ev.type === 'shop') cType = 'c-shop';
+                if(ev.type === 'hotel') cType = 'c-hotel';
+                
+                card.className = `timeline-card ${cType}`;
+                
+                // 產生多個隨機貼圖
+                let stickersHtml = '<div class="sticker-box">';
+                if(ev.stickers) {
+                    ev.stickers.forEach((s, idx) => {
+                        // 隨機選一個位置 class
+                        const posClass = `s-pos-${(idx % 3) + 1}`;
+                        stickersHtml += `<div class="sticker ${posClass}">${s}</div>`;
+                    });
+                }
+                stickersHtml += '</div>';
+
+                // Note 顯示
+                let noteHtml = ev.note ? `<span class="t-note-mini">📝 ${ev.note}</span>` : '';
+
+                card.innerHTML = `
+                    ${stickersHtml}
+                    <div class="card-inner">
+                        <div class="t-time-group">
+                            <span class="t-time-big">${ev.time.split(':')[0]}</span>
+                            <span class="t-ampm">:${ev.time.split(':')[1]}</span>
+                        </div>
+                        <div class="t-detail">
+                            <div class="t-head">${ev.title}</div>
+                            <div class="t-desc">${ev.desc}</div>
+                            ${noteHtml}
+                        </div>
+                    </div>
+                `;
+                card.onclick = () => openModal(ev);
+                timeline.appendChild(card);
+            });
+            section.appendChild(timeline);
+            root.appendChild(section);
+        });
+
+        // 🚀 渲染行李清單
+        const checkRoot = document.getElementById('checklist-root');
+        for (const [category, items] of Object.entries(checklistData)) {
+            const catBox = document.createElement('div');
+            catBox.className = 'cl-category';
+            catBox.style.borderColor = category.includes('文件') ? '#ff7675' : 
+                                       category.includes('3C') ? '#0984e3' : 
+                                       category.includes('衣物') ? '#fdcb6e' : '#b2bec3';
+
+            let itemsHtml = items.map(item => {
+                const isChecked = localStorage.getItem('chk_v6_'+item) ? 'checked' : '';
+                const icon = isChecked ? '✅' : '⬜';
+                return `<div class="cl-item ${isChecked}" onclick="toggleCheck(this, '${item}')">
+                            <span class="cl-checkbox">${icon}</span> ${item}
+                        </div>`;
+            }).join('');
+
+            catBox.innerHTML = `<div class="cl-title">${category}</div>${itemsHtml}`;
+            checkRoot.appendChild(catBox);
+        }
+
+        // Checklist 功能
+        function toggleCheck(el, itemKey) {
+            el.classList.toggle('checked');
+            const isChecked = el.classList.contains('checked');
+            el.querySelector('.cl-checkbox').innerText = isChecked ? '✅' : '⬜';
+            if(isChecked) localStorage.setItem('chk_v6_'+itemKey, '1');
+            else localStorage.removeItem('chk_v6_'+itemKey);
+        }
+
+        // Modal 邏輯
+        const modal = document.getElementById('modal');
+        function openModal(d){
+            document.getElementById('m-title').innerText = d.title;
+            document.getElementById('m-time').innerText = `${d.time} @ ${d.title}`;
+            document.getElementById('m-desc').innerText = d.desc;
+            const noteBox = document.getElementById('m-note-box');
+            if(d.note){
+                noteBox.style.display = 'block';
+                document.getElementById('m-note').innerText = d.note;
+            } else { noteBox.style.display = 'none'; }
+            
+            // 搜尋關鍵字優化
+            const query = d.mapLink ? d.mapLink : d.title;
+            document.getElementById('m-map').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query + ' 北海道')}`;
+            
+            modal.style.display = 'flex';
+        }
+        function closeModal(){ modal.style.display = 'none'; }
+        modal.onclick = (e) => { if(e.target === modal) closeModal(); }
+
+    </script>
+</body>
+</html>
