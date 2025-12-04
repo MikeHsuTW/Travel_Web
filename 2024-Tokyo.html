@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🗼 東京河口湖・春櫻日和 (真實版)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* * 🎨 東京主題：櫻花粉、富士藍、東京紅 */
+        :root {
+            --c-bg-top: #fff0f6;   /* 淺粉 */
+            --c-bg-bot: #dfe6e9;   /* 都市灰白 */
+            --c-primary: #2d3436;
+            
+            /* 分類色 */
+            --c-food: #fab1a0;    /* 鮭魚粉：美食 */
+            --c-spot: #74b9ff;    /* 富士藍：景點 */
+            --c-move: #636e72;    /* 鐵道灰：移動 */
+            --c-shop: #e17055;    /* 東京紅：購物 */
+            --c-hotel: #a29bfe;   /* 夢幻紫：住宿 */
+
+            --shadow-card: 5px 5px 0px rgba(0,0,0,0.1);
+            --font-main: 'Zen Maru Gothic', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--c-primary);
+            background: linear-gradient(180deg, var(--c-bg-top) 0%, #ffffff 60%, var(--c-bg-bot) 100%);
+            min-height: 100vh;
+            padding-bottom: 120px;
+            overflow-x: hidden;
+        }
+
+        /* 🌸 櫻花飄落特效 */
+        .sakura-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+        .sakura {
+            position: absolute; top: -20px;
+            background: #ff9ff3; border-radius: 100% 0 100% 0; opacity: 0.8;
+            animation: sway linear infinite;
+        }
+        @keyframes sway {
+            0% { transform: translateY(0) rotate(0deg) translateX(0); }
+            25% { transform: translateY(30vh) rotate(90deg) translateX(20px); }
+            50% { transform: translateY(60vh) rotate(180deg) translateX(-20px); }
+            75% { transform: translateY(80vh) rotate(270deg) translateX(10px); }
+            100% { transform: translateY(110vh) rotate(360deg) translateX(0); }
+        }
+
+        /* 導航 */
+        .navbar {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            width: 92%; max-width: 420px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border: 2px solid #fff; border-radius: 60px;
+            box-shadow: 0 10px 25px rgba(255, 107, 129, 0.2);
+            z-index: 999;
+            display: flex; justify-content: space-evenly; padding: 8px 0;
+        }
+        .nav-item {
+            text-align: center; text-decoration: none; color: var(--c-primary);
+            font-size: 0.8rem; font-weight: 800;
+            display: flex; flex-direction: column; align-items: center;
+            padding: 5px; border-radius: 10px; transition: background 0.2s;
+        }
+        .nav-item:active { background: #ffeaa7; transform: scale(0.95); }
+        .nav-icon { font-size: 1.4rem; margin-bottom: 2px; }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 20px 20px 60px; position: relative; z-index: 1; }
+
+        /* Header */
+        header { text-align: center; padding: 50px 0 30px; }
+        .main-title {
+            font-size: 2.2rem; font-weight: 900; color: #2d3436;
+            text-shadow: 3px 3px 0px #fff; margin-bottom: 10px; letter-spacing: 2px;
+        }
+        .sub-title {
+            background: #fff; padding: 8px 20px; border-radius: 30px;
+            font-size: 1rem; font-weight: 800; color: #e17055;
+            box-shadow: var(--shadow-card); transform: rotate(-2deg); display: inline-block;
+            border: 2px solid #fab1a0;
+        }
+
+        /* 天氣卡 */
+        .weather-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px; padding: 20px; margin-bottom: 30px;
+            border: 4px solid #fff; box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+        .weather-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px dashed #dfe6e9; padding-bottom: 15px; }
+        .w-icon { font-size: 3.5rem; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1)); }
+        .w-temp-group { text-align: right; display: flex; align-items: center; gap: 15px; }
+        .temp-box { text-align: center; }
+        .temp-val { font-size: 2rem; font-weight: 900; line-height: 1; }
+        .temp-label { font-size: 0.9rem; font-weight: 700; opacity: 0.7; margin-top: 5px; }
+        .t-high { color: #e17055; } .t-low { color: #74b9ff; }
+        .weather-info { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+        .w-badge {
+            background: #f1f2f6; padding: 8px 12px; border-radius: 10px;
+            font-size: 1rem; font-weight: 700; color: #636e72; flex: 1; text-align: center;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+
+        /* 行程時間軸 */
+        .day-section { margin-bottom: 60px; }
+        .day-title {
+            background: var(--c-primary); color: #fff; padding: 12px 25px;
+            border-radius: 15px; font-size: 1.3rem; font-weight: 900;
+            display: inline-block; margin-bottom: 25px; box-shadow: 5px 5px 0 rgba(0,0,0,0.2);
+            transform: rotate(-1deg);
+        }
+
+        .timeline-container { padding-left: 25px; border-left: 6px dashed #b2bec3; margin-left: 15px; }
+        
+        .timeline-card {
+            position: relative; background: #fff; border-radius: 18px; padding: 18px; margin-bottom: 25px;
+            border: 3px solid transparent; box-shadow: var(--shadow-card);
+            transition: transform 0.1s; cursor: pointer; overflow: visible;
+        }
+        .timeline-card:active { transform: scale(0.98); box-shadow: 2px 2px 0 rgba(0,0,0,0.1); }
+        .timeline-card::before {
+            content: ''; position: absolute; left: -37px; top: 25px;
+            width: 18px; height: 18px; border-radius: 50%;
+            background: #fff; border: 4px solid var(--c-primary); z-index: 1;
+        }
+
+        /* 類型樣式 */
+        .c-food { border-color: var(--c-food); } .c-food::before { border-color: var(--c-food); background: #ffeaa7; }
+        .c-spot { border-color: var(--c-spot); } .c-spot::before { border-color: var(--c-spot); background: #74b9ff; }
+        .c-move { border-color: var(--c-move); } .c-move::before { border-color: var(--c-move); background: #dfe6e9; }
+        .c-shop { border-color: var(--c-shop); } .c-shop::before { border-color: var(--c-shop); background: #fab1a0; }
+        .c-hotel { border-color: var(--c-hotel); } .c-hotel::before { border-color: var(--c-hotel); background: #a29bfe; }
+
+        .card-inner { display: flex; align-items: flex-start; gap: 15px; }
+        .t-time-group { display: flex; flex-direction: column; align-items: center; min-width: 65px; }
+        .t-time-big { font-size: 1.4rem; font-weight: 900; color: #2d3436; line-height: 1; }
+        .t-ampm { font-size: 0.8rem; font-weight: 700; color: #b2bec3; }
+        .t-detail { flex: 1; z-index: 2; position: relative; }
+        .t-head { font-size: 1.25rem; font-weight: 800; color: #2d3436; margin-bottom: 8px; line-height: 1.3; }
+        .t-desc { font-size: 1rem; color: #636e72; line-height: 1.6; font-weight: 500; }
+        .t-note-mini { 
+            display: inline-block; background: #ffeaa7; color: #d63031; 
+            font-size: 0.8rem; padding: 2px 8px; border-radius: 4px; margin-top: 6px; font-weight: 700;
+        }
+
+        /* 貼圖 */
+        .sticker-box { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; overflow: hidden; border-radius: 15px; }
+        .sticker {
+            position: absolute; font-size: 2.2rem; filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.1)); opacity: 0.95;
+        }
+        .s-pos-1 { top: -15px; right: -10px; transform: rotate(15deg); }
+        .s-pos-2 { bottom: -10px; right: 10px; transform: rotate(-10deg) scale(0.8); }
+        .s-pos-3 { top: 5px; right: 40px; transform: rotate(5deg) scale(0.6); opacity: 0.5; }
+
+        /* 行李清單 */
+        .checklist-wrapper { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .cl-category { background: #fff; border-radius: 15px; padding: 20px; box-shadow: var(--shadow-card); border-top: 5px solid #ff7675; }
+        .cl-title { font-size: 1.2rem; font-weight: 900; margin-bottom: 15px; color: #2d3436; }
+        .cl-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px dashed #eee; font-size: 1rem; cursor: pointer; color: #636e72; font-weight: 500; }
+        .cl-item.checked { color: #00b894; text-decoration: line-through; }
+
+        /* 總叮嚀 */
+        .tips-section { background: #fff; border-radius: 20px; padding: 25px; border: 4px solid #ff7675; margin-top: 40px; box-shadow: var(--shadow-card); }
+        .tips-title { color: #ff7675; font-size: 1.5rem; font-weight: 900; text-align: center; margin-bottom: 20px; border-bottom: 2px dashed #ffeaa7; padding-bottom: 15px; }
+        .tip-item { margin-bottom: 12px; font-size: 1rem; line-height: 1.6; padding-left: 25px; position: relative; font-weight: 500; }
+        .tip-item::before { content: '💡'; position: absolute; left: 0; top: 0; }
+
+        /* Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(45,52,54,0.9); z-index: 2000; display: none; justify-content: center; align-items: center; padding: 20px; }
+        .modal-box { background: #fff; width: 100%; max-width: 500px; border-radius: 24px; padding: 30px; position: relative; animation: popUp 0.3s; }
+        @keyframes popUp { from{transform:scale(0.8); opacity:0;} to{transform:scale(1); opacity:1;} }
+        .m-map-btn { display:block; background:#54a0ff; color:#fff; text-align:center; padding:15px; border-radius:15px; text-decoration:none; font-weight:900; font-size:1.1rem; margin-top: 20px; box-shadow: 0 4px 0 #2e86de; }
+
+    </style>
+</head>
+<body>
+
+    <div class="sakura-container" id="sakuraContainer"></div>
+
+    <div class="container">
+        <header>
+            <div class="main-title">🗼 東京河口湖・春櫻日和</div>
+            <div class="sub-title">2024/03/14 - 03/18 (5 Days)</div>
+        </header>
+
+        <div id="itinerary-root"></div>
+
+        <section id="checklist-section" style="margin-top: 60px;">
+            <div class="day-title" style="background: #e84393; transform: rotate(1deg);">🎒 東京行前清單</div>
+            <div class="checklist-wrapper" id="checklist-root"></div>
+        </section>
+
+        <section class="tips-section" id="general-tips">
+            <div class="tips-title">📝 日本旅遊小筆記</div>
+            <div class="tip-item"><strong>挽肉與米：</strong>非常熱門，訂不到會「心情受傷」，需提前 7 天早上 8 點搶。</div>
+            <div class="tip-item"><strong>河口湖自駕：</strong>需備齊台灣駕照、日文譯本、護照，少一樣都不能租。</div>
+            <div class="tip-item"><strong>Shibuya Sky：</strong>頂樓禁帶包包帽子，建議 18:00 前入場看日落。</div>
+            <div class="tip-item"><strong>和服租借：</strong>3/16 下午 13:30 大正和服，需提前線上預約。</div>
+            <div class="tip-item"><strong>迪士尼：</strong>3/17 一整天，記得下載 App 抽整理券。</div>
+            <div class="tip-item"><strong>末班車：</strong>東京電車約 00:00 收班，請抓好回程時間。</div>
+        </section>
+
+        <div style="text-align: center; margin-top: 50px; color: #636e72; font-size: 0.9rem; font-weight: 700;">
+            Created for Tokyo Trip 2024
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <a href="#itinerary-root" class="nav-item"><span class="nav-icon">📅</span>行程</a>
+        <a href="#checklist-section" class="nav-item"><span class="nav-icon">🎒</span>清單</a>
+        <a href="#general-tips" class="nav-item"><span class="nav-icon">💡</span>叮嚀</a>
+        <a href="#" class="nav-item" onclick="window.scrollTo(0,0)"><span class="nav-icon">🔝</span>TOP</a>
+    </nav>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal-box">
+            <button onclick="closeModal()" style="position:absolute; right:20px; top:20px; border:none; background:none; font-size:1.5rem; cursor:pointer;">✕</button>
+            <h2 id="m-title" style="color:#2d3436; margin-bottom:5px; font-size:1.6rem;">標題</h2>
+            <div id="m-time" style="color:#636e72; font-weight:700; margin-bottom:15px; font-size:0.9rem;"></div>
+            
+            <div style="background:#f1f2f6; padding:15px; border-radius:12px; margin-bottom:15px; font-size:1.05rem; line-height:1.6;" id="m-desc">內容</div>
+            
+            <div id="m-note-box" style="display:none; margin-bottom:15px;">
+                <span style="background:#ff7675; color:#fff; padding:4px 10px; border-radius:8px; font-size:0.85rem; font-weight:bold;">重點筆記</span>
+                <p id="m-note" style="margin-top:8px; font-weight:700; color:#d63031;"></p>
+            </div>
+
+            <a id="m-map" href="#" target="_blank" class="m-map-btn">📍 Google Maps 導航</a>
+        </div>
+    </div>
+
+    <script>
+        // 🌸 櫻花生成器
+        const sakuraContainer = document.getElementById('sakuraContainer');
+        for(let i=0; i<30; i++){ 
+            const div = document.createElement('div');
+            div.className = 'sakura';
+            div.style.left = Math.random()*100 + 'vw';
+            const size = Math.random()*15 + 10; 
+            div.style.width = size + 'px';
+            div.style.height = size + 'px';
+            div.style.animationDuration = (Math.random()*5+5)+'s';
+            div.style.animationDelay = Math.random()*5+'s';
+            sakuraContainer.appendChild(div);
+        }
+
+        // 📅 真實行程資料庫 (根據您貼上的文字完全對應)
+        const itineraryDB = [
+            {
+                date: "3/14 (四)", location: "東京 (澀谷)",
+                weather: { high: "14°", low: "6°", feel: "10°", icon: "🌤️", desc: "晴時多雲", sun: "05:50 / 17:50" },
+                events: [
+                    { time: "09:35", type: "move", title: "搭機 MM620", desc: "TPE(T1) → NRT(T1)。訂位代碼：EA8YVW。", stickers: ["✈️","🇯🇵"] },
+                    { time: "14:39", type: "move", title: "Skyliner (Car38)", desc: "14:39-15:23 抵達上野。備案: 14:59班次。", stickers: ["🚄","💨"] },
+                    { time: "16:00", type: "hotel", title: "Hotel Vintage", desc: "Check-in 放行李，隨後立刻出發澀谷。", stickers: ["🏨","🧳"] },
+                    { time: "18:00", type: "spot", title: "Shibuya Sky", desc: "預計 18:00 入場看夜景。挽肉與米(備案)。", stickers: ["🌇","🗼"] },
+                    { time: "20:00", type: "shop", title: "澀谷逛街", desc: "Hikarie、澀谷橫丁、MEGA 唐吉訶德。", stickers: ["🛍️","🏮"] },
+                    { time: "23:00", type: "move", title: "返回飯店", desc: "注意末班車約 00:00。", stickers: ["🚇","⚠️"] }
+                ]
+            },
+            {
+                date: "3/15 (五)", location: "東京 → 河口湖",
+                weather: { high: "10°", low: "-2°", feel: "-4°", icon: "🗻", desc: "晴朗偏冷", sun: "05:49 / 17:51" },
+                events: [
+                    { time: "07:00", type: "food", title: "築地市場", desc: "早午餐壽司海鮮。09:00前往東京總站。", stickers: ["🍣","🐟"] },
+                    { time: "09:50", type: "move", title: "高速巴士往河口湖", desc: "東京八重洲南口。CarNo.115。預約：02152010101。", stickers: ["🚌","💨"] },
+                    { time: "12:00", type: "move", title: "Toyota 租車", desc: "抵達河口湖取車。預約號：119016654。", stickers: ["🚗","🔑"] },
+                    { time: "13:00", type: "food", title: "餺飥不動", desc: "東戀路店。品嚐山梨名物餺飥麵。", stickers: ["🍜","☁️"] },
+                    { time: "14:00", type: "spot", title: "河口湖景點", desc: "纜車(16:20前下山)、狸貓茶屋、BRAND NEW DAY。", stickers: ["🚠","☕"] },
+                    { time: "17:00", type: "hotel", title: "富士山四季之宿", desc: "Check-in。浴池開放至 24:00。", stickers: ["🏡","♨️"] },
+                    { time: "18:00", type: "food", title: "河口湖晚餐", desc: "Kobe Yakiniku Yoritomo 或 焼肉ひまわり亭。", stickers: ["🥩","🔥"] }
+                ]
+            },
+            {
+                date: "3/16 (六)", location: "河口湖 → 東京",
+                weather: { high: "12°", low: "0°", feel: "-1°", icon: "🌥️", desc: "多雲", sun: "05:48 / 17:52" },
+                events: [
+                    { time: "09:00", type: "move", title: "還車 & 搭巴士", desc: "09:00前還車。搭09:30巴士(CarNo.8)回東京。", stickers: ["🚗","🚌"] },
+                    { time: "11:00", type: "hotel", title: "MYSTAYS 上野", desc: "Ueno-Inaricho 寄放行李。", stickers: ["🏨","🧳"] },
+                    { time: "13:30", type: "spot", title: "大正和服 (淺草)", desc: "13:30 預約換裝。17:30 前歸還。", stickers: ["👘","🌸"] },
+                    { time: "14:00", type: "spot", title: "和服散步", desc: "上野賞櫻、淺草寺、雷門拍照。", stickers: ["📸","⛩️"] },
+                    { time: "18:00", type: "shop", title: "晚上活動", desc: "秋葉原扭蛋 或 淺草晚餐、ROX 逛街。", stickers: ["🤖","🛍️"] }
+                ]
+            },
+            {
+                date: "3/17 (日)", location: "迪士尼一日遊",
+                weather: { high: "15°", low: "6°", feel: "10°", icon: "🏰", desc: "晴時多雲", sun: "05:46 / 17:53" },
+                events: [
+                    { time: "08:00", type: "move", title: "前往迪士尼", desc: "搭乘電車約 59 分鐘。", stickers: ["🚃","🐭"] },
+                    { time: "09:00", type: "spot", title: "東京迪士尼樂園", desc: "09:00-21:00。遊行：13:00 / 15:40 / 18:35(夢之光)。", stickers: ["🏰","✨","🎆"] },
+                    { time: "13:50", type: "spot", title: "米奇俱樂部", desc: "動感節奏秀 (需報名)。場次：13:50 / 15:15 等。", stickers: ["💃","🎶"] },
+                    { time: "21:00", type: "food", title: "回程晚餐", desc: "回淺草吃居酒屋、燒肉宵夜。", stickers: ["🍺","🍢"] }
+                ]
+            },
+            {
+                date: "3/18 (一)", location: "上野 → 返台",
+                weather: { high: "12°", low: "5°", feel: "8°", icon: "☁️", desc: "陰天", sun: "05:45 / 17:54" },
+                events: [
+                    { time: "08:40", type: "move", title: "Skyliner", desc: "08:40 或 09:00 班次往成田 T1。", stickers: ["🚄","💨"] },
+                    { time: "11:45", type: "move", title: "搭機 TR899", desc: "11:45-15:10 飛往 TPE(T1)。訂位：OYQCYW。", stickers: ["✈️","🇹🇼"] }
+                ]
+            }
+        ];
+
+        // 🎒 完整行李清單 (來自文字檔)
+        const checklistData = {
+            "📂 文件類": ["護照", "機票證明", "飯店訂單", "保險文件", "健保卡", "駕照+日文譯本"],
+            "👕 衣物配件": ["Dress Code 衣物", "毛帽", "外套", "貼身衣物", "襪子", "睡衣", "發熱衣"],
+            "💰 支付類": ["台幣", "信用卡", "提款卡", "日幣現金"],
+            "🔌 電子用品": ["行動電源", "充電器", "充電線", "網卡"],
+            "💄 藥妝類": ["常備藥", "隱形眼鏡+藥水", "化妝包", "保養品", "洗面乳", "生理用品", "防曬", "護手霜"],
+            "👜 其他": ["小皮夾", "酒精/乾洗手", "衛生紙/濕紙巾", "髒衣袋", "行李秤", "雨傘"]
+        };
+
+        // 🚀 渲染行程 (保持 V6.0 邏輯)
+        const root = document.getElementById('itinerary-root');
+        itineraryDB.forEach(day => {
+            const section = document.createElement('div');
+            section.className = 'day-section';
+            
+            const header = document.createElement('div');
+            header.className = 'day-title';
+            header.innerText = `${day.date} @${day.location}`;
+            section.appendChild(header);
+
+            const w = day.weather;
+            const weatherCard = document.createElement('div');
+            weatherCard.className = 'weather-card';
+            weatherCard.innerHTML = `
+                <div class="weather-top">
+                    <div class="w-icon">${w.icon}</div>
+                    <div class="w-temp-group">
+                        <div class="temp-box"><div class="temp-val t-high">${w.high}</div><div class="temp-label">High</div></div>
+                        <div style="font-size:1.5rem; opacity:0.3;">/</div>
+                        <div class="temp-box"><div class="temp-val t-low">${w.low}</div><div class="temp-label">Low</div></div>
+                    </div>
+                </div>
+                <div class="weather-info">
+                    <div class="w-badge">🌡️ 體感 ${w.feel}</div>
+                    <div class="w-badge">☁️ ${w.desc}</div>
+                    <div class="w-badge">🌅 ${w.sun}</div>
+                </div>
+            `;
+            section.appendChild(weatherCard);
+
+            const timeline = document.createElement('div');
+            timeline.className = 'timeline-container';
+            day.events.forEach(ev => {
+                const card = document.createElement('div');
+                let cType = 'c-spot';
+                if(ev.type === 'food') cType = 'c-food';
+                if(ev.type === 'move') cType = 'c-move';
+                if(ev.type === 'shop') cType = 'c-shop';
+                if(ev.type === 'hotel') cType = 'c-hotel';
+                card.className = `timeline-card ${cType}`;
+                
+                let stickersHtml = '<div class="sticker-box">';
+                if(ev.stickers) {
+                    ev.stickers.forEach((s, idx) => {
+                        const posClass = `s-pos-${(idx % 3) + 1}`;
+                        stickersHtml += `<div class="sticker ${posClass}">${s}</div>`;
+                    });
+                }
+                stickersHtml += '</div>';
+                let noteHtml = ev.note ? `<span class="t-note-mini">📝 ${ev.note}</span>` : '';
+
+                card.innerHTML = `
+                    ${stickersHtml}
+                    <div class="card-inner">
+                        <div class="t-time-group">
+                            <span class="t-time-big">${ev.time.split(':')[0]}</span>
+                            <span class="t-ampm">:${ev.time.split(':')[1]}</span>
+                        </div>
+                        <div class="t-detail">
+                            <div class="t-head">${ev.title}</div>
+                            <div class="t-desc">${ev.desc}</div>
+                            ${noteHtml}
+                        </div>
+                    </div>
+                `;
+                card.onclick = () => openModal(ev);
+                timeline.appendChild(card);
+            });
+            section.appendChild(timeline);
+            root.appendChild(section);
+        });
+
+        // 🚀 渲染清單
+        const checkRoot = document.getElementById('checklist-root');
+        for (const [category, items] of Object.entries(checklistData)) {
+            const catBox = document.createElement('div');
+            catBox.className = 'cl-category';
+            let itemsHtml = items.map(item => {
+                const isChecked = localStorage.getItem('tyo_chk_real_'+item) ? 'checked' : '';
+                const icon = isChecked ? '✅' : '⬜';
+                return `<div class="cl-item ${isChecked}" onclick="toggleCheck(this, '${item}')">
+                            <span class="cl-checkbox">${icon}</span> ${item}
+                        </div>`;
+            }).join('');
+            catBox.innerHTML = `<div class="cl-title">${category}</div>${itemsHtml}`;
+            checkRoot.appendChild(catBox);
+        }
+
+        function toggleCheck(el, itemKey) {
+            el.classList.toggle('checked');
+            const isChecked = el.classList.contains('checked');
+            el.querySelector('.cl-checkbox').innerText = isChecked ? '✅' : '⬜';
+            if(isChecked) localStorage.setItem('tyo_chk_real_'+itemKey, '1');
+            else localStorage.removeItem('tyo_chk_real_'+itemKey);
+        }
+
+        const modal = document.getElementById('modal');
+        function openModal(d){
+            document.getElementById('m-title').innerText = d.title;
+            document.getElementById('m-time').innerText = `${d.time} @ ${d.title}`;
+            document.getElementById('m-desc').innerText = d.desc;
+            const noteBox = document.getElementById('m-note-box');
+            if(d.note){
+                noteBox.style.display = 'block';
+                document.getElementById('m-note').innerText = d.note;
+            } else { noteBox.style.display = 'none'; }
+            document.getElementById('m-map').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.title + ' 東京')}`;
+            modal.style.display = 'flex';
+        }
+        function closeModal(){ modal.style.display = 'none'; }
+        modal.onclick = (e) => { if(e.target === modal) closeModal(); }
+    </script>
+</body>
+</html>
