@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>❄️ 北海道雪地吃貨小隊 9 日遊 - 旅行筆記</title>
+    <style>
+        /*
+         * 全域樣式與變數
+         */
+        :root {
+            --color-primary: #375a7f; /* 深藍/雪夜藍 */
+            --color-secondary: #ffc107; /* 溫暖黃/燈光 */
+            --color-accent: #007bff; /* 連結藍 */
+            --color-light: #f8f9fa; /* 淺灰/雪地 */
+            --color-dark: #343a40; /* 深灰/大地 */
+            --color-text: #212529;
+            --color-background: #ffffff;
+            --font-family-main: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+            --spacing-unit: 1rem;
+        }
+
+        /* 重置 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family-main);
+            line-height: 1.6;
+            color: var(--color-text);
+            background-color: var(--color-background);
+            scroll-behavior: smooth;
+        }
+
+        /* 佈局容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-unit);
+        }
+        
+        /* 標題與排版 */
+        h1, h2, h3 {
+            font-weight: 700;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: var(--color-primary);
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--color-light);
+        }
+
+        h3 {
+            font-size: 1.4rem;
+            color: var(--color-dark);
+            border-left: 5px solid var(--color-secondary);
+            padding-left: 10px;
+            margin-top: 2rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        a {
+            color: var(--color-accent);
+            text-decoration: none;
+        }
+
+        /*
+         * 1. Hero Section
+         */
+        .hero {
+            background-color: var(--color-primary);
+            color: var(--color-light);
+            text-align: center;
+            padding: 4rem 1rem;
+            position: relative;
+            overflow: hidden;
+            border-bottom-left-radius: 50% 10%;
+            border-bottom-right-radius: 50% 10%;
+        }
+
+        .hero::before {
+            content: "❄️"; /* 雪花裝飾 */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-size: 5rem;
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: 0;
+            line-height: 0;
+            animation: snowfall 15s linear infinite;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .hero .dates {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 0.25rem;
+        }
+        
+        .hero .destinations {
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--color-secondary);
+        }
+
+        .hero .subtitle {
+            font-size: 1.1rem;
+            font-style: italic;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            padding-top: 0.5rem;
+            display: inline-block;
+        }
+        
+        /* 雪花動畫 */
+        @keyframes snowfall {
+            0% { transform: translate(0, -100%) rotate(0deg); opacity: 0.1; }
+            50% { opacity: 0.3; }
+            100% { transform: translate(100%, 100%) rotate(360deg); opacity: 0.1; }
+        }
+
+        /*
+         * 2. 行程總覽 (Timeline Cards)
+         */
+        .timeline {
+            margin: 2rem 0;
+            position: relative;
+            padding-left: 10px; /* 為了裝飾線 */
+        }
+        
+        /* Timeline 垂直線 - 僅在大螢幕顯示 */
+        @media (min-width: 768px) {
+            .timeline {
+                padding-left: 0;
+            }
+            .timeline::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 50%;
+                width: 2px;
+                height: 100%;
+                background-color: var(--color-light);
+                margin-left: -1px;
+            }
+        }
+
+        .timeline-item {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 2rem;
+            position: relative;
+            background: var(--color-light);
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .timeline-item:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Mobile View: 垂直線裝飾 */
+        .timeline-item::before {
+            content: '🗓️';
+            position: absolute;
+            left: -35px;
+            top: 0.5rem;
+            font-size: 1.2rem;
+            color: var(--color-secondary);
+        }
+
+        @media (min-width: 768px) {
+            .timeline-item {
+                flex-direction: row;
+                width: 48%; /* 讓它佔用一半寬度 */
+                margin-left: 0;
+                margin-right: 0;
+                padding: 1.5rem;
+            }
+
+            .timeline-item:nth-child(odd) {
+                float: left;
+                clear: both;
+            }
+
+            .timeline-item:nth-child(even) {
+                float: right;
+                clear: both;
+            }
+            
+            /* 中間的圓點裝飾 */
+            .timeline-item::before {
+                content: '';
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                background: var(--color-secondary);
+                border: 4px solid var(--color-primary);
+                border-radius: 50%;
+                z-index: 10;
+                top: calc(50% - 10px); /* 垂直居中 */
+            }
+
+            .timeline-item:nth-child(odd)::before {
+                right: -31px; /* 靠右側的圓點 */
+                left: auto;
+            }
+
+            .timeline-item:nth-child(even)::before {
+                left: -31px; /* 靠左側的圓點 */
+            }
+            
+            .timeline-item-content {
+                width: 100%;
+            }
+        }
+
+        .timeline-header {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--color-primary);
+        }
+
+        .timeline-highlight {
+            font-style: italic;
+            color: var(--color-dark);
+            font-size: 0.95rem;
+        }
+        
+        .timeline-clear {
+            clear: both;
+        }
+
+        /*
+         * 3. 每日詳細行程
+         */
+        .day-schedule {
+            background-color: var(--color-light);
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px solid #e9ecef;
+        }
+
+        .time-slot {
+            margin-bottom: 0.75rem;
+            padding-left: 10px;
+            border-left: 3px solid var(--color-secondary);
+        }
+
+        .time-slot strong {
+            color: var(--color-primary);
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .time-slot p {
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        /*
+         * 4. 必吃＆推薦店家清單 (Table)
+         */
+        .restaurant-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .restaurant-table th, .restaurant-table td {
+            border: 1px solid #dee2e6;
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .restaurant-table th {
+            background-color: var(--color-primary);
+            color: var(--color-light);
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+
+        .restaurant-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        .restaurant-table tr:hover {
+            background-color: #e2e6ea;
+        }
+        
+        /* Table Responsive */
+        @media screen and (max-width: 600px) {
+            .restaurant-table thead {
+                display: none; /* Hide table headers (but not important for screen readers) */
+            }
+
+            .restaurant-table, .restaurant-table tbody, .restaurant-table tr, .restaurant-table td {
+                display: block;
+            }
+
+            .restaurant-table tr {
+                margin-bottom: 1rem;
+                border: 1px solid #dee2e6;
+                border-radius: 4px;
+            }
+
+            .restaurant-table td {
+                text-align: right;
+                padding-left: 50%;
+                position: relative;
+            }
+
+            .restaurant-table td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                text-align: left;
+                font-weight: 600;
+                color: var(--color-primary);
+            }
+        }
+
+        /*
+         * 5. 行前準備 Checklists
+         */
+        .checklist-section {
+            background-color: #fff;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .checklist-section h4 {
+            font-size: 1.2rem;
+            color: var(--color-primary);
+            margin-bottom: 0.75rem;
+            border-bottom: 1px dashed #ced4da;
+            padding-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .checklist-section h4::before {
+            content: attr(data-icon);
+            margin-right: 8px;
+            font-size: 1.1em;
+        }
+
+        .checklist ul {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.5rem 1rem;
+        }
+
+        .checklist li {
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+            font-size: 0.95rem;
+            color: var(--color-dark);
+        }
+
+        /* 自定義 Checkbox 樣式 */
+        .checklist li::before {
+            content: '☐'; /* 未勾選 */
+            margin-right: 0.5rem;
+            color: var(--color-accent);
+        }
+        
+        .checklist li.checked::before {
+            content: '☑'; /* 已勾選 */
+            color: #28a745; /* 綠色 */
+            font-weight: bold;
+        }
+        
+        /*
+         * 6. 小提醒 & Tips
+         */
+        .tips-grid {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            margin-top: 1rem;
+        }
+
+        .tip-card {
+            background-color: var(--color-light);
+            padding: 1.25rem;
+            border-radius: 8px;
+            border-left: 5px solid var(--color-secondary);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .tip-card h4 {
+            color: var(--color-primary);
+            font-size: 1.1rem;
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .tip-card h4::before {
+            content: '💡';
+            margin-right: 8px;
+        }
+        
+        .tip-card ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 0.5rem;
+        }
+        
+        .tip-card li {
+            position: relative;
+            padding-left: 1.2rem;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+        }
+        
+        .tip-card li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--color-secondary);
+            font-weight: 900;
+        }
+
+        /*
+         * Footer
+         */
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+            border-top: 1px solid var(--color-light);
+            color: #6c757d;
+            font-size: 0.85rem;
+            background-color: var(--color-light);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1>北海道雪地吃貨＋自駕小隊 9 日遊</h1>
+            <p class="dates">2025/12/05 (五) - 12/13 (六)</p>
+            <p class="destinations">主要據點：函館・札幌・留壽都・新千歲</p>
+            <p class="subtitle">風格：美食爆吃・自駕探險・溫泉放鬆・滑雪體驗</p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section id="summary">
+            <h2>🛫 行程總覽 (Day 1 ~ 9)</h2>
+            <div class="timeline">
+                
+                <div class="timeline-item">
+                    <div class="timeline-item-content">
+                        <p class="timeline-header">Day 1：12/5 (五) 函館</p>
+                        <p>桃園飛函館、租車、入住</p>
+                        <p class="timeline-highlight">✨ 重點：幸運小丑漢堡、MaxValu 超市採買</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-item-content">
+                        <p class="timeline-header">Day 2：12/6 (六) 函館</p>
+                        <p>函館朝市、金森倉庫、五稜郭、函館山</p>
+                        <p class="timeline-highlight">✨ 重點：阿佐利壽喜燒、五稜郭「星之夢」</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-item-content">
+                        <p class="timeline-header">Day 3：12/7 (日) 函館 → 札幌</p>
+                        <p>洞爺湖熊牧場、散策</p>
+                        <p class="timeline-highlight">✨ 重點：有珠山口咖啡（備案）、札幌居酒屋（鳥貴族/串鳥）</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-item-content">
+                        <p class="timeline-header">Day 4：12/8 (一) 札幌</p>
+                        <p>北海道神宮、白色戀人、狸小路、啤酒博物館</p>
+                        <p class="timeline-highlight">✨ 重點：狸小路湯咖哩、成吉思汗燒肉 (已訂位)</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-item-content">
+                        <p class="timeline-header">Day 5：12/9 (二) 札幌 → 旭山/美瑛 → 札幌</p>
+                        <p>旭山動物園、美瑛周邊景點</p>
+                        <p class="timeline-highlight">✨ 重點：企鵝散步 (11:00)、白鬚瀑布、拉麵橫丁</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-item-content">
+                        <p class="timeline-header">Day 6：12/10 (三) 札幌 → 小樽 → 札幌</p>
+                        <p>小樽三角市場、運河周邊甜點</p>
+                        <p class="timeline-highlight">✨ 重點：LeTAO 咖啡廳、晚餐焼肉割烹はじめ</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-item-content">
+                        <p class="timeline-header">Day 7：12/11 (四) 札幌 → 留壽都</p>
+                        <p>開車前往留壽都、雪具租借、教練課</p>
+                        <p class="timeline-highlight">✨ 重點：晚餐 Yo-chan、飯店溫泉放鬆</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-item-content">
+                        <p class="timeline-header">Day 8：12/12 (五) 留壽都 → 新千歲</p>
+                        <p>自由滑雪 5 小時</p>
+                        <p class="timeline-highlight">✨ 重點：新千歲晚餐 (火鍋)、移動到機場附近住宿</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-item-content">
+                        <p class="timeline-header">Day 9：12/13 (六) 回台</p>
+                        <p>最後採購、還車、新千歲機場</p>
+                        <p class="timeline-highlight">✨ 重點：Aeon 千歲採購、華航 BR115 返家</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-clear"></div>
+            </div>
+        </section>
+
+        <section id="daily-schedule">
+            <h2>🗺️ 每日詳細行程 (時間軸)</h2>
+
+            <div class="day-schedule">
+                <h3>Day 1 ｜ 12/5 (五) 桃園 → 函館</h3>
+                <p>住宿：函館 · 關鍵字：租車、幸運小丑漢堡</p>
+                <div class="time-slot"><strong>下午</strong> <p>12:00–17:00 JX 860 班機（TPE T1 → HKD）</p></div>
+                <div class="time-slot"><strong>傍晚</strong> <p>17:00–19:00 機場租車（含 Expressway Pass）、開車前往住宿 Check-in</p></div>
+                <div class="time-slot"><strong>晚上</strong> <p>20:00 晚餐：幸運小丑漢堡；22:00 MaxValu 超市補貨</p></div>
+            </div>
+
+            <div class="day-schedule">
+                <h3>Day 2 ｜ 12/6 (六) 函館市區一日</h3>
+                <p>住宿：函館 · 關鍵字：朝市、五稜郭星之夢、函館山</p>
+                <div class="time-slot"><strong>早上</strong> <p>07:00 早餐：函館朝市（海鮮丼）；09:00 八幡坂、金森紅磚倉庫、Pastry Snaffles</p></div>
+                <div class="time-slot"><strong>中午～下午</strong> <p>15:00 五稜郭公園＋五稜郭塔（看星之夢點燈）</p></div>
+                <div class="time-slot"><strong>黃昏～晚上</strong> <p>17:00 晚餐：阿佐利壽喜燒；19:00 函館山夜景</p></div>
+                <blockquote style="font-size: 0.9em;">備註：冬季約 16:00 日落，「星之夢」17:00 開始，下午行程需抓緊時間。</blockquote>
+            </div>
+
+            <div class="day-schedule">
+                <h3>Day 3 ｜ 12/7 (日) 函館 → 札幌</h3>
+                <p>住宿：札幌 · 關鍵字：洞爺湖熊牧場、有珠山口</p>
+                <div class="time-slot"><strong>早上</strong> <p>07:00 早餐：麥當勞；08:00 開車前往洞爺湖（約 150 分鐘）</p></div>
+                <div class="time-slot"><strong>中午 & 下午</strong> <p>11:00 午餐：仙堂庵；13:00 洞爺湖熊牧場；15:00 洞爺湖散步（備案：有珠山口纜車/咖啡）</p></div>
+                <div class="time-slot"><strong>晚上</strong> <p>18:00 開車回札幌；20:00 晚餐：鳥貴族或串鳥（居酒屋）；22:00 MaxValu 採買</p></div>
+            </div>
+
+            <div class="day-schedule">
+                <h3>Day 4 ｜ 12/8 (一) 札幌市區一日</h3>
+                <p>住宿：札幌 · 關鍵字：神宮、狸小路、成吉思汗燒肉</p>
+                <div class="time-slot"><strong>早上</strong> <p>09:00 北海道神宮參拜、白色戀人觀光工廠參觀</p></div>
+                <div class="time-slot"><strong>中午～下午</strong> <p>12:00 午餐：狸小路湯咖哩；逛狸小路商店街、BARISTART COFFEE</p></div>
+                <div class="time-slot"><strong>傍晚～晚上</strong> <p>16:00 札幌啤酒博物館；18:00 晚餐：成吉思汗燒肉；22:00 Sandria 本店買隔天早餐</p></div>
+            </div>
+
+            <div class="day-schedule">
+                <h3>Day 5 ｜ 12/9 (二) 旭山動物園＆美瑛</h3>
+                <p>住宿：札幌 · 關鍵字：企鵝散步、青池、拉麵橫丁</p>
+                <div class="time-slot"><strong>清晨～早上</strong> <p>07:00 開車前往旭山動物園（約 130 分鐘）；09:00 入園、準備看 11:00 企鵝走路</p></div>
+                <div class="time-slot"><strong>中午～下午</strong> <p>12:00 午餐：Donya；13:00 美瑛/富良野周邊：Ken＆Mary 之樹、白鬚瀑布、青池</p></div>
+                <div class="time-slot"><strong>傍晚～晚上</strong> <p>17:00 開車回札幌；20:00 晚餐：元祖札幌拉麵橫丁</p></div>
+            </div>
+
+            <div class="day-schedule">
+                <h3>Day 6 ｜ 12/10 (三) 小樽一日遊</h3>
+                <p>住宿：札幌 · 關鍵字：三角市場、小樽運河、LeTAO、焼肉割烹はじめ</p>
+                <div class="time-slot"><strong>早上</strong> <p>08:00 出發前往小樽；10:00 早餐：小樽三角市場（海鮮）</p></div>
+                <div class="time-slot"><strong>中午～下午</strong> <p>12:00 小樽運河散步、北果樓泡芙、LeTAO 咖啡廳、北一硝子冰淇淋</p></div>
+                <div class="time-slot"><strong>傍晚～晚上</strong> <p>16:00 朝里車站周邊；17:00 開車回札幌；19:00 晚餐：焼肉割烹はじめ</p></div>
+            </div>
+
+            <div class="day-schedule">
+                <h3>Day 7 ｜ 12/11 (四) 留壽都滑雪日</h3>
+                <p>住宿：留壽都 · 關鍵字：租裝備、教練課、Yo-chan、飯店泡湯</p>
+                <div class="time-slot"><strong>早上</strong> <p>07:00 開車前往留壽都（約 90 分鐘）；10:00 租雪具裝備、買纜車票；11:00 滑雪教練課</p></div>
+                <div class="time-slot"><strong>晚上</strong> <p>17:00 晚餐：Yo-chan；19:00 飯店泡湯（北翼 6F）</p></div>
+            </div>
+
+            <div class="day-schedule">
+                <h3>Day 8 ｜ 12/12 (五) 自由滑雪 → 新千歲</h3>
+                <p>住宿：新千歲 · 關鍵字：自由滑雪、火鍋、移動</p>
+                <div class="time-slot"><strong>早上～下午</strong> <p>10:00 寄放行李；11:00 自由滑雪 5 小時券</p></div>
+                <div class="time-slot"><strong>晚上</strong> <p>17:00 晚餐：新千歲火鍋（待決定店家）；19:00 開車前往新千歲住宿</p></div>
+            </div>
+
+            <div class="day-schedule">
+                <h3>Day 9 ｜ 12/13 (六) 新千歲 → 台北</h3>
+                <p>住宿：返家 · 關鍵字：Aeon 千歲、還車、BR115</p>
+                <div class="time-slot"><strong>早上</strong> <p>08:00 退房；09:00 逛 Aeon 千歲（最後採購＆用餐）</p></div>
+                <div class="time-slot"><strong>中午～下午</strong> <p>12:00 還車；15:00 搭乘華航 BR 115 (15:20–19:05)</p></div>
+            </div>
+
+        </section>
+
+
+        <section id="restaurants">
+            <h2>🍜 必吃＆推薦店家清單</h2>
+            <div class="table-responsive">
+                <table class="restaurant-table">
+                    <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>店名 / 內容</th>
+                            <th>地區 / 備註</th>
+                            <th>推薦菜/特色</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="日期">12/5</td>
+                            <td data-label="店名 / 內容">幸運小丑漢堡</td>
+                            <td data-label="地區 / 備註">函館在地名物</td>
+                            <td data-label="推薦菜/特色">在地特色漢堡</td>
+                        </tr>
+                        <tr>
+                            <td data-label="日期">12/6</td>
+                            <td data-label="店名 / 內容">函館朝市</td>
+                            <td data-label="地區 / 備註">函館</td>
+                            <td data-label="推薦菜/特色">海鮮丼、烤物小吃</td>
+                        </tr>
+                        <tr>
+                            <td data-label="日期">12/6</td>
+                            <td data-label="店名 / 內容">阿佐利壽喜燒</td>
+                            <td data-label="地區 / 備註">函館老字號（已預約 17:00）</td>
+                            <td data-label="推薦菜/特色">壽喜燒</td>
+                        </tr>
+                        <tr>
+                            <td data-label="日期">12/7</td>
+                            <td data-label="店名 / 內容">鳥貴族 / 串鳥</td>
+                            <td data-label="地區 / 備註">札幌居酒屋連鎖</td>
+                            <td data-label="推薦菜/特色">串燒、啤酒、聊天好去處</td>
+                        </tr>
+                        <tr>
+                            <td data-label="日期">12/8</td>
+                            <td data-label="店名 / 內容">狸小路湯咖哩</td>
+                            <td data-label="地區 / 備註">札幌</td>
+                            <td data-label="推薦菜/特色">湯咖哩（札幌名物）</td>
+                        </tr>
+                        <tr>
+                            <td data-label="日期">12/8</td>
+                            <td data-label="店名 / 內容">成吉思汗燒肉</td>
+                            <td data-label="地區 / 備註">札幌啤酒博物館（已訂位 18:00）</td>
+                            <td data-label="推薦菜/特色">羊肉燒肉</td>
+                        </tr>
+                        <tr>
+                            <td data-label="日期">12/9</td>
+                            <td data-label="店名 / 內容">元祖札幌拉麵橫丁</td>
+                            <td data-label="地區 / 備註">札幌薄野</td>
+                            <td data-label="推薦菜/特色">各家拉麵集中地</td>
+                        </tr>
+                        <tr>
+                            <td data-label="日期">12/10</td>
+                            <td data-label="店名 / 內容">三角市場</td>
+                            <td data-label="地區 / 備註">小樽</td>
+                            <td data-label="推薦菜/特色">海鮮早餐</td>
+                        </tr>
+                        <tr>
+                            <td data-label="日期">12/10</td>
+                            <td data-label="店名 / 內容">LeTAO / 北果樓</td>
+                            <td data-label="地區 / 備註">小樽甜點街</td>
+                            <td data-label="推薦菜/特色">雙層起司蛋糕、泡芙</td>
+                        </tr>
+                        <tr>
+                            <td data-label="日期">12/10</td>
+                            <td data-label="店名 / 內容">焼肉割烹 はじめ</td>
+                            <td data-label="地區 / 備註">札幌燒肉（已訂位 19:00）</td>
+                            <td data-label="推薦菜/特色">日式燒肉割烹</td>
+                        </tr>
+                        <tr>
+                            <td data-label="日期">12/11</td>
+                            <td data-label="店名 / 內容">Yo-chan</td>
+                            <td data-label="地區 / 備註">留壽都周邊</td>
+                            <td data-label="推薦菜/特色">在地晚餐</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="checklist">
+            <h2>✅ 行前準備 Checklists</h2>
+            <p>點擊項目即可切換勾選狀態 (僅限本頁面效果)</p>
+            <div class="checklist">
+                
+                <div class="checklist-section">
+                    <h4 data-icon="📁">文件</h4>
+                    <ul>
+                        <li>護照</li>
+                        <li>機票證明（電子或紙本）</li>
+                        <li>飯店訂單</li>
+                        <li>保險文書</li>
+                        <li>健保卡</li>
+                        <li>駕照</li>
+                        <li>駕照日文譯本</li>
+                        <li>Visit Japan Web 資訊 / QR</li>
+                    </ul>
+                </div>
+
+                <div class="checklist-section">
+                    <h4 data-icon="🔌">電子 3C</h4>
+                    <ul>
+                        <li>行動電源</li>
+                        <li>充電器</li>
+                        <li>各種充電線</li>
+                        <li>網卡 / eSIM 資訊</li>
+                        <li>耳機</li>
+                        <li>防水袋（保護手機/相機）</li>
+                    </ul>
+                </div>
+
+                <div class="checklist-section">
+                    <h4 data-icon="🧣">衣物＆配件</h4>
+                    <ul>
+                        <li>口罩</li>
+                        <li>帽子（毛帽）</li>
+                        <li>發熱衣</li>
+                        <li>外套（中厚羽絨、擋風防水）</li>
+                        <li>貼身衣物</li>
+                        <li>襪子（多帶厚襪）</li>
+                        <li>睡衣</li>
+                        <li>平常穿的衣服、褲子</li>
+                        <li>太陽眼鏡（雪地專用）</li>
+                        <li>防摔裝備（滑雪護具）</li>
+                    </ul>
+                </div>
+
+                <div class="checklist-section">
+                    <h4 data-icon="🧴">盥洗＆保養</h4>
+                    <ul>
+                        <li>牙膏牙刷</li>
+                        <li>刮鬍刀</li>
+                        <li>梳子</li>
+                        <li>隱形眼鏡、藥水</li>
+                        <li>生理食鹽水</li>
+                        <li>眼鏡盒</li>
+                        <li>護唇膏（必備！）</li>
+                        <li>保濕乳、身體乳</li>
+                        <li>護手霜</li>
+                        <li>洗面乳</li>
+                        <li>日常保養品</li>
+                        <li>面膜</li>
+                        <li>個人常備藥品</li>
+                    </ul>
+                </div>
+                
+                <div class="checklist-section">
+                    <h4 data-icon="💰">錢包相關</h4>
+                    <ul>
+                        <li>台幣</li>
+                        <li>信用卡</li>
+                        <li>提款卡</li>
+                        <li>日幣現金</li>
+                    </ul>
+                </div>
+
+                <div class="checklist-section">
+                    <h4 data-icon="🎒">其他</h4>
+                    <ul>
+                        <li>小皮夾（出門簡單帶）</li>
+                        <li>酒精、乾洗手</li>
+                        <li>衛生紙、溼紙巾</li>
+                        <li>髒衣服袋子</li>
+                        <li>行李秤</li>
+                        <li>雨傘 或 輕便雨衣</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+        
+        <section id="tips">
+            <h2>⚠️ 冬季旅行小提醒 & Tips</h2>
+            <div class="tips-grid">
+                
+                <div class="tip-card">
+                    <h4>冬季日落與景點時間</h4>
+                    <ul>
+                        <li><strong>冬季日落極早：</strong> 約 15:30–16:00 天色即開始轉暗。室外景點務必排在中午前結束。</li>
+                        <li><strong>五稜郭「星之夢」：</strong> 點燈約 17:00–20:00。建議黃昏（天色剛暗）時上塔，同時欣賞夜景與點燈。</li>
+                        <li><strong>企鵝散步：</strong> 每天 11:00 & 14:30 各一場。務必提前到場卡位並查閱園區地圖。</li>
+                    </ul>
+                </div>
+                
+                <div class="tip-card">
+                    <h4>雪地駕駛與行車安全</h4>
+                    <ul>
+                        <li><strong>長距離移動：</strong> 盡量安排在白天，避免夜間雪地行駛。</li>
+                        <li><strong>車速與煞車：</strong> 採取「保守路線」，不急加速、不急煞車，保持慢速平穩駕駛。</li>
+                        <li><strong>跟車距離：</strong> 與前車保持比台灣「多 2～3 倍」的距離，預留足夠的煞停空間。</li>
+                        <li><strong>油量與休息：</strong> 上高速公路前確認油量，北海道部分路段休息站距離較遠。</li>
+                    </ul>
+                </div>
+                
+                <div class="tip-card">
+                    <h4>禦寒衣物與裝備</h4>
+                    <ul>
+                        <li><strong>洋蔥式穿法：</strong> 內部發熱衣、中間保暖層（毛衣/羽絨）、外部擋風防水外套（尤其滑雪）。</li>
+                        <li><strong>配件必備：</strong> 毛帽、圍巾、防水手套、太陽眼鏡（雪地反光極強）。</li>
+                        <li><strong>鞋子：</strong> 務必穿著防滑、防水的雪靴，避免滑倒受傷。</li>
+                        <li><strong>保濕：</strong> 隨時擦護唇膏與保濕乳液，預防皮膚乾燥。</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>👨‍💻 內容來源：北海道雪地吃貨小隊旅行筆記 | 頁面設計：AI Web Designer</p>
+        <p>旅行時間：2025/12/05 - 12/13</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const checklistItems = document.querySelectorAll('.checklist li');
+            
+            checklistItems.forEach(item => {
+                // 嘗試從 localStorage 恢復狀態
+                const storedState = localStorage.getItem('hokkaido_checklist_' + item.textContent.trim());
+                if (storedState === 'checked') {
+                    item.classList.add('checked');
+                }
+                
+                // 點擊切換狀態
+                item.addEventListener('click', () => {
+                    item.classList.toggle('checked');
+                    
+                    // 將狀態儲存到 localStorage
+                    const key = 'hokkaido_checklist_' + item.textContent.trim();
+                    if (item.classList.contains('checked')) {
+                        localStorage.setItem(key, 'checked');
+                    } else {
+                        localStorage.removeItem(key);
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
