@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🇻🇳 越式風情・西貢光影</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        /* * 🎨 越南主題配色：法式黃、熱帶綠、咖啡褐 */
+        :root {
+            --c-bg-top: #ffecb3;   /* 溫暖法式黃 */
+            --c-bg-bot: #fff9c4;   /* 淺黃 */
+            --c-primary: #5d4037;  /* 咖啡褐文字 */
+            
+            /* 分類色 */
+            --c-food: #ffab91;    /* 蝦醬紅：美食 */
+            --c-spot: #a5d6a7;    /* 熱帶綠：景點 */
+            --c-move: #b0bec5;    /* 機車灰：移動 */
+            --c-shop: #fff59d;    /* 亮黃：購物 */
+            --c-hotel: #ce93d8;   /* 舒適紫：住宿 */
+
+            --shadow-card: 5px 5px 0px rgba(93, 64, 55, 0.15);
+            --font-main: 'Zen Maru Gothic', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--c-primary);
+            background: linear-gradient(180deg, var(--c-bg-top) 0%, #ffffff 60%, var(--c-bg-bot) 100%);
+            min-height: 100vh;
+            padding-bottom: 120px;
+            overflow-x: hidden;
+        }
+
+        /* 🍃 落葉特效 (模擬熱帶氣息) */
+        .leaf-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+        .leaf {
+            position: absolute; top: -20px;
+            background: #81c784;
+            border-radius: 0 50% 0 50%; /* 葉子形狀 */
+            opacity: 0.6;
+            animation: fall-leaf linear infinite;
+        }
+        @keyframes fall-leaf {
+            0% { transform: translateY(0) rotate(0deg) translateX(0); }
+            100% { transform: translateY(110vh) rotate(360deg) translateX(50px); }
+        }
+
+        /* 導航 */
+        .navbar {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            width: 92%; max-width: 420px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border: 2px solid #fff; border-radius: 60px;
+            box-shadow: 0 10px 25px rgba(93, 64, 55, 0.2);
+            z-index: 999;
+            display: flex; justify-content: space-evenly; padding: 8px 0;
+        }
+        .nav-item {
+            text-align: center; text-decoration: none; color: var(--c-primary);
+            font-size: 0.8rem; font-weight: 800;
+            display: flex; flex-direction: column; align-items: center;
+            padding: 5px; border-radius: 10px; transition: background 0.2s;
+        }
+        .nav-item:active { background: #ffe082; transform: scale(0.95); }
+        .nav-icon { font-size: 1.4rem; margin-bottom: 2px; }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 20px 20px 60px; position: relative; z-index: 1; }
+
+        /* Header */
+        header { text-align: center; padding: 50px 0 30px; }
+        .main-title {
+            font-size: 2.2rem; font-weight: 900; color: #3e2723;
+            text-shadow: 3px 3px 0px #fff; margin-bottom: 10px; letter-spacing: 2px;
+        }
+        .sub-title {
+            background: #fff; padding: 8px 20px; border-radius: 30px;
+            font-size: 1rem; font-weight: 800; color: #ff6f00;
+            box-shadow: var(--shadow-card); transform: rotate(-2deg); display: inline-block;
+            border: 2px solid #ffcc80;
+        }
+
+        /* 天氣卡 */
+        .weather-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px; padding: 20px; margin-bottom: 30px;
+            border: 4px solid #fff; box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+        .weather-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 2px dashed #ffe082; padding-bottom: 15px; }
+        .w-icon { font-size: 3.5rem; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1)); }
+        .w-temp-group { text-align: right; display: flex; align-items: center; gap: 15px; }
+        .temp-box { text-align: center; }
+        .temp-val { font-size: 2rem; font-weight: 900; line-height: 1; }
+        .temp-label { font-size: 0.9rem; font-weight: 700; opacity: 0.7; margin-top: 5px; }
+        .t-high { color: #d84315; } .t-low { color: #0277bd; }
+        .weather-info { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+        .w-badge {
+            background: #fff8e1; padding: 8px 12px; border-radius: 10px;
+            font-size: 1rem; font-weight: 700; color: #5d4037; flex: 1; text-align: center;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+
+        /* 行程時間軸 */
+        .day-section { margin-bottom: 60px; }
+        .day-title {
+            background: var(--c-primary); color: #fff; padding: 12px 25px;
+            border-radius: 15px; font-size: 1.3rem; font-weight: 900;
+            display: inline-block; margin-bottom: 25px; box-shadow: 5px 5px 0 rgba(0,0,0,0.2);
+            transform: rotate(-1deg);
+        }
+
+        .timeline-container { padding-left: 25px; border-left: 6px dashed #bdbdbd; margin-left: 15px; }
+        
+        .timeline-card {
+            position: relative; background: #fff; border-radius: 18px; padding: 18px; margin-bottom: 25px;
+            border: 3px solid transparent; box-shadow: var(--shadow-card);
+            transition: transform 0.1s; cursor: pointer; overflow: visible;
+        }
+        .timeline-card:active { transform: scale(0.98); box-shadow: 2px 2px 0 rgba(0,0,0,0.1); }
+        .timeline-card::before {
+            content: ''; position: absolute; left: -37px; top: 25px;
+            width: 18px; height: 18px; border-radius: 50%;
+            background: #fff; border: 4px solid var(--c-primary); z-index: 1;
+        }
+
+        /* 類型樣式 - 越南版 */
+        .c-food { border-color: var(--c-food); } .c-food::before { border-color: var(--c-food); background: #ffe0b2; }
+        .c-spot { border-color: var(--c-spot); } .c-spot::before { border-color: var(--c-spot); background: #c8e6c9; }
+        .c-move { border-color: var(--c-move); } .c-move::before { border-color: var(--c-move); background: #cfd8dc; }
+        .c-shop { border-color: var(--c-shop); } .c-shop::before { border-color: var(--c-shop); background: #fff9c4; }
+        .c-hotel { border-color: var(--c-hotel); } .c-hotel::before { border-color: var(--c-hotel); background: #e1bee7; }
+
+        .card-inner { display: flex; align-items: flex-start; gap: 15px; }
+        .t-time-group { display: flex; flex-direction: column; align-items: center; min-width: 65px; }
+        .t-time-big { font-size: 1.4rem; font-weight: 900; color: #5d4037; line-height: 1; }
+        .t-ampm { font-size: 0.8rem; font-weight: 700; color: #8d6e63; }
+        .t-detail { flex: 1; z-index: 2; position: relative; }
+        .t-head { font-size: 1.25rem; font-weight: 800; color: #3e2723; margin-bottom: 8px; line-height: 1.3; }
+        .t-desc { font-size: 1rem; color: #6d4c41; line-height: 1.6; font-weight: 500; }
+        .t-note-mini { 
+            display: inline-block; background: #ffecb3; color: #e65100; 
+            font-size: 0.8rem; padding: 2px 8px; border-radius: 4px; margin-top: 6px; font-weight: 700;
+        }
+
+        /* 貼圖 */
+        .sticker-box { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; overflow: hidden; border-radius: 15px; }
+        .sticker {
+            position: absolute; font-size: 2.2rem; filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.1)); opacity: 0.95;
+        }
+        .s-pos-1 { top: -15px; right: -10px; transform: rotate(15deg); }
+        .s-pos-2 { bottom: -10px; right: 10px; transform: rotate(-10deg) scale(0.8); }
+        .s-pos-3 { top: 5px; right: 40px; transform: rotate(5deg) scale(0.6); opacity: 0.5; }
+
+        /* 行李清單 */
+        .checklist-wrapper { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .cl-category { background: #fff; border-radius: 15px; padding: 20px; box-shadow: var(--shadow-card); border-top: 5px solid #a5d6a7; }
+        .cl-title { font-size: 1.2rem; font-weight: 900; margin-bottom: 15px; color: #33691e; }
+        .cl-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px dashed #eee; font-size: 1rem; cursor: pointer; color: #558b2f; font-weight: 500; }
+        .cl-item.checked { color: #81c784; text-decoration: line-through; }
+
+        /* 總叮嚀 */
+        .tips-section { background: #fff; border-radius: 20px; padding: 25px; border: 4px solid #ffab91; margin-top: 40px; box-shadow: var(--shadow-card); }
+        .tips-title { color: #d84315; font-size: 1.5rem; font-weight: 900; text-align: center; margin-bottom: 20px; border-bottom: 2px dashed #ffab91; padding-bottom: 15px; }
+        .tip-item { margin-bottom: 12px; font-size: 1rem; line-height: 1.6; padding-left: 25px; position: relative; font-weight: 500; }
+        .tip-item::before { content: '🛵'; position: absolute; left: 0; top: 0; }
+
+        /* Modal */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(62, 39, 35, 0.9); z-index: 2000; display: none; justify-content: center; align-items: center; padding: 20px; }
+        .modal-box { background: #fff; width: 100%; max-width: 500px; border-radius: 24px; padding: 30px; position: relative; animation: popUp 0.3s; }
+        @keyframes popUp { from{transform:scale(0.8); opacity:0;} to{transform:scale(1); opacity:1;} }
+        .m-map-btn { display:block; background:#ff7043; color:#fff; text-align:center; padding:15px; border-radius:15px; text-decoration:none; font-weight:900; font-size:1.1rem; margin-top: 20px; box-shadow: 0 4px 0 #d84315; }
+
+    </style>
+</head>
+<body>
+
+    <div class="leaf-container" id="leafContainer"></div>
+
+    <div class="container">
+        <header>
+            <div class="main-title">🇻🇳 越式風情・西貢光影</div>
+            <div class="sub-title">2025/4/13 - 4/17 (5 Days)</div>
+        </header>
+
+        <div id="itinerary-root"></div>
+
+        <section id="checklist-section" style="margin-top: 60px;">
+            <div class="day-title" style="background: #a5d6a7; color: #1b5e20; transform: rotate(1deg);">🎒 越南行前清單</div>
+            <div class="checklist-wrapper" id="checklist-root"></div>
+        </section>
+
+        <section class="tips-section" id="general-tips">
+            <div class="tips-title">📝 越南旅遊小筆記</div>
+            <div class="tip-item"><strong>換錢注意：</strong>在機場或銀樓換匯時，務必當面點清面額 (越南盾零太多)。</div>
+            <div class="tip-item"><strong>飛車搶劫：</strong>在路邊使用手機請抓緊，包包盡量背前面，注意摩托車。</div>
+            <div class="tip-item"><strong>殺價技巧：</strong>濱城市場從 3 折開始殺，不要怕！</div>
+            <div class="tip-item"><strong>交通 App：</strong>建議全程使用 Grab 叫車，避免被計程車司機繞路或亂喊價。</div>
+            <div class="tip-item"><strong>小費文化：</strong>按摩通常需給小費，餐廳則視情況而定。</div>
+        </section>
+
+        <div style="text-align: center; margin-top: 50px; color: #8d6e63; font-size: 0.9rem; font-weight: 700;">
+            Created for Ho Chi Minh Trip 2025
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <a href="#itinerary-root" class="nav-item"><span class="nav-icon">📅</span>行程</a>
+        <a href="#checklist-section" class="nav-item"><span class="nav-icon">🎒</span>清單</a>
+        <a href="#general-tips" class="nav-item"><span class="nav-icon">💡</span>叮嚀</a>
+        <a href="#" class="nav-item" onclick="window.scrollTo(0,0)"><span class="nav-icon">🔝</span>TOP</a>
+    </nav>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal-box">
+            <button onclick="closeModal()" style="position:absolute; right:20px; top:20px; border:none; background:none; font-size:1.5rem; cursor:pointer;">✕</button>
+            <h2 id="m-title" style="color:#3e2723; margin-bottom:5px; font-size:1.6rem;">標題</h2>
+            <div id="m-time" style="color:#8d6e63; font-weight:700; margin-bottom:15px; font-size:0.9rem;"></div>
+            
+            <div style="background:#fff8e1; padding:15px; border-radius:12px; margin-bottom:15px; font-size:1.05rem; line-height:1.6;" id="m-desc">內容</div>
+            
+            <div id="m-note-box" style="display:none; margin-bottom:15px;">
+                <span style="background:#ffcc80; color:#e65100; padding:4px 10px; border-radius:8px; font-size:0.85rem; font-weight:bold;">重點筆記</span>
+                <p id="m-note" style="margin-top:8px; font-weight:700; color:#e65100;"></p>
+            </div>
+
+            <a id="m-map" href="#" target="_blank" class="m-map-btn">📍 Google Maps 導航</a>
+        </div>
+    </div>
+
+    <script>
+        // 🍃 落葉生成器
+        const leafContainer = document.getElementById('leafContainer');
+        for(let i=0; i<20; i++){ 
+            const div = document.createElement('div');
+            div.className = 'leaf';
+            div.style.left = Math.random()*100 + 'vw';
+            const size = Math.random()*15 + 10; 
+            div.style.width = size + 'px';
+            div.style.height = size + 'px';
+            div.style.animationDuration = (Math.random()*10+5)+'s';
+            div.style.animationDelay = Math.random()*5+'s';
+            leafContainer.appendChild(div);
+        }
+
+        // 📅 行程資料庫 (根據文字檔 100% 還原)
+        const itineraryDB = [
+            {
+                date: "Day 1 (4/13)", location: "抵達胡志明",
+                weather: { high: "34°", low: "26°", feel: "38°", icon: "☀️", desc: "酷熱", sun: "05:45 / 18:00" },
+                events: [
+                    { time: "06:55", type: "move", title: "搭機出發", desc: "06:55-09:20 飛往 SGN。機上補眠。", stickers: ["✈️","🇻🇳"] },
+                    { time: "11:00", type: "move", title: "前往飯店", desc: "車程約 30 分鐘，車資約 20 USD。", stickers: ["🚕","🏨"] },
+                    { time: "12:00", type: "food", title: "在地午餐", desc: "由朋友 Nhat 帶路吃道地美食。", stickers: ["🍜","🥢"] },
+                    { time: "14:00", type: "move", title: "換錢 & Check-in", desc: "注意點收鈔票。15:00 飯店小休。", stickers: ["💵","🛏️"] },
+                    { time: "16:00", type: "spot", title: "濱城市場", desc: "逛街、採購、殺價、吃晚餐。", stickers: ["🛍️","🗣️"] },
+                    { time: "19:00", type: "spot", title: "Chill SkyBar", desc: "高空酒吧看夜景。注意財物安全。", stickers: ["🍸","🌃"] },
+                    { time: "21:00", type: "spot", title: "MIUMIU 按摩", desc: "21:00 預約 (需提早到)。步行約 25 分。", stickers: ["💆","🦶"] }
+                ]
+            },
+            {
+                date: "Day 2 (4/14)", location: "湄公河一日遊",
+                weather: { high: "33°", low: "25°", feel: "37°", icon: "🌤️", desc: "晴時多雲", sun: "05:44 / 18:00" },
+                events: [
+                    { time: "07:25", type: "move", title: "飯店集合", desc: "等待接駁車，開始湄公河之旅。", stickers: ["🚌","⏰"] },
+                    { time: "08:00", type: "spot", title: "湄公河體驗", desc: "搭船、水果園、椰子糖工廠 (含午餐)。", note: "約 17:30 回飯店", stickers: ["🚣","🥥","🐝"] },
+                    { time: "19:00", type: "food", title: "Den Long", desc: "晚餐：家常越南料理。", stickers: ["🍲","🍚"] },
+                    { time: "20:30", type: "spot", title: "范五老街", desc: "Bui Vien 酒吧街小酌感受夜生活。", stickers: ["🍺","🎶"] }
+                ]
+            },
+            {
+                date: "Day 3 (4/15)", location: "美奈沙漠一日遊",
+                weather: { high: "35°", low: "26°", feel: "40°", icon: "🏜️", desc: "沙漠炎熱", sun: "05:43 / 18:00" },
+                events: [
+                    { time: "06:55", type: "move", title: "集合出發", desc: "步行至 Viet Fun Travel Office 集合。", stickers: ["🚶","🚌"] },
+                    { time: "08:00", type: "spot", title: "美奈沙漠", desc: "白沙丘、紅沙丘、仙女溪、漁村。", note: "午餐自理", stickers: ["🏜️","🧚‍♀️","🛶"] },
+                    { time: "18:00", type: "move", title: "返回胡志明", desc: "傍晚結束行程返回市區。", stickers: ["🚌","😴"] },
+                    { time: "20:00", type: "hotel", title: "自由活動", desc: "簡單吃晚餐，早點休息。", stickers: ["🍜","🛌"] }
+                ]
+            },
+            {
+                date: "Day 4 (4/16)", location: "市區慢遊",
+                weather: { high: "34°", low: "26°", feel: "38°", icon: "☀️", desc: "晴朗", sun: "05:42 / 18:00" },
+                events: [
+                    { time: "10:00", type: "spot", title: "CiCi 洗頭", desc: "越式洗頭 SPA，開啟美美的一天。", stickers: ["💆‍♀️","✨"] },
+                    { time: "11:00", type: "spot", title: "粉紅教堂", desc: "Tan Dinh Church 拍照。", stickers: ["⛪","🩷"] },
+                    { time: "12:00", type: "food", title: "新定市場", desc: "對面市場吃在地小吃午餐。", stickers: ["🥣","😋"] },
+                    { time: "14:00", type: "spot", title: "中央郵局", desc: "聖母院、百年郵局拍照。", stickers: ["📮","📸"] },
+                    { time: "16:00", type: "food", title: "咖啡公寓", desc: "搭電梯到頂樓慢慢逛下來。", stickers: ["☕","🏢"] },
+                    { time: "18:00", type: "spot", title: "阮文惠大道", desc: "散步逛街。", stickers: ["🚶‍♂️","🌆"] },
+                    { time: "19:00", type: "food", title: "鳥籠咖啡", desc: "特色咖啡廳放鬆。", stickers: ["🐦","☕"] },
+                    { time: "21:00", type: "spot", title: "濱城夜市", desc: "最後衝刺買伴手禮、吃宵夜。", stickers: ["🛍️","🍢"] }
+                ]
+            },
+            {
+                date: "Day 5 (4/17)", location: "返程",
+                weather: { high: "33°", low: "26°", feel: "37°", icon: "🏊", desc: "悠閒", sun: "05:42 / 18:00" },
+                events: [
+                    { time: "09:00", type: "hotel", title: "飯店泳池", desc: "吃早餐、泳池玩水耍廢、整理行李。", stickers: ["🏊","🧳"] },
+                    { time: "11:00", type: "move", title: "前往機場", desc: "預留 30 分鐘車程。", stickers: ["🚕","👋"] },
+                    { time: "13:30", type: "move", title: "搭機返台", desc: "13:30-18:00 飛行。平安回家！", stickers: ["✈️","🇹🇼"] }
+                ]
+            }
+        ];
+
+        // 🎒 行李清單 (通用版 + 越南特色)
+        const checklistData = {
+            "📂 文件與簽證": ["護照", "電子簽證 (列印)", "機票證明", "飯店訂單", "大頭照 (落地簽備用)", "25美金 (落地簽費)"],
+            "👕 衣物穿著": ["短袖/薄衫", "薄外套 (冷氣房/防曬)", "短褲/裙子", "好走的鞋", "遮陽帽", "墨鏡", "正裝 (Skybar用)"],
+            "🔌 電子用品": ["手機", "行動電源", "充電器", "網卡", "轉接頭 (越南220V雙圓孔/扁孔)"],
+            "🧴 盥洗與防曬": ["牙刷牙膏", "洗面乳", "防曬乳 (超重要)", "防蚊液", "濕紙巾", "個人保養品"],
+            "💰 錢包": ["美金 (換匯用)", "台幣", "信用卡", "零錢包 (裝越南盾)"]
+        };
+
+        // 渲染行程
+        const root = document.getElementById('itinerary-root');
+        itineraryDB.forEach(day => {
+            const section = document.createElement('div');
+            section.className = 'day-section';
+            
+            const header = document.createElement('div');
+            header.className = 'day-title';
+            header.innerText = `${day.date} @${day.location}`;
+            section.appendChild(header);
+
+            const w = day.weather;
+            const weatherCard = document.createElement('div');
+            weatherCard.className = 'weather-card';
+            weatherCard.innerHTML = `
+                <div class="weather-top">
+                    <div class="w-icon">${w.icon}</div>
+                    <div class="w-temp-group">
+                        <div class="temp-box"><div class="temp-val t-high">${w.high}</div><div class="temp-label">High</div></div>
+                        <div style="font-size:1.5rem; opacity:0.3;">/</div>
+                        <div class="temp-box"><div class="temp-val t-low">${w.low}</div><div class="temp-label">Low</div></div>
+                    </div>
+                </div>
+                <div class="weather-info">
+                    <div class="w-badge">🌡️ 體感 ${w.feel}</div>
+                    <div class="w-badge">☁️ ${w.desc}</div>
+                    <div class="w-badge">🌅 ${w.sun}</div>
+                </div>
+            `;
+            section.appendChild(weatherCard);
+
+            const timeline = document.createElement('div');
+            timeline.className = 'timeline-container';
+            day.events.forEach(ev => {
+                const card = document.createElement('div');
+                let cType = 'c-spot';
+                if(ev.type === 'food') cType = 'c-food';
+                if(ev.type === 'move') cType = 'c-move';
+                if(ev.type === 'shop') cType = 'c-shop';
+                if(ev.type === 'hotel') cType = 'c-hotel';
+                card.className = `timeline-card ${cType}`;
+                
+                let stickersHtml = '<div class="sticker-box">';
+                if(ev.stickers) {
+                    ev.stickers.forEach((s, idx) => {
+                        const posClass = `s-pos-${(idx % 3) + 1}`;
+                        stickersHtml += `<div class="sticker ${posClass}">${s}</div>`;
+                    });
+                }
+                stickersHtml += '</div>';
+                let noteHtml = ev.note ? `<span class="t-note-mini">📝 ${ev.note}</span>` : '';
+
+                card.innerHTML = `
+                    ${stickersHtml}
+                    <div class="card-inner">
+                        <div class="t-time-group">
+                            <span class="t-time-big">${ev.time.split(':')[0]}</span>
+                            <span class="t-ampm">:${ev.time.split(':')[1]}</span>
+                        </div>
+                        <div class="t-detail">
+                            <div class="t-head">${ev.title}</div>
+                            <div class="t-desc">${ev.desc}</div>
+                            ${noteHtml}
+                        </div>
+                    </div>
+                `;
+                card.onclick = () => openModal(ev);
+                timeline.appendChild(card);
+            });
+            section.appendChild(timeline);
+            root.appendChild(section);
+        });
+
+        // 渲染清單
+        const checkRoot = document.getElementById('checklist-root');
+        for (const [category, items] of Object.entries(checklistData)) {
+            const catBox = document.createElement('div');
+            catBox.className = 'cl-category';
+            let itemsHtml = items.map(item => {
+                const isChecked = localStorage.getItem('hcm_chk_'+item) ? 'checked' : '';
+                const icon = isChecked ? '✅' : '⬜';
+                return `<div class="cl-item ${isChecked}" onclick="toggleCheck(this, '${item}')">
+                            <span class="cl-checkbox">${icon}</span> ${item}
+                        </div>`;
+            }).join('');
+            catBox.innerHTML = `<div class="cl-title">${category}</div>${itemsHtml}`;
+            checkRoot.appendChild(catBox);
+        }
+        function toggleCheck(el, itemKey) {
+            el.classList.toggle('checked');
+            const isChecked = el.classList.contains('checked');
+            el.querySelector('.cl-checkbox').innerText = isChecked ? '✅' : '⬜';
+            if(isChecked) localStorage.setItem('hcm_chk_'+itemKey, '1');
+            else localStorage.removeItem('hcm_chk_'+itemKey);
+        }
+
+        const modal = document.getElementById('modal');
+        function openModal(d){
+            document.getElementById('m-title').innerText = d.title;
+            document.getElementById('m-time').innerText = `${d.time} @ ${d.title}`;
+            document.getElementById('m-desc').innerText = d.desc;
+            const noteBox = document.getElementById('m-note-box');
+            if(d.note){
+                noteBox.style.display = 'block';
+                document.getElementById('m-note').innerText = d.note;
+            } else { noteBox.style.display = 'none'; }
+            document.getElementById('m-map').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.title + ' 胡志明')}`;
+            modal.style.display = 'flex';
+        }
+        function closeModal(){ modal.style.display = 'none'; }
+        modal.onclick = (e) => { if(e.target === modal) closeModal(); }
+    </script>
+</body>
+</html>
