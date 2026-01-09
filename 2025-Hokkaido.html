@@ -183,10 +183,42 @@
         .m-map-btn { display:block; background:#54a0ff; color:#fff; text-align:center; padding:15px; border-radius:15px; text-decoration:none; font-weight:900; font-size:1.1rem; margin-top: 20px; box-shadow: 0 4px 0 #2e86de; }
         .m-map-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #2e86de; }
 
+        /* 🏠 回首頁懸浮按鈕 */
+.home-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000; /* 確保它浮在所有貼紙和特效上面 */
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(5px);
+    padding: 10px 18px;
+    border-radius: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    text-decoration: none;
+    color: var(--c-primary); /* 會自動跟隨該頁面的主題色變色！ */
+    font-weight: 900;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: transform 0.2s;
+    border: 2px solid #fff;
+}
+
+.home-btn:hover {
+    transform: scale(1.05);
+    background: #fff;
+}
+
+.home-btn:active {
+    transform: scale(0.95);
+}
     </style>
 </head>
 <body>
-
+    <a href="index.html" class="home-btn">
+    <span>⬅</span> 回首頁
+</a>
     <div class="snow-container" id="snowContainer"></div>
 
     <div class="container">
@@ -509,4 +541,5 @@
 </body>
 
 </html>
+
 
