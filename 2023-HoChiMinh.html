@@ -206,6 +206,7 @@
     transform: scale(0.95);
 }
     </style>
+    <link rel="stylesheet" href="travel-style.css">
 </head>
 <body>
     <a href="index.html" class="home-btn">
@@ -348,118 +349,59 @@
             "💰 錢包": ["美金 (換匯用)", "台幣", "信用卡", "零錢包 (裝越南盾)"]
         };
 
-        // 渲染行程
-        const root = document.getElementById('itinerary-root');
-        itineraryDB.forEach(day => {
-            const section = document.createElement('div');
-            section.className = 'day-section';
-            
-            const header = document.createElement('div');
-            header.className = 'day-title';
-            header.innerText = `${day.date} @${day.location}`;
-            section.appendChild(header);
-
-            const w = day.weather;
-            const weatherCard = document.createElement('div');
-            weatherCard.className = 'weather-card';
-            weatherCard.innerHTML = `
-                <div class="weather-top">
-                    <div class="w-icon">${w.icon}</div>
-                    <div class="w-temp-group">
-                        <div class="temp-box"><div class="temp-val t-high">${w.high}</div><div class="temp-label">High</div></div>
-                        <div style="font-size:1.5rem; opacity:0.3;">/</div>
-                        <div class="temp-box"><div class="temp-val t-low">${w.low}</div><div class="temp-label">Low</div></div>
-                    </div>
-                </div>
-                <div class="weather-info">
-                    <div class="w-badge">🌡️ 體感 ${w.feel}</div>
-                    <div class="w-badge">☁️ ${w.desc}</div>
-                    <div class="w-badge">🌅 ${w.sun}</div>
-                </div>
-            `;
-            section.appendChild(weatherCard);
-
-            const timeline = document.createElement('div');
-            timeline.className = 'timeline-container';
-            day.events.forEach(ev => {
-                const card = document.createElement('div');
-                let cType = 'c-spot';
-                if(ev.type === 'food') cType = 'c-food';
-                if(ev.type === 'move') cType = 'c-move';
-                if(ev.type === 'shop') cType = 'c-shop';
-                if(ev.type === 'hotel') cType = 'c-hotel';
-                card.className = `timeline-card ${cType}`;
-                
-                let stickersHtml = '<div class="sticker-box">';
-                if(ev.stickers) {
-                    ev.stickers.forEach((s, idx) => {
-                        const posClass = `s-pos-${(idx % 3) + 1}`;
-                        stickersHtml += `<div class="sticker ${posClass}">${s}</div>`;
-                    });
-                }
-                stickersHtml += '</div>';
-                let noteHtml = ev.note ? `<span class="t-note-mini">📝 ${ev.note}</span>` : '';
-
-                card.innerHTML = `
-                    ${stickersHtml}
-                    <div class="card-inner">
-                        <div class="t-time-group">
-                            <span class="t-time-big">${ev.time.split(':')[0]}</span>
-                            <span class="t-ampm">:${ev.time.split(':')[1]}</span>
-                        </div>
-                        <div class="t-detail">
-                            <div class="t-head">${ev.title}</div>
-                            <div class="t-desc">${ev.desc}</div>
-                            ${noteHtml}
-                        </div>
-                    </div>
-                `;
-                card.onclick = () => openModal(ev);
-                timeline.appendChild(card);
-            });
-            section.appendChild(timeline);
-            root.appendChild(section);
-        });
-
-        // 渲染清單
-        const checkRoot = document.getElementById('checklist-root');
-        for (const [category, items] of Object.entries(checklistData)) {
-            const catBox = document.createElement('div');
-            catBox.className = 'cl-category';
-            let itemsHtml = items.map(item => {
-                const isChecked = localStorage.getItem('hcm_chk_'+item) ? 'checked' : '';
-                const icon = isChecked ? '✅' : '⬜';
-                return `<div class="cl-item ${isChecked}" onclick="toggleCheck(this, '${item}')">
-                            <span class="cl-checkbox">${icon}</span> ${item}
-                        </div>`;
-            }).join('');
-            catBox.innerHTML = `<div class="cl-title">${category}</div>${itemsHtml}`;
-            checkRoot.appendChild(catBox);
-        }
-        function toggleCheck(el, itemKey) {
-            el.classList.toggle('checked');
-            const isChecked = el.classList.contains('checked');
-            el.querySelector('.cl-checkbox').innerText = isChecked ? '✅' : '⬜';
-            if(isChecked) localStorage.setItem('hcm_chk_'+itemKey, '1');
-            else localStorage.removeItem('hcm_chk_'+itemKey);
-        }
-
-        const modal = document.getElementById('modal');
-        function openModal(d){
-            document.getElementById('m-title').innerText = d.title;
-            document.getElementById('m-time').innerText = `${d.time} @ ${d.title}`;
-            document.getElementById('m-desc').innerText = d.desc;
-            const noteBox = document.getElementById('m-note-box');
-            if(d.note){
-                noteBox.style.display = 'block';
-                document.getElementById('m-note').innerText = d.note;
-            } else { noteBox.style.display = 'none'; }
-            document.getElementById('m-map').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.title + ' 胡志明')}`;
-            modal.style.display = 'flex';
-        }
-        function closeModal(){ modal.style.display = 'none'; }
-        modal.onclick = (e) => { if(e.target === modal) closeModal(); }
+        const daySummaries = [
+            "清晨飛抵胡志明，換錢入住後逛濱城市場，晚上高空酒吧與按摩放鬆。",
+            "湄公河一日遊，搭船、果園與椰子糖工廠，晚上吃越南料理與范五老街。",
+            "美奈沙漠一日遊，白沙丘、紅沙丘、仙女溪與漁村，晚上回市區休息。",
+            "胡志明市區慢遊，越式洗頭、粉紅教堂、中央郵局、咖啡公寓與夜市。",
+            "飯店泳池耍廢，整理行李後前往機場返台。"
+];
+        window.travelPageData = {
+            storageKey: "hcm2023",
+            mapRegion: "胡志明",
+            flights: [
+            {
+                        "direction": "去程",
+                        "date": "2023-04-13",
+                        "flightNo": "航班待補",
+                        "depart": {
+                                    "airport": "TPE",
+                                    "terminal": "航廈出發前確認",
+                                    "time": "06:55"
+                        },
+                        "arrive": {
+                                    "airport": "SGN",
+                                    "terminal": "T2 國際航廈",
+                                    "time": "09:20"
+                        },
+                        "note": "原始行程未列航班號；SGN 國際航班使用 T2，實際仍以票券為準。"
+            },
+            {
+                        "direction": "回程",
+                        "date": "2023-04-17",
+                        "flightNo": "航班待補",
+                        "depart": {
+                                    "airport": "SGN",
+                                    "terminal": "T2 國際航廈",
+                                    "time": "13:30"
+                        },
+                        "arrive": {
+                                    "airport": "TPE",
+                                    "terminal": "航廈出發前確認",
+                                    "time": "18:00"
+                        },
+                        "note": "原始行程未列航班號；出發前再以航空公司或機場公告確認。"
+            }
+],
+            days: itineraryDB.map((day, index) => ({
+                ...day,
+                summary: day.summary || daySummaries[index] || ''
+            })),
+            checklist: checklistData,
+            tips: []
+        };
     </script>
+    <script src="travel-page.js"></script>
 </body>
 
 </html>

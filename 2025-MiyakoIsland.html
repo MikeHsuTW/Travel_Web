@@ -206,6 +206,7 @@
     transform: scale(0.95);
 }
     </style>
+    <link rel="stylesheet" href="travel-style.css">
 </head>
 <body>
     <a href="index.html" class="home-btn">
@@ -285,7 +286,7 @@
                 date: "Day 1 (10/10 五)", location: "抵達宮古島",
                 weather: { high: "28°", low: "24°", feel: "30°", icon: "🌤️", desc: "晴時多雲", sun: "06:30 / 18:10" },
                 events: [
-                    { time: "08:35", type: "move", title: "搭機 JX886", desc: "TPE(T1) → SHI 下地島機場。08:35-10:55。", stickers: ["✈️","🏝️"] },
+                    { time: "08:35", type: "move", title: "搭機 JX886", desc: "08:35 TPE (T2) → 10:55 SHI 下地島機場。", stickers: ["✈️","🏝️"] },
                     { time: "11:00", type: "move", title: "OTS 租車", desc: "1F 國內線抵達處。預約號：OTS1343831。", stickers: ["🚗","🔑"] },
                     { time: "13:00", type: "food", title: "New-Hamaya", desc: "午餐吃沖繩麵 (註1)。", stickers: ["🍜","😋"] },
                     { time: "14:00", type: "spot", title: "17END & 通池", desc: "絕美海景與潟湖 (註2、3)。吃 EIGHT smoothie's (註25)。", stickers: ["🌊","🥤"] },
@@ -337,7 +338,7 @@
                     { time: "08:00", type: "move", title: "前往機場", desc: "預留 30 分鐘車程。", stickers: ["🚗","💨"] },
                     { time: "09:30", type: "move", title: "OTS 還車", desc: "確認油量加滿、結帳。", stickers: ["⛽","👋"] },
                     { time: "10:00", type: "shop", title: "下地島機場", desc: "最後伴手禮採買、喝咖啡。", stickers: ["☕","🎁"] },
-                    { time: "11:55", type: "move", title: "搭機 JX887", desc: "SHI → TPE。11:55-12:05。回家囉！", stickers: ["✈️","🇹🇼"] }
+                    { time: "11:56", type: "move", title: "搭機 JX887", desc: "11:56 SHI → 11:54 TPE (T1)。回家囉！", stickers: ["✈️","🇹🇼"] }
                 ]
             }
         ];
@@ -352,118 +353,59 @@
             "💰 錢包": ["日幣現金", "信用卡", "零錢包"]
         };
 
-        // 渲染行程
-        const root = document.getElementById('itinerary-root');
-        itineraryDB.forEach(day => {
-            const section = document.createElement('div');
-            section.className = 'day-section';
-            
-            const header = document.createElement('div');
-            header.className = 'day-title';
-            header.innerText = `${day.date} @${day.location}`;
-            section.appendChild(header);
-
-            const w = day.weather;
-            const weatherCard = document.createElement('div');
-            weatherCard.className = 'weather-card';
-            weatherCard.innerHTML = `
-                <div class="weather-top">
-                    <div class="w-icon">${w.icon}</div>
-                    <div class="w-temp-group">
-                        <div class="temp-box"><div class="temp-val t-high">${w.high}</div><div class="temp-label">High</div></div>
-                        <div style="font-size:1.5rem; opacity:0.3;">/</div>
-                        <div class="temp-box"><div class="temp-val t-low">${w.low}</div><div class="temp-label">Low</div></div>
-                    </div>
-                </div>
-                <div class="weather-info">
-                    <div class="w-badge">🌡️ 體感 ${w.feel}</div>
-                    <div class="w-badge">☁️ ${w.desc}</div>
-                    <div class="w-badge">🌅 ${w.sun}</div>
-                </div>
-            `;
-            section.appendChild(weatherCard);
-
-            const timeline = document.createElement('div');
-            timeline.className = 'timeline-container';
-            day.events.forEach(ev => {
-                const card = document.createElement('div');
-                let cType = 'c-spot';
-                if(ev.type === 'food') cType = 'c-food';
-                if(ev.type === 'move') cType = 'c-move';
-                if(ev.type === 'shop') cType = 'c-shop';
-                if(ev.type === 'hotel') cType = 'c-hotel';
-                card.className = `timeline-card ${cType}`;
-                
-                let stickersHtml = '<div class="sticker-box">';
-                if(ev.stickers) {
-                    ev.stickers.forEach((s, idx) => {
-                        const posClass = `s-pos-${(idx % 3) + 1}`;
-                        stickersHtml += `<div class="sticker ${posClass}">${s}</div>`;
-                    });
-                }
-                stickersHtml += '</div>';
-                let noteHtml = ev.note ? `<span class="t-note-mini">📝 ${ev.note}</span>` : '';
-
-                card.innerHTML = `
-                    ${stickersHtml}
-                    <div class="card-inner">
-                        <div class="t-time-group">
-                            <span class="t-time-big">${ev.time.split(':')[0]}</span>
-                            <span class="t-ampm">:${ev.time.split(':')[1]}</span>
-                        </div>
-                        <div class="t-detail">
-                            <div class="t-head">${ev.title}</div>
-                            <div class="t-desc">${ev.desc}</div>
-                            ${noteHtml}
-                        </div>
-                    </div>
-                `;
-                card.onclick = () => openModal(ev);
-                timeline.appendChild(card);
-            });
-            section.appendChild(timeline);
-            root.appendChild(section);
-        });
-
-        // 渲染清單
-        const checkRoot = document.getElementById('checklist-root');
-        for (const [category, items] of Object.entries(checklistData)) {
-            const catBox = document.createElement('div');
-            catBox.className = 'cl-category';
-            let itemsHtml = items.map(item => {
-                const isChecked = localStorage.getItem('miyako_chk_'+item) ? 'checked' : '';
-                const icon = isChecked ? '✅' : '⬜';
-                return `<div class="cl-item ${isChecked}" onclick="toggleCheck(this, '${item}')">
-                            <span class="cl-checkbox">${icon}</span> ${item}
-                        </div>`;
-            }).join('');
-            catBox.innerHTML = `<div class="cl-title">${category}</div>${itemsHtml}`;
-            checkRoot.appendChild(catBox);
-        }
-        function toggleCheck(el, itemKey) {
-            el.classList.toggle('checked');
-            const isChecked = el.classList.contains('checked');
-            el.querySelector('.cl-checkbox').innerText = isChecked ? '✅' : '⬜';
-            if(isChecked) localStorage.setItem('miyako_chk_'+itemKey, '1');
-            else localStorage.removeItem('miyako_chk_'+itemKey);
-        }
-
-        const modal = document.getElementById('modal');
-        function openModal(d){
-            document.getElementById('m-title').innerText = d.title;
-            document.getElementById('m-time').innerText = `${d.time} @ ${d.title}`;
-            document.getElementById('m-desc').innerText = d.desc;
-            const noteBox = document.getElementById('m-note-box');
-            if(d.note){
-                noteBox.style.display = 'block';
-                document.getElementById('m-note').innerText = d.note;
-            } else { noteBox.style.display = 'none'; }
-            document.getElementById('m-map').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.title + ' 宮古島')}`;
-            modal.style.display = 'flex';
-        }
-        function closeModal(){ modal.style.display = 'none'; }
-        modal.onclick = (e) => { if(e.target === modal) closeModal(); }
+        const daySummaries = [
+            "台北飛下地島，取車後展開海島自駕與入住。",
+            "宮古島海景與沙灘巡禮，安排咖啡、海邊與晚餐。",
+            "下地島、17END 與海龜相關行程，享受海島慢步調。",
+            "島上景點與溫泉放鬆，保留彈性時間。",
+            "整理行李、還車後從下地島飛回台北。"
+];
+        window.travelPageData = {
+            storageKey: "miyako2025",
+            mapRegion: "宮古島",
+            flights: [
+            {
+                        "direction": "去程",
+                        "date": "2025-10-10",
+                        "flightNo": "JX886",
+                        "depart": {
+                                    "airport": "TPE",
+                                    "terminal": "T2",
+                                    "time": "08:35"
+                        },
+                        "arrive": {
+                                    "airport": "SHI",
+                                    "terminal": "主航廈",
+                                    "time": "10:55"
+                        },
+                        "note": "歷史時刻表：08:35-10:55；桃園 T2、下地島主航廈。查無去程當日實際起降紀錄。"
+            },
+            {
+                        "direction": "回程",
+                        "date": "2025-10-14",
+                        "flightNo": "JX887",
+                        "depart": {
+                                    "airport": "SHI",
+                                    "terminal": "主航廈",
+                                    "time": "11:56"
+                        },
+                        "arrive": {
+                                    "airport": "TPE",
+                                    "terminal": "T1",
+                                    "time": "11:54"
+                        },
+                        "note": "實際紀錄：11:56 起飛、11:54 抵達；下地島主航廈，桃園 T1。"
+            }
+],
+            days: itineraryDB.map((day, index) => ({
+                ...day,
+                summary: day.summary || daySummaries[index] || ''
+            })),
+            checklist: checklistData,
+            tips: []
+        };
     </script>
+    <script src="travel-page.js"></script>
 </body>
 </html>
 

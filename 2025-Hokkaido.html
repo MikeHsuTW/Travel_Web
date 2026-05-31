@@ -214,6 +214,7 @@
     transform: scale(0.95);
 }
     </style>
+    <link rel="stylesheet" href="travel-style.css">
 </head>
 <body>
     <a href="index.html" class="home-btn">
@@ -293,7 +294,7 @@
                 date: "12/5 (五)", location: "函館",
                 weather: { high: "2°", low: "-3°", feel: "-6°", icon: "🌥️", desc: "多雲", sun: "06:55 / 16:00" },
                 events: [
-                    { time: "12:30", type: "move", title: "抵達函館機場", desc: "JX860 抵達 HKD。出關找租車櫃台。", note: "記得拿 Expressway Pass", stickers: ["✈️","🇯🇵"] },
+                    { time: "18:13", type: "move", title: "抵達函館機場", desc: "JX860 實際 12:25 TPE (T1) → 18:13 HKD。出關找租車櫃台。", note: "記得拿 Expressway Pass", stickers: ["✈️","🇯🇵"] },
                     { time: "17:00", type: "move", title: "機場租車 & Check-in", desc: "開車前往住宿 (約18分)。天黑請慢行。", stickers: ["🚗","💨"] },
                     { time: "20:00", type: "food", title: "幸運小丑漢堡", desc: "函館必吃！推薦中華炸雞漢堡。", stickers: ["🍔","🤡","😋"] },
                     { time: "22:00", type: "shop", title: "MaxValu 超市", desc: "採買這幾天的水、零食、飲料。", stickers: ["🛒","🛍️","🍓"] }
@@ -335,7 +336,7 @@
                     { time: "12:00", type: "food", title: "狸小路湯咖哩", desc: "午餐：札幌必吃香料湯咖哩。", stickers: ["🍛","🌶️"] },
                     { time: "14:00", type: "shop", title: "狸小路逛街", desc: "藥妝、唐吉訶德。推薦：BARISTART COFFEE。", stickers: ["🛍️","☕","🥛"] },
                     { time: "16:00", type: "spot", title: "札幌啤酒博物館", desc: "紅磚建築拍照，了解啤酒歷史。", stickers: ["🍺","🧱"] },
-                    { time: "18:00", type: "food", title: "成吉思汗燒肉", desc: "啤酒園吃羊肉燒烤！", note: "訂位代碼：4VFSMQ", stickers: ["🥩","🔥","🐑"] },
+                    { time: "18:00", type: "food", title: "成吉思汗燒肉", desc: "啤酒園吃羊肉燒烤！", note: "已預約", stickers: ["🥩","🔥","🐑"] },
                     { time: "22:00", type: "food", title: "Sandria 本店", desc: "24hr 三明治店，買明天早餐！", stickers: ["🥪","🍳"] }
                 ]
             },
@@ -361,7 +362,7 @@
                     { time: "12:00", type: "spot", title: "小樽運河散策", desc: "散步拍照。", stickers: ["🚶","🌉"] },
                     { time: "13:00", type: "food", title: "甜點巡禮", desc: "北果樓(泡芙)、LeTAO(紅茶巧克力)、北一硝子(冰淇淋)。", stickers: ["🍦","🍰","🧁"] },
                     { time: "16:00", type: "spot", title: "朝里車站", desc: "無人車站拍海景雪景。", stickers: ["🚉","🌊"] },
-                    { time: "19:00", type: "food", title: "焼肉割烹 はじめ", desc: "回札幌吃高級燒肉。", note: "已訂位", stickers: ["🥩","🍷","✨"] }
+                    { time: "19:00", type: "food", title: "焼肉割烹 はじめ", desc: "回札幌吃高級燒肉。", note: "已預約", stickers: ["🥩","🍷","✨"] }
                 ]
             },
             {
@@ -390,7 +391,7 @@
                 events: [
                     { time: "09:00", type: "shop", title: "Aeon & Rera", desc: "最後衝刺買伴手禮、補貨。", stickers: ["🛍️","🎁"] },
                     { time: "12:00", type: "move", title: "還車", desc: "前往租車公司還車，搭接駁車去機場。", stickers: ["🚗","👋"] },
-                    { time: "15:20", type: "move", title: "BR115 飛台北", desc: "滿載回憶回家囉！", stickers: ["✈️","🇹🇼","❤️"] }
+                    { time: "15:58", type: "move", title: "BR115 飛台北", desc: "15:58 CTS 國際線航廈 → 19:09 TPE (T2)。滿載回憶回家囉！", stickers: ["✈️","🇹🇼","❤️"] }
                 ]
             }
         ];
@@ -404,140 +405,63 @@
             "💰 錢包雜項": ["台幣", "信用卡 (海外回饋)", "提款卡", "日幣現金", "小皮夾", "酒精/乾洗手", "濕紙巾", "髒衣袋", "行李秤", "雨傘/雨衣"]
         };
 
-        // 🚀 渲染行程
-        const root = document.getElementById('itinerary-root');
-
-        itineraryDB.forEach(day => {
-            const section = document.createElement('div');
-            section.className = 'day-section';
-
-            // 日期
-            const header = document.createElement('div');
-            header.className = 'day-title';
-            header.innerText = `${day.date} @${day.location}`;
-            section.appendChild(header);
-
-            // 天氣
-            const w = day.weather;
-            const weatherCard = document.createElement('div');
-            weatherCard.className = 'weather-card';
-            weatherCard.innerHTML = `
-                <div class="weather-top">
-                    <div class="w-icon">${w.icon}</div>
-                    <div class="w-temp-group">
-                        <div class="temp-box"><div class="temp-val t-high">${w.high}</div><div class="temp-label">High</div></div>
-                        <div style="font-size:1.5rem; opacity:0.3;">/</div>
-                        <div class="temp-box"><div class="temp-val t-low">${w.low}</div><div class="temp-label">Low</div></div>
-                    </div>
-                </div>
-                <div class="weather-info">
-                    <div class="w-badge">🌡️ 體感 ${w.feel}</div>
-                    <div class="w-badge">☁️ ${w.desc}</div>
-                    <div class="w-badge">🌅 ${w.sun}</div>
-                </div>
-            `;
-            section.appendChild(weatherCard);
-
-            // 時間軸
-            const timeline = document.createElement('div');
-            timeline.className = 'timeline-container';
-            day.events.forEach(ev => {
-                const card = document.createElement('div');
-                let cType = 'c-spot';
-                if(ev.type === 'food') cType = 'c-food';
-                if(ev.type === 'move') cType = 'c-move';
-                if(ev.type === 'shop') cType = 'c-shop';
-                if(ev.type === 'hotel') cType = 'c-hotel';
-                
-                card.className = `timeline-card ${cType}`;
-                
-                // 產生多個隨機貼圖
-                let stickersHtml = '<div class="sticker-box">';
-                if(ev.stickers) {
-                    ev.stickers.forEach((s, idx) => {
-                        // 隨機選一個位置 class
-                        const posClass = `s-pos-${(idx % 3) + 1}`;
-                        stickersHtml += `<div class="sticker ${posClass}">${s}</div>`;
-                    });
-                }
-                stickersHtml += '</div>';
-
-                // Note 顯示
-                let noteHtml = ev.note ? `<span class="t-note-mini">📝 ${ev.note}</span>` : '';
-
-                card.innerHTML = `
-                    ${stickersHtml}
-                    <div class="card-inner">
-                        <div class="t-time-group">
-                            <span class="t-time-big">${ev.time.split(':')[0]}</span>
-                            <span class="t-ampm">:${ev.time.split(':')[1]}</span>
-                        </div>
-                        <div class="t-detail">
-                            <div class="t-head">${ev.title}</div>
-                            <div class="t-desc">${ev.desc}</div>
-                            ${noteHtml}
-                        </div>
-                    </div>
-                `;
-                card.onclick = () => openModal(ev);
-                timeline.appendChild(card);
-            });
-            section.appendChild(timeline);
-            root.appendChild(section);
-        });
-
-        // 🚀 渲染行李清單
-        const checkRoot = document.getElementById('checklist-root');
-        for (const [category, items] of Object.entries(checklistData)) {
-            const catBox = document.createElement('div');
-            catBox.className = 'cl-category';
-            catBox.style.borderColor = category.includes('文件') ? '#ff7675' : 
-                                       category.includes('3C') ? '#0984e3' : 
-                                       category.includes('衣物') ? '#fdcb6e' : '#b2bec3';
-
-            let itemsHtml = items.map(item => {
-                const isChecked = localStorage.getItem('chk_v6_'+item) ? 'checked' : '';
-                const icon = isChecked ? '✅' : '⬜';
-                return `<div class="cl-item ${isChecked}" onclick="toggleCheck(this, '${item}')">
-                            <span class="cl-checkbox">${icon}</span> ${item}
-                        </div>`;
-            }).join('');
-
-            catBox.innerHTML = `<div class="cl-title">${category}</div>${itemsHtml}`;
-            checkRoot.appendChild(catBox);
-        }
-
-        // Checklist 功能
-        function toggleCheck(el, itemKey) {
-            el.classList.toggle('checked');
-            const isChecked = el.classList.contains('checked');
-            el.querySelector('.cl-checkbox').innerText = isChecked ? '✅' : '⬜';
-            if(isChecked) localStorage.setItem('chk_v6_'+itemKey, '1');
-            else localStorage.removeItem('chk_v6_'+itemKey);
-        }
-
-        // Modal 邏輯
-        const modal = document.getElementById('modal');
-        function openModal(d){
-            document.getElementById('m-title').innerText = d.title;
-            document.getElementById('m-time').innerText = `${d.time} @ ${d.title}`;
-            document.getElementById('m-desc').innerText = d.desc;
-            const noteBox = document.getElementById('m-note-box');
-            if(d.note){
-                noteBox.style.display = 'block';
-                document.getElementById('m-note').innerText = d.note;
-            } else { noteBox.style.display = 'none'; }
-            
-            // 搜尋關鍵字優化
-            const query = d.mapLink ? d.mapLink : d.title;
-            document.getElementById('m-map').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query + ' 北海道')}`;
-            
-            modal.style.display = 'flex';
-        }
-        function closeModal(){ modal.style.display = 'none'; }
-        modal.onclick = (e) => { if(e.target === modal) closeModal(); }
-
+        const daySummaries = [
+            "抵達函館機場後取車入住，晚上吃幸運小丑與採買。",
+            "函館朝市、八幡坂、金森倉庫與函館山夜景。",
+            "函館移動到洞爺湖沿線，安排景點與住宿。",
+            "洞爺湖、登別或札幌周邊移動日，彈性吃喝拍照。",
+            "北海道雪景與溫泉行程，注意保暖與道路狀況。",
+            "札幌市區、購物與美食安排。",
+            "滑雪或雪地活動日，保留體力與裝備時間。",
+            "移動至新千歲附近住宿，方便隔天搭機。",
+            "還車後前往新千歲機場，搭機返台。"
+];
+        window.travelPageData = {
+            storageKey: "hokkaido2025",
+            mapRegion: "北海道",
+            flights: [
+            {
+                        "direction": "去程",
+                        "date": "2025-12-05",
+                        "flightNo": "JX860",
+                        "depart": {
+                                    "airport": "TPE",
+                                    "terminal": "T1",
+                                    "time": "12:25"
+                        },
+                        "arrive": {
+                                    "airport": "HKD",
+                                    "terminal": "國際線航廈",
+                                    "time": "18:13"
+                        },
+                        "note": "實際紀錄：12:25 起飛、18:13 抵達；桃園 T1，函館國際線航廈。"
+            },
+            {
+                        "direction": "回程",
+                        "date": "2025-12-13",
+                        "flightNo": "BR115",
+                        "depart": {
+                                    "airport": "CTS",
+                                    "terminal": "國際線航廈",
+                                    "time": "15:58"
+                        },
+                        "arrive": {
+                                    "airport": "TPE",
+                                    "terminal": "T2",
+                                    "time": "19:09"
+                        },
+                        "note": "實際紀錄：15:58 起飛、19:09 抵達；新千歲國際線航廈，桃園 T2。"
+            }
+],
+            days: itineraryDB.map((day, index) => ({
+                ...day,
+                summary: day.summary || daySummaries[index] || ''
+            })),
+            checklist: checklistData,
+            tips: []
+        };
     </script>
+    <script src="travel-page.js"></script>
 </body>
 
 </html>

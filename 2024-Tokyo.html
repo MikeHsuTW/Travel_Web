@@ -207,6 +207,7 @@
     transform: scale(0.95);
 }
     </style>
+    <link rel="stylesheet" href="travel-style.css">
 </head>
 <body>
     <a href="index.html" class="home-btn">
@@ -287,7 +288,7 @@
                 date: "3/14 (四)", location: "東京 (澀谷)",
                 weather: { high: "14°", low: "6°", feel: "10°", icon: "🌤️", desc: "晴時多雲", sun: "05:50 / 17:50" },
                 events: [
-                    { time: "09:35", type: "move", title: "搭機 MM620", desc: "TPE(T1) → NRT(T1)。訂位代碼：EA8YVW。", stickers: ["✈️","🇯🇵"] },
+                    { time: "09:35", type: "move", title: "搭機 MM620", desc: "09:35 TPE (T1) → 13:40 NRT (T1)。", stickers: ["✈️","🇯🇵"] },
                     { time: "14:39", type: "move", title: "Skyliner (Car38)", desc: "14:39-15:23 抵達上野。備案: 14:59班次。", stickers: ["🚄","💨"] },
                     { time: "16:00", type: "hotel", title: "Hotel Vintage", desc: "Check-in 放行李，隨後立刻出發澀谷。", stickers: ["🏨","🧳"] },
                     { time: "18:00", type: "spot", title: "Shibuya Sky", desc: "預計 18:00 入場看夜景。挽肉與米(備案)。", stickers: ["🌇","🗼"] },
@@ -300,8 +301,8 @@
                 weather: { high: "10°", low: "-2°", feel: "-4°", icon: "🗻", desc: "晴朗偏冷", sun: "05:49 / 17:51" },
                 events: [
                     { time: "07:00", type: "food", title: "築地市場", desc: "早午餐壽司海鮮。09:00前往東京總站。", stickers: ["🍣","🐟"] },
-                    { time: "09:50", type: "move", title: "高速巴士往河口湖", desc: "東京八重洲南口。CarNo.115。預約：02152010101。", stickers: ["🚌","💨"] },
-                    { time: "12:00", type: "move", title: "Toyota 租車", desc: "抵達河口湖取車。預約號：119016654。", stickers: ["🚗","🔑"] },
+                    { time: "09:50", type: "move", title: "高速巴士往河口湖", desc: "東京八重洲南口。座位與憑證請看私人文件。", stickers: ["🚌","💨"] },
+                    { time: "12:00", type: "move", title: "Toyota 租車", desc: "抵達河口湖取車。租車憑證請看私人文件。", stickers: ["🚗","🔑"] },
                     { time: "13:00", type: "food", title: "餺飥不動", desc: "東戀路店。品嚐山梨名物餺飥麵。", stickers: ["🍜","☁️"] },
                     { time: "14:00", type: "spot", title: "河口湖景點", desc: "纜車(16:20前下山)、狸貓茶屋、BRAND NEW DAY。", stickers: ["🚠","☕"] },
                     { time: "17:00", type: "hotel", title: "富士山四季之宿", desc: "Check-in。浴池開放至 24:00。", stickers: ["🏡","♨️"] },
@@ -334,7 +335,7 @@
                 weather: { high: "12°", low: "5°", feel: "8°", icon: "☁️", desc: "陰天", sun: "05:45 / 17:54" },
                 events: [
                     { time: "08:40", type: "move", title: "Skyliner", desc: "08:40 或 09:00 班次往成田 T1。", stickers: ["🚄","💨"] },
-                    { time: "11:45", type: "move", title: "搭機 TR899", desc: "11:45-15:10 飛往 TPE(T1)。訂位：OYQCYW。", stickers: ["✈️","🇹🇼"] }
+                    { time: "11:45", type: "move", title: "搭機 TR899", desc: "11:45-15:10 飛往 TPE(T1)。", stickers: ["✈️","🇹🇼"] }
                 ]
             }
         ];
@@ -349,119 +350,59 @@
             "👜 其他": ["小皮夾", "酒精/乾洗手", "衛生紙/濕紙巾", "髒衣袋", "行李秤", "雨傘"]
         };
 
-        // 🚀 渲染行程 (保持 V6.0 邏輯)
-        const root = document.getElementById('itinerary-root');
-        itineraryDB.forEach(day => {
-            const section = document.createElement('div');
-            section.className = 'day-section';
-            
-            const header = document.createElement('div');
-            header.className = 'day-title';
-            header.innerText = `${day.date} @${day.location}`;
-            section.appendChild(header);
-
-            const w = day.weather;
-            const weatherCard = document.createElement('div');
-            weatherCard.className = 'weather-card';
-            weatherCard.innerHTML = `
-                <div class="weather-top">
-                    <div class="w-icon">${w.icon}</div>
-                    <div class="w-temp-group">
-                        <div class="temp-box"><div class="temp-val t-high">${w.high}</div><div class="temp-label">High</div></div>
-                        <div style="font-size:1.5rem; opacity:0.3;">/</div>
-                        <div class="temp-box"><div class="temp-val t-low">${w.low}</div><div class="temp-label">Low</div></div>
-                    </div>
-                </div>
-                <div class="weather-info">
-                    <div class="w-badge">🌡️ 體感 ${w.feel}</div>
-                    <div class="w-badge">☁️ ${w.desc}</div>
-                    <div class="w-badge">🌅 ${w.sun}</div>
-                </div>
-            `;
-            section.appendChild(weatherCard);
-
-            const timeline = document.createElement('div');
-            timeline.className = 'timeline-container';
-            day.events.forEach(ev => {
-                const card = document.createElement('div');
-                let cType = 'c-spot';
-                if(ev.type === 'food') cType = 'c-food';
-                if(ev.type === 'move') cType = 'c-move';
-                if(ev.type === 'shop') cType = 'c-shop';
-                if(ev.type === 'hotel') cType = 'c-hotel';
-                card.className = `timeline-card ${cType}`;
-                
-                let stickersHtml = '<div class="sticker-box">';
-                if(ev.stickers) {
-                    ev.stickers.forEach((s, idx) => {
-                        const posClass = `s-pos-${(idx % 3) + 1}`;
-                        stickersHtml += `<div class="sticker ${posClass}">${s}</div>`;
-                    });
-                }
-                stickersHtml += '</div>';
-                let noteHtml = ev.note ? `<span class="t-note-mini">📝 ${ev.note}</span>` : '';
-
-                card.innerHTML = `
-                    ${stickersHtml}
-                    <div class="card-inner">
-                        <div class="t-time-group">
-                            <span class="t-time-big">${ev.time.split(':')[0]}</span>
-                            <span class="t-ampm">:${ev.time.split(':')[1]}</span>
-                        </div>
-                        <div class="t-detail">
-                            <div class="t-head">${ev.title}</div>
-                            <div class="t-desc">${ev.desc}</div>
-                            ${noteHtml}
-                        </div>
-                    </div>
-                `;
-                card.onclick = () => openModal(ev);
-                timeline.appendChild(card);
-            });
-            section.appendChild(timeline);
-            root.appendChild(section);
-        });
-
-        // 🚀 渲染清單
-        const checkRoot = document.getElementById('checklist-root');
-        for (const [category, items] of Object.entries(checklistData)) {
-            const catBox = document.createElement('div');
-            catBox.className = 'cl-category';
-            let itemsHtml = items.map(item => {
-                const isChecked = localStorage.getItem('tyo_chk_real_'+item) ? 'checked' : '';
-                const icon = isChecked ? '✅' : '⬜';
-                return `<div class="cl-item ${isChecked}" onclick="toggleCheck(this, '${item}')">
-                            <span class="cl-checkbox">${icon}</span> ${item}
-                        </div>`;
-            }).join('');
-            catBox.innerHTML = `<div class="cl-title">${category}</div>${itemsHtml}`;
-            checkRoot.appendChild(catBox);
-        }
-
-        function toggleCheck(el, itemKey) {
-            el.classList.toggle('checked');
-            const isChecked = el.classList.contains('checked');
-            el.querySelector('.cl-checkbox').innerText = isChecked ? '✅' : '⬜';
-            if(isChecked) localStorage.setItem('tyo_chk_real_'+itemKey, '1');
-            else localStorage.removeItem('tyo_chk_real_'+itemKey);
-        }
-
-        const modal = document.getElementById('modal');
-        function openModal(d){
-            document.getElementById('m-title').innerText = d.title;
-            document.getElementById('m-time').innerText = `${d.time} @ ${d.title}`;
-            document.getElementById('m-desc').innerText = d.desc;
-            const noteBox = document.getElementById('m-note-box');
-            if(d.note){
-                noteBox.style.display = 'block';
-                document.getElementById('m-note').innerText = d.note;
-            } else { noteBox.style.display = 'none'; }
-            document.getElementById('m-map').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(d.title + ' 東京')}`;
-            modal.style.display = 'flex';
-        }
-        function closeModal(){ modal.style.display = 'none'; }
-        modal.onclick = (e) => { if(e.target === modal) closeModal(); }
+        const daySummaries = [
+            "抵達成田後搭 Skyliner 進東京，入住後直衝涉谷與 Shibuya Sky 夜景。",
+            "築地早午餐後前往河口湖，租車、吃餺飥麵、看富士山與住宿泡湯。",
+            "河口湖還車回東京，上野寄放行李，淺草和服散步與晚間活動。",
+            "整天東京迪士尼樂園，遊行、表演與夜間煙火，回程吃宵夜。",
+            "早上搭 Skyliner 前往成田，搭機返台。"
+];
+        window.travelPageData = {
+            storageKey: "tokyo2024",
+            mapRegion: "東京",
+            flights: [
+            {
+                        "direction": "去程",
+                        "date": "2024-03-14",
+                        "flightNo": "MM620",
+                        "depart": {
+                                    "airport": "TPE",
+                                    "terminal": "T1",
+                                    "time": "09:35"
+                        },
+                        "arrive": {
+                                    "airport": "NRT",
+                                    "terminal": "T1",
+                                    "time": "13:40"
+                        },
+                        "note": "歷史時刻表：09:35-13:40；Peach 桃園/成田皆為 T1。查無當日實際起降紀錄。"
+            },
+            {
+                        "direction": "回程",
+                        "date": "2024-03-18",
+                        "flightNo": "TR899",
+                        "depart": {
+                                    "airport": "NRT",
+                                    "terminal": "T1",
+                                    "time": "11:45"
+                        },
+                        "arrive": {
+                                    "airport": "TPE",
+                                    "terminal": "T1",
+                                    "time": "15:10"
+                        },
+                        "note": "歷史時刻表：11:45-15:10；Scoot 成田/桃園皆為 T1。查無當日實際起降紀錄。"
+            }
+],
+            days: itineraryDB.map((day, index) => ({
+                ...day,
+                summary: day.summary || daySummaries[index] || ''
+            })),
+            checklist: checklistData,
+            tips: []
+        };
     </script>
+    <script src="travel-page.js"></script>
 </body>
 
 </html>

@@ -118,11 +118,13 @@
             background: linear-gradient(135deg, #dff9fb 0%, #81ecec 100%);
         }
 
+        /* 6. 東京 2026 樣式 (春櫻藍天) */
+        .cover-tokyo-2026 {
+            background: linear-gradient(135deg, #f8bbd0 0%, #bbdefb 100%);
+        }
+
         .cover-icon { font-size: 4rem; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.1)); transition: transform 0.3s; }
         .trip-card:hover .cover-icon { transform: scale(1.1) rotate(5deg); }
-
-        /* 未來樣式 */
-        .cover-future { background: #f1f2f6; color: #b2bec3; }
 
         .card-body { padding: 25px; }
         .trip-year {
@@ -157,49 +159,15 @@
 
     <main class="grid-container">
 
-        <a href="2023-HoChiMinh.html" class="trip-card">
-            <div class="card-cover cover-vietnam">
-                <div class="cover-icon">🏮</div>
-            </div>
-            <div class="card-body">
-                <div class="trip-year">Apr 2023 • Spring</div>
-                <div class="trip-title">越式風情・西貢光影</div>
-                <div class="trip-desc">
-                    5 天的南越探險。湄公河搖船體驗、美奈紅白沙丘吉普車衝沙，還有每天一杯的越南咖啡。
-                </div>
-                <div class="card-footer">
-                    <span>5 Days Trip</span>
-                    <span>View Log →</span>
-                </div>
-            </div>
-        </a>
-
-        <a href="2024-Tokyo.html" class="trip-card">
-            <div class="card-cover cover-tokyo">
+        <a href="2026-Tokyo-Sakura.html" class="trip-card">
+            <div class="card-cover cover-tokyo-2026">
                 <div class="cover-icon">🌸</div>
             </div>
             <div class="card-body">
-                <div class="trip-year">Mar 2024 • Spring</div>
-                <div class="trip-title">東京河口湖・春櫻日和</div>
+                <div class="trip-year">Apr 2026 • Spring</div>
+                <div class="trip-title">東京櫻花散策・江之鎌上野手帖</div>
                 <div class="trip-desc">
-                    5 天的富士山自駕與都市漫遊。河口湖絕美逆富士、澀谷 Sky 日落、和服體驗與迪士尼夢幻一日。
-                </div>
-                <div class="card-footer">
-                    <span>5 Days Trip</span>
-                    <span>View Log →</span>
-                </div>
-            </div>
-        </a>
-
-        <a href="2025-MiyakoIsland.html" class="trip-card">
-            <div class="card-cover cover-miyako">
-                <div class="cover-icon">🐢</div>
-            </div>
-            <div class="card-body">
-                <div class="trip-year">Oct 2025 • Autumn</div>
-                <div class="trip-title">宮古藍・海島自駕日記</div>
-                <div class="trip-desc">
-                    5 天的熱帶放鬆之旅。下地島絕美 17END、與海龜共游、大啖宮古牛燒肉與阿古豬火鍋。
+                    5 天的東京近郊春旅。江之島海風、鎌倉高校前、上野賞櫻、秋葉原採購，最後用淺草與晴空塔收尾。
                 </div>
                 <div class="card-footer">
                     <span>5 Days Trip</span>
@@ -242,19 +210,56 @@
             </div>
         </a>
 
-        <div class="trip-card" style="opacity: 0.6; cursor: default;">
-            <div class="card-cover cover-future">
-                <div class="cover-icon">✈️</div>
+        <a href="2025-MiyakoIsland.html" class="trip-card">
+            <div class="card-cover cover-miyako">
+                <div class="cover-icon">🐢</div>
             </div>
             <div class="card-body">
-                <div class="trip-year">Coming Soon</div>
-                <div class="trip-title">Next Destination...</div>
+                <div class="trip-year">Oct 2025 • Autumn</div>
+                <div class="trip-title">宮古藍・海島自駕日記</div>
                 <div class="trip-desc">
-                    未來的旅程正在規劃中。
-                    <br>Where to go next?
+                    5 天的熱帶放鬆之旅。下地島絕美 17END、與海龜共游、大啖宮古牛燒肉與阿古豬火鍋。
+                </div>
+                <div class="card-footer">
+                    <span>5 Days Trip</span>
+                    <span>View Log →</span>
                 </div>
             </div>
-        </div>
+        </a>
+
+        <a href="2024-Tokyo.html" class="trip-card">
+            <div class="card-cover cover-tokyo">
+                <div class="cover-icon">🌸</div>
+            </div>
+            <div class="card-body">
+                <div class="trip-year">Mar 2024 • Spring</div>
+                <div class="trip-title">東京河口湖・春櫻日和</div>
+                <div class="trip-desc">
+                    5 天的富士山自駕與都市漫遊。河口湖絕美逆富士、澀谷 Sky 日落、和服體驗與迪士尼夢幻一日。
+                </div>
+                <div class="card-footer">
+                    <span>5 Days Trip</span>
+                    <span>View Log →</span>
+                </div>
+            </div>
+        </a>
+
+        <a href="2023-HoChiMinh.html" class="trip-card">
+            <div class="card-cover cover-vietnam">
+                <div class="cover-icon">🏮</div>
+            </div>
+            <div class="card-body">
+                <div class="trip-year">Apr 2023 • Spring</div>
+                <div class="trip-title">越式風情・西貢光影</div>
+                <div class="trip-desc">
+                    5 天的南越探險。湄公河搖船體驗、美奈紅白沙丘吉普車衝沙，還有每天一杯的越南咖啡。
+                </div>
+                <div class="card-footer">
+                    <span>5 Days Trip</span>
+                    <span>View Log →</span>
+                </div>
+            </div>
+        </a>
 
     </main>
 
