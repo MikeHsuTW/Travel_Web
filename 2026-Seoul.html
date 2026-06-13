@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首爾盛夏漫遊・鐘路弘大購物手帖</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --c-bg-top: #e8f7f4;
+            --c-bg-bot: #fff0f3;
+            --c-primary: #24454d;
+            --c-food: #ff8a80;
+            --c-spot: #4db6ac;
+            --c-move: #607d8b;
+            --c-shop: #ec6f91;
+            --c-hotel: #7e72c5;
+            --shadow-card: 5px 5px 0 rgba(36, 69, 77, 0.13);
+            --font-main: 'Zen Maru Gothic', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        html { overflow-x: hidden; }
+
+        body {
+            min-height: 100vh;
+            padding-bottom: 120px;
+            overflow-x: hidden;
+            color: var(--c-primary);
+            font-family: var(--font-main);
+            background: linear-gradient(180deg, var(--c-bg-top) 0%, #fff 55%, var(--c-bg-bot) 100%);
+        }
+
+        .bojagi-container {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .bojagi-piece {
+            position: absolute;
+            top: -40px;
+            width: 14px;
+            height: 22px;
+            border: 2px solid rgba(255,255,255,0.8);
+            opacity: 0.65;
+            animation: pieceFall linear infinite;
+        }
+
+        @keyframes pieceFall {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(55vh) rotate(180deg) translateX(22px); }
+            100% { transform: translateY(112vh) rotate(360deg) translateX(-12px); }
+        }
+
+        .home-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            border: 2px solid #fff;
+            border-radius: 30px;
+            color: var(--c-primary);
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 900;
+        }
+
+        .home-btn:hover { transform: scale(1.05); background: #fff; }
+
+        .navbar {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            z-index: 999;
+            display: flex;
+            justify-content: space-evenly;
+            width: 92%;
+            max-width: 420px;
+            padding: 8px 0;
+            border: 2px solid #fff;
+            border-radius: 60px;
+            background: rgba(255,255,255,0.92);
+            box-shadow: 0 10px 25px rgba(36,69,77,0.18);
+            backdrop-filter: blur(12px);
+            transform: translateX(-50%);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 5px;
+            border-radius: 10px;
+            color: var(--c-primary);
+            text-align: center;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 800;
+        }
+
+        .nav-item:active { background: #e0f2f1; transform: scale(0.95); }
+        .nav-icon { margin-bottom: 2px; font-size: 1.4rem; }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px 20px 60px;
+        }
+
+        header { padding: 50px 0 30px; text-align: center; }
+
+        .main-title {
+            margin-bottom: 10px;
+            color: #176b68;
+            text-shadow: 3px 3px 0 #fff;
+            font-size: 2.2rem;
+            font-weight: 900;
+            line-height: 1.35;
+        }
+
+        .sub-title {
+            display: inline-block;
+            padding: 8px 20px;
+            border: 2px solid #80cbc4;
+            border-radius: 30px;
+            color: #d94d72;
+            background: #fff;
+            box-shadow: var(--shadow-card);
+            transform: rotate(-2deg);
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .weather-card {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 4px solid #fff;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.95);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        .weather-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px dashed #80cbc4;
+        }
+
+        .w-icon { font-size: 3.5rem; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1)); }
+        .w-temp-group { display: flex; align-items: center; gap: 15px; text-align: right; }
+        .temp-box { text-align: center; }
+        .temp-val { font-size: 1.8rem; font-weight: 900; line-height: 1; }
+        .temp-label { margin-top: 5px; opacity: 0.7; font-size: 0.85rem; font-weight: 700; }
+        .t-high { color: #ef5350; }
+        .t-low { color: #26a69a; }
+
+        .weather-info { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+
+        .w-badge {
+            display: flex;
+            flex: 1;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            color: #546e7a;
+            background: #e0f2f1;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .day-section { margin-bottom: 60px; }
+
+        .day-title {
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 25px;
+            padding: 12px 25px;
+            border-radius: 15px;
+            color: #fff;
+            background: var(--c-primary);
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.2);
+            transform: rotate(-1deg);
+            white-space: normal;
+            font-size: 1.3rem;
+            font-weight: 900;
+            line-height: 1.4;
+        }
+
+        .timeline-container {
+            width: calc(100% - 15px);
+            margin-left: 15px;
+            padding-left: 25px;
+            border-left: 6px dashed #90a4ae;
+        }
+
+        .timeline-card {
+            position: relative;
+            width: 100%;
+            margin-bottom: 25px;
+            padding: 18px;
+            overflow: hidden;
+            border: 3px solid transparent;
+            border-radius: 18px;
+            background: #fff;
+            box-shadow: var(--shadow-card);
+            cursor: pointer;
+        }
+
+        .timeline-card:active { transform: scale(0.98); }
+
+        .timeline-card::before {
+            content: '';
+            position: absolute;
+            top: 25px;
+            left: -37px;
+            z-index: 1;
+            width: 18px;
+            height: 18px;
+            border: 4px solid var(--c-primary);
+            border-radius: 50%;
+            background: #fff;
+        }
+
+        .c-food { border-color: var(--c-food); } .c-food::before { border-color: var(--c-food); background: #ffccbc; }
+        .c-spot { border-color: var(--c-spot); } .c-spot::before { border-color: var(--c-spot); background: #b2dfdb; }
+        .c-move { border-color: var(--c-move); } .c-move::before { border-color: var(--c-move); background: #eceff1; }
+        .c-shop { border-color: var(--c-shop); } .c-shop::before { border-color: var(--c-shop); background: #f8bbd0; }
+        .c-hotel { border-color: var(--c-hotel); } .c-hotel::before { border-color: var(--c-hotel); background: #d1c4e9; }
+
+        .card-inner { display: flex; align-items: flex-start; gap: 15px; min-width: 0; }
+        .t-time-group { display: flex; flex-direction: column; align-items: center; min-width: 65px; }
+        .t-time-big { color: #24454d; font-size: 1.4rem; font-weight: 900; line-height: 1; }
+        .t-ampm { color: #78909c; font-size: 0.8rem; font-weight: 700; }
+        .t-detail { position: relative; z-index: 2; flex: 1; min-width: 0; }
+        .t-head { margin-bottom: 8px; color: #263238; overflow-wrap: anywhere; font-size: 1.25rem; font-weight: 800; line-height: 1.3; }
+        .t-desc { color: #546e7a; white-space: pre-line; overflow-wrap: anywhere; font-size: 1rem; font-weight: 500; line-height: 1.6; }
+
+        .t-note-mini {
+            display: inline-block;
+            max-width: 100%;
+            margin-top: 6px;
+            padding: 3px 8px;
+            border-radius: 5px;
+            color: #ad3f5e;
+            background: #fff0f3;
+            white-space: normal;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .sticker-box { position: absolute; inset: 0; overflow: hidden; border-radius: 15px; pointer-events: none; }
+        .sticker { position: absolute; opacity: 0.92; filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.1)); font-size: 2.2rem; }
+        .s-pos-1 { top: -10px; right: -2px; transform: rotate(15deg); }
+        .s-pos-2 { right: 10px; bottom: -10px; transform: rotate(-10deg) scale(0.8); }
+        .s-pos-3 { top: 5px; right: 40px; opacity: 0.5; transform: rotate(5deg) scale(0.6); }
+
+        .checklist-wrapper { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .cl-category { padding: 20px; border-top: 5px solid #ec6f91; border-radius: 15px; background: #fff; box-shadow: var(--shadow-card); }
+        .cl-title { margin-bottom: 15px; color: #176b68; font-size: 1.2rem; font-weight: 900; }
+        .cl-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px dashed #eee; color: #546e7a; cursor: pointer; font-size: 1rem; font-weight: 500; }
+        .cl-item.checked { color: #ec6f91; text-decoration: line-through; }
+        .cl-checkbox { font-size: 1.2rem; }
+
+        .tips-section { margin-top: 40px; padding: 25px; border: 4px solid #80cbc4; border-radius: 20px; background: #fff; box-shadow: var(--shadow-card); }
+        .tips-title { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px dashed #80cbc4; color: #176b68; text-align: center; font-size: 1.5rem; font-weight: 900; }
+        .tip-item { position: relative; margin-bottom: 12px; padding-left: 25px; color: #546e7a; font-size: 1rem; font-weight: 500; line-height: 1.6; }
+        .tip-item::before { content: '✦'; position: absolute; top: 0; left: 0; color: #ec6f91; }
+
+        .modal-overlay { position: fixed; inset: 0; z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; background: rgba(36,69,77,0.9); }
+        .modal-box { position: relative; width: 100%; max-width: 500px; padding: 30px; border-radius: 24px; background: #fff; animation: popUp 0.3s; }
+        @keyframes popUp { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+        .m-map-btn { display: block; margin-top: 20px; padding: 15px; border-radius: 15px; color: #fff; background: #176b68; box-shadow: 0 4px 0 #0d4b49; text-align: center; text-decoration: none; font-size: 1.1rem; font-weight: 900; }
+
+        @media (max-width: 520px) {
+            .main-title { font-size: 1.9rem; }
+            .sub-title { font-size: 0.92rem; }
+            .day-title { padding: 10px 16px; font-size: 1.05rem; }
+            .weather-card { padding: 16px; }
+            .weather-top { display: grid; grid-template-columns: 1fr; gap: 12px; text-align: center; }
+            .w-temp-group { justify-content: center; }
+            .weather-info { display: grid; grid-template-columns: 1fr; }
+            .timeline-container { width: 100%; margin-left: 0; padding-left: 18px; }
+            .timeline-card { width: calc(100vw - 72px); padding: 16px 14px; }
+            .timeline-card::before { left: -30px; }
+            .card-inner { gap: 12px; }
+            .t-time-group { min-width: 54px; }
+            .t-detail { max-width: calc(100vw - 160px); }
+            .t-head { font-size: 1.15rem; }
+            .sticker { font-size: 1.9rem; }
+            .home-btn { top: 14px; left: 14px; padding: 8px 14px; }
+        }
+    </style>
+    <link rel="stylesheet" href="travel-style.css">
+</head>
+<body>
+    <a href="index.html" class="home-btn"><span>⬅</span> 回首頁</a>
+    <div class="bojagi-container" id="bojagiContainer"></div>
+
+    <div class="container">
+        <header>
+            <div class="main-title">🇰🇷 首爾盛夏漫遊・<br>鐘路弘大購物手帖</div>
+            <div class="sub-title">2026/06/19 - 06/23 (5 Days)</div>
+        </header>
+
+        <div id="itinerary-root"></div>
+
+        <section id="checklist-section" style="margin-top:60px;">
+            <div class="day-title" style="background:#ec6f91; transform:rotate(1deg);">🎒 首爾行李清單</div>
+            <div class="checklist-wrapper" id="checklist-root"></div>
+        </section>
+
+        <section class="tips-section" id="general-tips">
+            <div class="tips-title">📝 首爾行前備忘</div>
+            <div class="tip-item"><strong>天氣：</strong>本頁預報於 2026/06/13 更新。五天高溫約 32–36°C，請準備防曬、補水用品與輕便雨具，出發前一天再確認。</div>
+            <div class="tip-item"><strong>第一天分組：</strong>江南組 13:10 報到、弘大組 13:50 報到；私人預約憑證請留在個人文件中。</div>
+            <div class="tip-item"><strong>愛寶樂園：</strong>先確認接駁車是否能在 16:00 離園；若不能，需改搭大眾運輸返回首爾。</div>
+            <div class="tip-item"><strong>最後一天：</strong>行李放首爾站附近，17:20–17:40 搭 AREX 前往仁川機場，不建議跑太遠。</div>
+            <div class="tip-item"><strong>交通：</strong>確認 T-money 或其他交通卡可用餘額，深夜返回鐘路三街時也保留計程車備案。</div>
+        </section>
+
+        <div style="margin-top:50px; color:#78909c; text-align:center; font-size:0.9rem; font-weight:700;">
+            Created for MikeHsu & Friends 2026
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <a href="#itinerary-root" class="nav-item"><span class="nav-icon">📅</span>行程</a>
+        <a href="#checklist-section" class="nav-item"><span class="nav-icon">🎒</span>清單</a>
+        <a href="#general-tips" class="nav-item"><span class="nav-icon">💡</span>叮嚀</a>
+        <a href="#" class="nav-item" onclick="window.scrollTo(0,0)"><span class="nav-icon">🔝</span>TOP</a>
+    </nav>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal-box">
+            <button onclick="closeModal()" style="position:absolute; right:20px; top:20px; border:none; background:none; font-size:1.5rem; cursor:pointer;">✕</button>
+            <h2 id="m-title" style="margin-bottom:5px; color:#263238; font-size:1.6rem;">標題</h2>
+            <div id="m-time" style="margin-bottom:15px; color:#78909c; font-size:0.9rem; font-weight:700;"></div>
+            <div id="m-desc" style="margin-bottom:15px; padding:15px; border-radius:12px; background:#e0f2f1; white-space:pre-line; font-size:1.05rem; line-height:1.6;">內容</div>
+            <div id="m-note-box" style="display:none; margin-bottom:15px;">
+                <span style="padding:4px 10px; border-radius:8px; color:#ad3f5e; background:#fff0f3; font-size:0.85rem; font-weight:bold;">重點筆記</span>
+                <p id="m-note" style="margin-top:8px; color:#ad3f5e; font-weight:700;"></p>
+            </div>
+            <a id="m-map" href="#" target="_blank" class="m-map-btn">📍 Google Maps 導航</a>
+        </div>
+    </div>
+
+    <script>
+        const bojagiContainer = document.getElementById('bojagiContainer');
+        const bojagiColors = ['#4db6ac', '#ec6f91', '#ffb74d', '#7e72c5'];
+        for (let i = 0; i < 18; i++) {
+            const piece = document.createElement('div');
+            piece.className = 'bojagi-piece';
+            piece.style.left = Math.random() * 100 + 'vw';
+            piece.style.background = bojagiColors[i % bojagiColors.length];
+            piece.style.animationDuration = (Math.random() * 9 + 8) + 's';
+            piece.style.animationDelay = Math.random() * 7 + 's';
+            piece.style.transform = `rotate(${Math.random() * 45}deg)`;
+            bojagiContainer.appendChild(piece);
+        }
+
+        const itineraryDB = [
+            {
+                date: "Day 1 (06/19 五)",
+                location: "仁川・安國・江南・弘大・鐘路",
+                summary: "清晨抵達仁川，寄放行李與倫敦貝果早餐；下午分組做顏色測試，晚上弘大會合、烤鰻魚與鐘路布帳馬車。",
+                weather: { high: "36°", low: "24°", feel: "36° / 25°", icon: "☁️", desc: "多雲・降雨 14%", sun: "05:10 / 19:55" },
+                events: [
+                    { time: "01:25", type: "move", flight: true, title: "真航空 LJ734 出發", desc: "01:25 TPE (T1) → 05:00 ICN (T2)。", stickers: ["✈️","🌙"], mapLink: "桃園國際機場 第一航廈" },
+                    { time: "05:00", type: "move", title: "抵達仁川機場", desc: "入境、領行李、盥洗與整理交通卡，預留約 90 分鐘。", stickers: ["🛬","🧳"], mapLink: "Incheon International Airport Terminal 2" },
+                    { time: "06:30", type: "move", title: "前往鐘路三街", desc: "搭 AREX 與地鐵轉乘，粗估 90–100 分鐘。", stickers: ["🚆","🗺️"], mapLink: "Jongno 3-ga Station" },
+                    { time: "08:10", type: "hotel", title: "飯店寄放行李", desc: "前往 The Square Hostel Jongno 寄放行李。", stickers: ["🏨","🧳"], mapLink: "The Square Hostel Jongno" },
+                    { time: "08:50", type: "food", title: "倫敦貝果早餐", desc: "前往安國店，早餐、咖啡並預留排隊時間到 10:40。", stickers: ["🥯","☕"], mapLink: "London Bagel Museum Anguk" },
+                    { time: "12:00", type: "move", title: "下午分組行動", desc: "A 組前往江南，13:10 報到、13:30–15:30 顏色測試。\nB 組前往弘大，13:50 報到、14:10 開始顏色測試。", note: "兩組私人預約憑證請看個人文件。", stickers: ["🎨","🚇"], mapLink: "Hongik University Station" },
+                    { time: "17:00", type: "shop", title: "弘大會合與客製紀念品", desc: "兩組在弘大會合，前往客製紀念品店；先確認製作時間及是否可晚點取件。", stickers: ["🎁","✨"], mapLink: "홍대입구역" },
+                    { time: "18:30", type: "food", title: "弘大烤鰻魚晚餐", desc: "烤鰻魚晚餐，建議提前預約 18:30。", stickers: ["🍱","🔥"], mapLink: "홍대 장어구이" },
+                    { time: "20:00", type: "shop", title: "弘大逛街", desc: "服飾、街頭表演、選物店，接著逛 Olive Young 男士館或弘大店。", stickers: ["🛍️","🎵"], mapLink: "Olive Young Hongdae Town" },
+                    { time: "22:50", type: "hotel", title: "飯店 Check-in", desc: "回鐘路三街辦理入住、放戰利品。", stickers: ["🏨","🛏️"], mapLink: "The Square Hostel Jongno" },
+                    { time: "23:10", type: "food", title: "鐘路布帳馬車", desc: "在鐘路三街或益善洞附近吃宵夜，視體力決定停留時間。", stickers: ["🍢","🍺"], mapLink: "Jongno 3-ga Pojangmacha Street" }
+                ]
+            },
+            {
+                date: "Day 2 (06/20 六)",
+                location: "景福宮・北村・明洞",
+                summary: "穿韓服走景福宮與北村韓屋村，午後吃土俗村蔘雞湯，晚上在明洞購物、醬蟹與炸雞收尾。",
+                weather: { high: "33°", low: "25°", feel: "31° / 25°", icon: "☁️", desc: "多雲・降雨 20%", sun: "05:10 / 19:56" },
+                events: [
+                    { time: "08:45", type: "food", title: "飯店附近早餐", desc: "簡單吃早餐，09:15 從飯店出發。", stickers: ["🥪","☕"] },
+                    { time: "09:45", type: "spot", title: "西花韓服報到", desc: "10:00 預約，提前 15 分鐘抵達；挑選韓服、換裝、髮型與寄物。", note: "已預約，憑證請看私人文件。", stickers: ["👘","🌺"], mapLink: "Seohwa Hanbok Gyeongbokgung" },
+                    { time: "11:00", type: "spot", title: "景福宮參觀拍照", desc: "穿韓服遊覽景福宮，停留約 80 分鐘。", stickers: ["🏯","📸"], mapLink: "Gyeongbokgung Palace" },
+                    { time: "12:40", type: "spot", title: "北村韓屋村", desc: "韓屋村散步與拍照，注意住宅區音量。", stickers: ["🏘️","📷"], mapLink: "Bukchon Hanok Village" },
+                    { time: "14:00", type: "spot", title: "歸還韓服", desc: "返回西花韓服還裝、整理，目標 14:20 前完成。", stickers: ["👘","✅"], mapLink: "Seohwa Hanbok Gyeongbokgung" },
+                    { time: "14:30", type: "food", title: "土俗村蔘雞湯", desc: "較晚的午餐，安排約 70 分鐘。", stickers: ["🍲","🐔"], mapLink: "Tosokchon Samgyetang" },
+                    { time: "16:10", type: "shop", title: "明洞逛街", desc: "美妝、服飾與伴手禮採購。", stickers: ["🛍️","💄"], mapLink: "Myeongdong Shopping Street" },
+                    { time: "19:00", type: "food", title: "水刺醬蟹晚餐", desc: "醬蟹晚餐，建議依訂位狀況安排 19:00。", stickers: ["🦀","🍚"], mapLink: "Myeongdong soy marinated crab" },
+                    { time: "20:45", type: "food", title: "外帶炸雞", desc: "點餐等待後帶回飯店，回程搭地鐵到鐘路三街。", stickers: ["🍗","🥤"], mapLink: "Myeongdong Korean fried chicken" }
+                ]
+            },
+            {
+                date: "Day 3 (06/21 日)",
+                location: "望遠市場・弘大・東大門",
+                summary: "望遠市場吃早餐、弘大補買，下午回飯店放戰利品，晚上東大門吃一隻雞並一路逛到深夜。",
+                weather: { high: "33°", low: "23°", feel: "33° / 23°", icon: "☁️", desc: "多雲・降雨 20%", sun: "05:11 / 19:56" },
+                events: [
+                    { time: "09:00", type: "move", title: "前往望遠市場", desc: "從鐘路三街搭地鐵加步行，預計 09:50 抵達。", stickers: ["🚇","🗺️"], mapLink: "Mangwon Market" },
+                    { time: "09:50", type: "food", title: "望遠市場早餐", desc: "市場吃小吃與早餐，停留到約 11:30。", stickers: ["🥟","🍢"], mapLink: "Mangwon Market" },
+                    { time: "11:50", type: "shop", title: "弘大補買", desc: "補第一天來不及買到的東西，13:50 左右離開。", stickers: ["🛍️","💳"], mapLink: "Hongdae Shopping Street" },
+                    { time: "14:40", type: "hotel", title: "回飯店放戰利品", desc: "整理購物品並休息約半小時。", stickers: ["🧳","🛏️"], mapLink: "The Square Hostel Jongno" },
+                    { time: "15:40", type: "shop", title: "東大門第一輪逛街", desc: "先逛較早關門的商場，可依序安排 Doota、Migliore、Hello apM。", stickers: ["🏬","🛍️"], mapLink: "Dongdaemun Shopping Complex" },
+                    { time: "17:40", type: "food", title: "陳玉華一隻雞", desc: "提早吃晚餐避開部分排隊人潮。", stickers: ["🍲","🐔"], mapLink: "Jin Ok Hwa Original Chicken Restaurant" },
+                    { time: "19:00", type: "shop", title: "東大門夜間購物", desc: "繼續逛 Doota、Migliore、Hello apM、NYUNYU 與營業較晚的店。", stickers: ["🌙","🛍️"], mapLink: "NYUNYU Dongdaemun" },
+                    { time: "23:00", type: "move", title: "返回飯店", desc: "從東大門返回鐘路三街，預估約 30 分鐘。", stickers: ["🚇","🏨"], mapLink: "Jongno 3-ga Station" }
+                ]
+            },
+            {
+                date: "Day 4 (06/22 一)",
+                location: "愛寶樂園・聖水",
+                summary: "上午前往愛寶樂園玩到 16:00，傍晚回首爾吃韓式烤肉，再逛聖水咖啡廳、選物與服飾店。",
+                weather: { high: "32°", low: "22°", feel: "34° / 24°", icon: "⛅", desc: "晴時多雲・降雨 18%", sun: "05:11 / 19:56" },
+                events: [
+                    { time: "08:00", type: "food", title: "離開飯店吃早餐", desc: "在飯店或接駁集合點附近用餐。", stickers: ["🥪","🚌"] },
+                    { time: "08:40", type: "move", title: "前往愛寶樂園", desc: "依接駁方式抓約 90 分鐘，預計 10:10 抵達。", note: "需確認接駁車是否支援約 16:00 離園。", stickers: ["🚌","🎢"], mapLink: "Everland" },
+                    { time: "10:10", type: "spot", title: "愛寶樂園自由活動", desc: "園區內不排細部順序，依人潮與設施狀況自由安排。", stickers: ["🎡","🐼","🎢"], mapLink: "Everland" },
+                    { time: "16:00", type: "move", title: "離開愛寶樂園", desc: "返回首爾，視交通狀況可能 17:40–18:00 抵達。", stickers: ["🚌","🏙️"], mapLink: "Seongsu Station" },
+                    { time: "18:30", type: "food", title: "聖水韓式烤肉", desc: "晚餐品項確定為韓式烤肉，店家待選；若回程延誤可順延到 19:00。", note: "餐廳尚待確認。", stickers: ["🥩","🔥"], mapLink: "Seongsu Korean BBQ" },
+                    { time: "20:00", type: "shop", title: "聖水逛街", desc: "咖啡廳、選物店與服飾店，依實際營業時間安排。", stickers: ["☕","🛍️"], mapLink: "Seongsu-dong Cafe Street" },
+                    { time: "22:00", type: "move", title: "返回飯店", desc: "從聖水返回鐘路三街，預估約 40 分鐘。", stickers: ["🚇","🌙"], mapLink: "The Square Hostel Jongno" }
+                ]
+            },
+            {
+                date: "Day 5 (06/23 二)",
+                location: "首爾站・市區自由活動・仁川",
+                summary: "退房後把行李寄在首爾站，白天在明洞、南大門或市廳附近自由活動，傍晚搭 AREX 前往仁川返台。",
+                weather: { high: "33°", low: "23°", feel: "34° / 24°", icon: "☁️", desc: "多雲・降雨 40%", sun: "05:11 / 19:56" },
+                events: [
+                    { time: "08:30", type: "hotel", title: "整理行李與退房", desc: "09:30 退房，確認沒有遺漏物品。", stickers: ["🧳","✅"], mapLink: "The Square Hostel Jongno" },
+                    { time: "10:00", type: "hotel", title: "首爾站寄放行李", desc: "使用首爾站置物櫃或附近寄存店，事先確認尺寸及營業時間。", stickers: ["🧳","🔐"], mapLink: "Seoul Station luggage storage" },
+                    { time: "10:20", type: "spot", title: "自由活動第一段", desc: "建議選明洞、南大門市場或首爾站周邊，方便中途調整。", stickers: ["🏙️","📷"], mapLink: "Namdaemun Market" },
+                    { time: "12:30", type: "food", title: "最後午餐", desc: "餐廳尚未指定，可依當天活動區域決定。", stickers: ["🍜","🥢"] },
+                    { time: "13:40", type: "shop", title: "自由活動第二段", desc: "最後購物、咖啡廳或德壽宮／市廳附近散步，16:30 前回首爾站。", stickers: ["🛍️","☕"], mapLink: "Deoksugung Palace" },
+                    { time: "17:00", type: "hotel", title: "取行李重新整理", desc: "確認護照、退稅單與行李重量。", stickers: ["🧳","⚖️"], mapLink: "Seoul Station" },
+                    { time: "17:20", type: "move", title: "AREX 前往仁川機場", desc: "建議在 17:20–17:40 間離開首爾站，約 18:40–19:10 抵達仁川。", stickers: ["🚆","🛫"], mapLink: "AREX Seoul Station" },
+                    { time: "19:10", type: "move", title: "報到、安檢與退稅", desc: "辦理托運、安檢、出境，之後吃晚餐與逛免稅店。", stickers: ["🛂","🛍️"], mapLink: "Incheon International Airport Terminal 2" },
+                    { time: "22:40", type: "move", flight: true, title: "真航空 LJ733 回程", desc: "22:40 ICN (T2) → 00:10 TPE (T1)，於 06/24 抵達。", stickers: ["✈️","🇹🇼"], mapLink: "Incheon International Airport Terminal 2" }
+                ]
+            }
+        ];
+
+        const checklistData = {
+            "📂 文件與預約": ["護照", "機票證明", "住宿憑證", "旅遊保險", "顏色測試憑證", "韓服預約憑證", "愛寶樂園門票與交通"],
+            "👕 夏季衣物": ["透氣上衣", "短褲或薄長褲", "貼身衣物", "襪子", "睡衣", "薄外套", "舒適好走的鞋"],
+            "☀️ 防暑雨具": ["防曬乳", "帽子", "墨鏡", "摺疊傘", "隨身水瓶", "涼感用品"],
+            "🔌 電子用品": ["手機", "行動電源", "充電器", "充電線", "韓國網卡或 eSIM", "轉接頭"],
+            "🧴 個人用品": ["常備藥", "腸胃藥", "隱形眼鏡", "眼鏡", "化妝包", "保養品", "盥洗用品"],
+            "💳 支付與購物": ["韓元現金", "信用卡", "可海外提款卡", "T-money", "零錢包", "行李秤", "購物袋"]
+        };
+
+        window.travelPageData = {
+            storageKey: "seoul2026",
+            mapRegion: "首爾",
+            flights: [
+                {
+                    direction: "去程",
+                    date: "2026-06-19",
+                    flightNo: "LJ734",
+                    depart: { airport: "TPE", terminal: "T1", time: "01:25" },
+                    arrive: { airport: "ICN", terminal: "T2", time: "05:00" },
+                    note: "預定時刻；真航空由桃園 T1 出發、抵達仁川 T2。"
+                },
+                {
+                    direction: "回程",
+                    date: "2026-06-23",
+                    flightNo: "LJ733",
+                    depart: { airport: "ICN", terminal: "T2", time: "22:40" },
+                    arrive: { airport: "TPE", terminal: "T1", time: "00:10", date: "2026-06-24" },
+                    note: "預定時刻；真航空由仁川 T2 出發、抵達桃園 T1。"
+                }
+            ],
+            days: itineraryDB,
+            checklist: checklistData,
+            tips: []
+        };
+    </script>
+    <script src="travel-page.js"></script>
+</body>
+</html>
