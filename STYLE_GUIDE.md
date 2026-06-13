@@ -36,9 +36,11 @@
   - 封面中央放一個大型 emoji，hover 時放大並旋轉。
 - 每張卡片應包含：
   - `trip-year`：月份、年份、季節，例如 `Dec 2025 • Winter`
+  - `trip-date`：完整起訖日期，格式統一為 `YYYY.MM.DD — MM.DD`，例如 `2026.06.19 — 06.23`
   - `trip-title`：目的地主題名
   - `trip-desc`：一段 1 到 2 句的旅程摘要
   - footer：天數與 `View Log →`
+- `trip-date` 放在 `trip-year` 與 `trip-title` 之間，使用小型淺色日期貼紙樣式；不可比標題醒目，也不要讓日期改變卡片主要視覺層級。
 
 ## 旅程頁風格
 
@@ -291,7 +293,7 @@ const checklistData = {
 新增一趟旅程時，至少要做：
 
 1. 新增旅程 HTML 檔，檔名維持 `YYYY-Destination.html`。
-2. 在首頁新增一張 `.trip-card`，設定封面漸層、emoji、年份季節、標題、摘要、天數。
+2. 在首頁新增一張 `.trip-card`，設定封面漸層、emoji、年份季節、完整起訖日期、標題、摘要、天數。
 3. 在旅程頁設定 `:root` 主題色與分類色。
 4. 建立與目的地相關的背景特效或裝飾。
 5. 填入 `itineraryDB`、每日天氣、每日 summary、每日事件。
