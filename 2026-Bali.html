@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>峇里島 Villa 海島假期・Sanur 烏布 Umalas 手帖</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --c-bg-top: #e0f7fa;
+            --c-bg-bot: #fff3e0;
+            --c-primary: #28545a;
+            --c-food: #ffb74d;
+            --c-spot: #4db6ac;
+            --c-move: #78909c;
+            --c-shop: #ff8a65;
+            --c-hotel: #9575cd;
+            --shadow-card: 5px 5px 0 rgba(40, 84, 90, 0.14);
+            --font-main: 'Zen Maru Gothic', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        html { overflow-x: hidden; }
+        body {
+            min-height: 100vh;
+            padding-bottom: 120px;
+            overflow-x: hidden;
+            color: var(--c-primary);
+            font-family: var(--font-main);
+            background: linear-gradient(180deg, var(--c-bg-top) 0%, #fff 56%, var(--c-bg-bot) 100%);
+        }
+
+        .leaf-container { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+        .leaf {
+            position: absolute;
+            top: -34px;
+            width: 20px;
+            height: 30px;
+            border-radius: 100% 0 100% 0;
+            opacity: 0.7;
+            filter: drop-shadow(0 3px 4px rgba(0,0,0,0.08));
+            animation: leafFall linear infinite;
+        }
+        @keyframes leafFall {
+            0% { transform: translateY(0) rotate(0deg) translateX(0); }
+            50% { transform: translateY(58vh) rotate(160deg) translateX(24px); }
+            100% { transform: translateY(112vh) rotate(320deg) translateX(-18px); }
+        }
+
+        .home-btn {
+            position: fixed; top: 20px; left: 20px; z-index: 1000;
+            display: flex; align-items: center; gap: 6px;
+            padding: 10px 18px;
+            border: 2px solid #fff; border-radius: 30px;
+            color: var(--c-primary);
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+            text-decoration: none;
+            font-size: 0.9rem; font-weight: 900;
+        }
+        .home-btn:hover { transform: scale(1.05); background: #fff; }
+
+        .navbar {
+            position: fixed; bottom: 30px; left: 50%; z-index: 999;
+            display: flex; justify-content: space-evenly;
+            width: 92%; max-width: 420px;
+            padding: 8px 0;
+            border: 2px solid #fff; border-radius: 60px;
+            background: rgba(255,255,255,0.92);
+            box-shadow: 0 10px 25px rgba(40,84,90,0.18);
+            backdrop-filter: blur(12px);
+            transform: translateX(-50%);
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center;
+            padding: 5px; border-radius: 10px;
+            color: var(--c-primary);
+            text-align: center; text-decoration: none;
+            font-size: 0.8rem; font-weight: 800;
+        }
+        .nav-item:active { background: #e0f2f1; transform: scale(0.95); }
+        .nav-icon { margin-bottom: 2px; font-size: 1.4rem; }
+
+        .container { position: relative; z-index: 1; width: 100%; max-width: 800px; margin: 0 auto; padding: 20px 20px 60px; }
+        header { padding: 50px 0 30px; text-align: center; }
+        .main-title {
+            margin-bottom: 10px;
+            color: #00796b;
+            text-shadow: 3px 3px 0 #fff;
+            font-size: 2.2rem;
+            font-weight: 900;
+            line-height: 1.35;
+        }
+        .sub-title {
+            display: inline-block;
+            padding: 8px 20px;
+            border: 2px solid #80deea; border-radius: 30px;
+            color: #ef6c00;
+            background: #fff;
+            box-shadow: var(--shadow-card);
+            transform: rotate(-2deg);
+            font-size: 1rem; font-weight: 800;
+        }
+
+        .weather-card { margin-bottom: 30px; padding: 20px; border: 4px solid #fff; border-radius: 20px; background: rgba(255,255,255,0.95); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+        .weather-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 2px dashed #80deea; }
+        .w-icon { font-size: 3.5rem; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1)); }
+        .w-temp-group { display: flex; align-items: center; gap: 15px; text-align: right; }
+        .temp-box { text-align: center; }
+        .temp-val { font-size: 1.8rem; font-weight: 900; line-height: 1; }
+        .temp-label { margin-top: 5px; opacity: 0.7; font-size: 0.85rem; font-weight: 700; }
+        .t-high { color: #ef6c00; } .t-low { color: #00897b; }
+        .weather-info { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+        .w-badge { display: flex; flex: 1; align-items: center; justify-content: center; gap: 6px; padding: 8px 12px; border-radius: 10px; color: #546e7a; background: #e0f2f1; text-align: center; font-size: 1rem; font-weight: 700; }
+
+        .day-section { margin-bottom: 60px; }
+        .day-title {
+            display: inline-block; max-width: 100%;
+            margin-bottom: 25px; padding: 12px 25px;
+            border-radius: 15px;
+            color: #fff; background: var(--c-primary);
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.2);
+            transform: rotate(-1deg);
+            white-space: normal;
+            font-size: 1.3rem; font-weight: 900; line-height: 1.4;
+        }
+        .timeline-container { width: calc(100% - 15px); margin-left: 15px; padding-left: 25px; border-left: 6px dashed #80cbc4; }
+        .timeline-card {
+            position: relative; width: 100%;
+            margin-bottom: 25px; padding: 18px;
+            overflow: hidden;
+            border: 3px solid transparent; border-radius: 18px;
+            background: #fff; box-shadow: var(--shadow-card);
+            cursor: pointer;
+        }
+        .timeline-card:active { transform: scale(0.98); }
+        .timeline-card::before {
+            content: ''; position: absolute; top: 25px; left: -37px; z-index: 1;
+            width: 18px; height: 18px;
+            border: 4px solid var(--c-primary); border-radius: 50%;
+            background: #fff;
+        }
+        .c-food { border-color: var(--c-food); } .c-food::before { border-color: var(--c-food); background: #ffe0b2; }
+        .c-spot { border-color: var(--c-spot); } .c-spot::before { border-color: var(--c-spot); background: #b2dfdb; }
+        .c-move { border-color: var(--c-move); } .c-move::before { border-color: var(--c-move); background: #eceff1; }
+        .c-shop { border-color: var(--c-shop); } .c-shop::before { border-color: var(--c-shop); background: #ffccbc; }
+        .c-hotel { border-color: var(--c-hotel); } .c-hotel::before { border-color: var(--c-hotel); background: #d1c4e9; }
+
+        .card-inner { display: flex; align-items: flex-start; gap: 15px; min-width: 0; }
+        .t-time-group { display: flex; flex-direction: column; align-items: center; min-width: 65px; }
+        .t-time-big { color: #28545a; font-size: 1.4rem; font-weight: 900; line-height: 1; }
+        .t-ampm { color: #78909c; font-size: 0.8rem; font-weight: 700; }
+        .t-detail { position: relative; z-index: 2; flex: 1; min-width: 0; }
+        .t-head { margin-bottom: 8px; color: #263238; overflow-wrap: anywhere; font-size: 1.25rem; font-weight: 800; line-height: 1.3; }
+        .t-desc { color: #546e7a; white-space: pre-line; overflow-wrap: anywhere; font-size: 1rem; font-weight: 500; line-height: 1.6; }
+        .t-note-mini { display: inline-block; max-width: 100%; margin-top: 6px; padding: 3px 8px; border-radius: 5px; color: #d84315; background: #fff3e0; white-space: normal; font-size: 0.8rem; font-weight: 700; }
+
+        .sticker-box { position: absolute; inset: 0; overflow: hidden; border-radius: 15px; pointer-events: none; }
+        .sticker { position: absolute; opacity: 0.92; filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.1)); font-size: 2.2rem; }
+        .s-pos-1 { top: -10px; right: -2px; transform: rotate(15deg); }
+        .s-pos-2 { right: 10px; bottom: -10px; transform: rotate(-10deg) scale(0.8); }
+        .s-pos-3 { top: 5px; right: 40px; opacity: 0.5; transform: rotate(5deg) scale(0.6); }
+
+        .checklist-wrapper { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .cl-category { padding: 20px; border-top: 5px solid #ff8a65; border-radius: 15px; background: #fff; box-shadow: var(--shadow-card); }
+        .cl-title { margin-bottom: 15px; color: #00796b; font-size: 1.2rem; font-weight: 900; }
+        .cl-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px dashed #eee; color: #546e7a; cursor: pointer; font-size: 1rem; font-weight: 500; }
+        .cl-item.checked { color: #ef6c00; text-decoration: line-through; }
+        .cl-checkbox { font-size: 1.2rem; }
+
+        .tips-section { margin-top: 40px; padding: 25px; border: 4px solid #80deea; border-radius: 20px; background: #fff; box-shadow: var(--shadow-card); }
+        .tips-title { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px dashed #80deea; color: #00796b; text-align: center; font-size: 1.5rem; font-weight: 900; }
+        .tip-item { position: relative; margin-bottom: 12px; padding-left: 25px; color: #546e7a; font-size: 1rem; font-weight: 500; line-height: 1.6; }
+        .tip-item::before { content: '🌺'; position: absolute; top: 0; left: 0; }
+
+        .modal-overlay { position: fixed; inset: 0; z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; background: rgba(40,84,90,0.9); }
+        .modal-box { position: relative; width: 100%; max-width: 500px; padding: 30px; border-radius: 24px; background: #fff; animation: popUp 0.3s; }
+        @keyframes popUp { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+        .m-map-btn { display: block; margin-top: 20px; padding: 15px; border-radius: 15px; color: #fff; background: #00796b; box-shadow: 0 4px 0 #004d40; text-align: center; text-decoration: none; font-size: 1.1rem; font-weight: 900; }
+
+        @media (max-width: 520px) {
+            .main-title { font-size: 1.9rem; }
+            .sub-title { font-size: 0.92rem; }
+            .day-title { padding: 10px 16px; font-size: 1.05rem; }
+            .weather-card { padding: 16px; }
+            .weather-top { display: grid; grid-template-columns: 1fr; gap: 12px; text-align: center; }
+            .w-temp-group { justify-content: center; }
+            .weather-info { display: grid; grid-template-columns: 1fr; }
+            .timeline-container { width: 100%; margin-left: 0; padding-left: 18px; }
+            .timeline-card { width: calc(100vw - 72px); padding: 16px 14px; }
+            .timeline-card::before { left: -30px; }
+            .card-inner { gap: 12px; }
+            .t-time-group { min-width: 54px; }
+            .t-detail { max-width: calc(100vw - 160px); }
+            .t-head { font-size: 1.15rem; }
+            .sticker { font-size: 1.9rem; }
+            .home-btn { top: 14px; left: 14px; padding: 8px 14px; }
+        }
+    </style>
+    <link rel="stylesheet" href="travel-style.css">
+</head>
+<body>
+    <a href="index.html" class="home-btn"><span>⬅</span> 回首頁</a>
+    <div class="leaf-container" id="leafContainer"></div>
+
+    <div class="container">
+        <header>
+            <div class="main-title">🌺 峇里島 Villa 海島假期・<br>Sanur 烏布 Umalas 手帖</div>
+            <div class="sub-title">2026/09/18 - 09/22 (5 Days)</div>
+        </header>
+
+        <div id="itinerary-root"></div>
+
+        <section id="checklist-section" style="margin-top:60px;">
+            <div class="day-title" style="background:#ff8a65; transform:rotate(1deg);">🎒 峇里島行李清單</div>
+            <div class="checklist-wrapper" id="checklist-root"></div>
+        </section>
+
+        <section class="tips-section" id="general-tips">
+            <div class="tips-title">📝 峇里島銜接提醒</div>
+            <div class="tip-item"><strong>天氣：</strong>本頁先用 9 月氣候平均。9 月仍偏乾季，約 30°C / 23°C，出發前再更新逐日預報。</div>
+            <div class="tip-item"><strong>Day 2 船班：</strong>07:00 船班不能出錯，船公司、取票、報到地點、最晚報到時間與島上接駁都要再確認。</div>
+            <div class="tip-item"><strong>Day 3 行李：</strong>Sanur 飯店需確認可寄放 5 人行李到晚上；包車是否可載部分行李去 Umalas 也要先問。</div>
+            <div class="tip-item"><strong>Day 4 採買：</strong>Atlas 後再買 Day 5 早餐與水，先查好超市營業時間；海鮮不要設成硬需求。</div>
+            <div class="tip-item"><strong>Day 5 回程：</strong>按摩與午餐要找順路、可放行李的地方，14:00 左右就要往 DPS 機場移動。</div>
+        </section>
+
+        <div style="margin-top:50px; color:#78909c; text-align:center; font-size:0.9rem; font-weight:700;">
+            Created for MikeHsu & Friends 2026
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <a href="#itinerary-root" class="nav-item"><span class="nav-icon">📅</span>行程</a>
+        <a href="#checklist-section" class="nav-item"><span class="nav-icon">🎒</span>清單</a>
+        <a href="#general-tips" class="nav-item"><span class="nav-icon">💡</span>叮嚀</a>
+        <a href="#" class="nav-item" onclick="window.scrollTo(0,0)"><span class="nav-icon">🔝</span>TOP</a>
+    </nav>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal-box">
+            <button onclick="closeModal()" style="position:absolute; right:20px; top:20px; border:none; background:none; font-size:1.5rem; cursor:pointer;">✕</button>
+            <h2 id="m-title" style="margin-bottom:5px; color:#263238; font-size:1.6rem;">標題</h2>
+            <div id="m-time" style="margin-bottom:15px; color:#78909c; font-size:0.9rem; font-weight:700;"></div>
+            <div id="m-desc" style="margin-bottom:15px; padding:15px; border-radius:12px; background:#e0f2f1; white-space:pre-line; font-size:1.05rem; line-height:1.6;">內容</div>
+            <div id="m-note-box" style="display:none; margin-bottom:15px;">
+                <span style="padding:4px 10px; border-radius:8px; color:#d84315; background:#fff3e0; font-size:0.85rem; font-weight:bold;">重點筆記</span>
+                <p id="m-note" style="margin-top:8px; color:#d84315; font-weight:700;"></p>
+            </div>
+            <a id="m-map" href="#" target="_blank" class="m-map-btn">📍 Google Maps 導航</a>
+        </div>
+    </div>
+
+    <script>
+        const leafContainer = document.getElementById('leafContainer');
+        const leafColors = ['#4db6ac', '#80deea', '#ffb74d', '#ff8a65'];
+        for (let i = 0; i < 22; i++) {
+            const leaf = document.createElement('div');
+            leaf.className = 'leaf';
+            leaf.style.left = Math.random() * 100 + 'vw';
+            leaf.style.background = leafColors[i % leafColors.length];
+            leaf.style.animationDuration = (Math.random() * 9 + 8) + 's';
+            leaf.style.animationDelay = Math.random() * 7 + 's';
+            leafContainer.appendChild(leaf);
+        }
+
+        const itineraryDB = [
+            {
+                date: "Day 1 (09/18 五)",
+                location: "DPS・Sanur・夜市",
+                summary: "抵達 DPS 後接機前往 Sanur，Check-in、換錢、吃肋排，晚上逛夜市與超商採買。",
+                weather: { high: "30°", low: "23°", feel: "31° / 24°", icon: "☀️", desc: "乾季晴朗・出發前更新", sun: "06:10 / 18:16" },
+                events: [
+                    { time: "09:50", type: "move", flight: true, title: "EVA BR255 出發", desc: "09:50 TPE (T2) → 15:15 DPS Ngurah Rai International Terminal。", stickers: ["✈️","🌺"], mapLink: "Taiwan Taoyuan International Airport Terminal 2" },
+                    { time: "15:15", type: "move", title: "抵達峇里島 DPS", desc: "抵達、入境、領行李，抓約 90 分鐘。", stickers: ["🛬","🧳"], mapLink: "Ngurah Rai International Airport" },
+                    { time: "16:45", type: "move", title: "預約接機前往 Sanur", desc: "已預約接機，不使用 Grab；預估 17:30 抵達飯店。", note: "已預約，憑證請看私人文件。", stickers: ["🚗","🏨"], mapLink: "Sanur Bali" },
+                    { time: "17:30", type: "hotel", title: "Sanur 飯店 Check-in", desc: "入住、放行李，先把隔天早起用品整理好。", stickers: ["🏨","🧳"], mapLink: "https://maps.app.goo.gl/tz74HjL3CUtPr8LD8" },
+                    { time: "18:00", type: "move", title: "換錢", desc: "Grab 前往 PT. Dirgahayu Valuta Prima Money Changer，換錢後現金分散放。", stickers: ["💵","🚗"], mapLink: "PT. Dirgahayu Valuta Prima Money Changer Sanur" },
+                    { time: "18:30", type: "food", title: "Naughty Nuri's 肋排晚餐", desc: "吃肋排晚餐，步行或短程移動到夜市。", stickers: ["🍖","🔥"], mapLink: "Naughty Nuri's Warung Sanur" },
+                    { time: "20:00", type: "spot", title: "Sanur Night Market", desc: "夜市與附近走走，太累就簡單逛一下。", stickers: ["🏮","🍢"], mapLink: "Sanur Night Market" },
+                    { time: "21:30", type: "shop", title: "超商採買", desc: "買水、Day 2 早餐、輕食補給、暈船藥或暈船前可吃的食物。", stickers: ["🛒","🥤"], mapLink: "Sanur convenience store" },
+                    { time: "22:30", type: "hotel", title: "回飯店休息", desc: "Day 2 需要 06:00 出門，今晚不要拖太晚。", stickers: ["🛏️","⏰"], mapLink: "https://maps.app.goo.gl/tz74HjL3CUtPr8LD8" }
+                ]
+            },
+            {
+                date: "Day 2 (09/19 六)",
+                location: "Sanur・藍夢島・潛水",
+                summary: "06:00 出門搭 07:00 船去藍夢島，潛水行程後搭 17:00 船回 Sanur，晚上散步吃飯耍廢。",
+                weather: { high: "30°", low: "23°", feel: "31° / 24°", icon: "☀️", desc: "乾季晴朗・出發前更新", sun: "06:09 / 18:16" },
+                events: [
+                    { time: "05:30", type: "food", title: "起床與簡單早餐", desc: "吃 Day 1 超商買的東西，準備防水袋、毛巾、拖鞋、換洗衣物、防曬與潛水資料。", stickers: ["🥐","🎒"] },
+                    { time: "06:00", type: "move", title: "從 Sanur 飯店出門", desc: "前往港口處理取票與報到，07:00 船班不等人。", note: "船公司、取票方式、報到地點與最晚報到時間待確認。", stickers: ["🚗","⛴️"], mapLink: "Sanur Harbour" },
+                    { time: "07:00", type: "move", title: "船班前往藍夢島", desc: "Sanur → Nusa Lembongan，約 07:35 抵達。", stickers: ["⛴️","🌊"], mapLink: "Nusa Lembongan" },
+                    { time: "08:00", type: "spot", title: "藍夢島潛水行程", desc: "2 位 Fun Dive + 1 位 DSD 體驗潛水。若天候允許，希望安排 Manta Point 與第二個潛點。", note: "已預約，憑證請看私人文件；到島後接駁待確認。", stickers: ["🤿","🐠","🌊"], mapLink: "Manta Point Nusa Penida" },
+                    { time: "15:30", type: "spot", title: "潛水結束整理", desc: "整理裝備、補水、等待回程船班。不潛水的人可在潛店附近休息或安排陸遊。", stickers: ["🧴","🥤"], mapLink: "Nusa Lembongan" },
+                    { time: "17:00", type: "move", title: "回程船班", desc: "藍夢島 → Sanur，回程取票與港口位置待確認。", stickers: ["⛴️","🌅"], mapLink: "Sanur Harbour" },
+                    { time: "18:30", type: "food", title: "Sanur 晚餐", desc: "回 Sanur 後當天決定晚餐，潛水後可能疲累，不訂太遠。", stickers: ["🍜","🍹"], mapLink: "Sanur restaurants" },
+                    { time: "20:00", type: "spot", title: "散步與耍廢", desc: "喝飲料、附近散步，Day 3 也要 07:00 出發，早點休息。", stickers: ["🌙","🏝️"], mapLink: "Sanur Beach" }
+                ]
+            },
+            {
+                date: "Day 3 (09/20 日)",
+                location: "Sanur・聖泉寺・烏布・Umalas",
+                summary: "07:00 包車烏布一日遊，走聖泉寺、猴子森林與藝術市集，傍晚回 Sanur 拿行李轉 Umalas Villa。",
+                weather: { high: "30°", low: "23°", feel: "31° / 24°", icon: "⛅", desc: "乾季晴朗・出發前更新", sun: "06:09 / 18:16" },
+                events: [
+                    { time: "06:00", type: "food", title: "早餐與退房準備", desc: "吃前一天買好的早餐，06:20–06:45 退房、整理並寄放行李。", stickers: ["🥪","🧳"], mapLink: "https://maps.app.goo.gl/tz74HjL3CUtPr8LD8" },
+                    { time: "07:00", type: "move", title: "包車出發", desc: "Sanur → 聖泉寺，包車 12 小時，使用至 19:00。", note: "需確認司機是否可最後載部分人與行李去 Umalas，以及超時費。", stickers: ["🚗","🗺️"], mapLink: "Tirta Empul Temple" },
+                    { time: "09:00", type: "spot", title: "Tirta Empul 聖泉寺", desc: "參觀聖泉寺，不安排梯田，避免壓縮後續時間。", stickers: ["⛩️","💧"], mapLink: "Tirta Empul Temple" },
+                    { time: "11:30", type: "spot", title: "烏布猴子森林", desc: "Sacred Monkey Forest Sanctuary，注意物品不要外露。", stickers: ["🐒","🌿"], mapLink: "Sacred Monkey Forest Sanctuary" },
+                    { time: "13:00", type: "food", title: "烏布市集周邊午餐", desc: "午餐安排在烏布市集附近，吃完直接逛街。", stickers: ["🍛","🥥"], mapLink: "Ubud Art Market" },
+                    { time: "14:00", type: "shop", title: "烏布藝術市集與周邊街區", desc: "視逛街狀況彈性結束，17:00 左右回 Sanur 拿行李。", stickers: ["🛍️","🎨"], mapLink: "Ubud Art Market" },
+                    { time: "17:00", type: "move", title: "回 Sanur 拿行李", desc: "若市集提早結束，可部分人與行李搭原包車去 Umalas；若接近 19:00，改叫 2 台 Grab。", note: "Sanur 飯店需確認可寄放行李到晚上。", stickers: ["🚗","🧳"], mapLink: "https://maps.app.goo.gl/tz74HjL3CUtPr8LD8" },
+                    { time: "19:00", type: "hotel", title: "前往 Umalas Villa", desc: "入住 Villa、耍廢，視抵達時間決定是否採買或吃東西。", stickers: ["🏡","🏊"], mapLink: "https://maps.app.goo.gl/z8PhP6qySCJRA7CB6" }
+                ]
+            },
+            {
+                date: "Day 4 (09/21 一)",
+                location: "Umalas・小狗瑜珈・Atlas",
+                summary: "小狗瑜珈與 Gigi Susu 早餐後回 Villa 耍廢，下午去 Atlas Beach Club，晚上採買 Day 5 早餐。",
+                weather: { high: "30°", low: "23°", feel: "31° / 24°", icon: "☀️", desc: "乾季晴朗・出發前更新", sun: "06:08 / 18:16" },
+                events: [
+                    { time: "08:00", type: "move", title: "Villa 出發", desc: "Grab 前往小狗瑜珈，預留路況時間。", stickers: ["🚗","🐶"], mapLink: "Happy Puppy Yoga Bali" },
+                    { time: "09:00", type: "spot", title: "Happy Puppy Yoga Bali", desc: "小狗瑜珈已預約，課程可能不會準時結束，保留緩衝。", note: "已預約，憑證請看私人文件。", stickers: ["🐶","🧘"], mapLink: "Happy Puppy Yoga Bali" },
+                    { time: "10:30", type: "food", title: "Gigi Susu 早餐", desc: "課程地點到 Gigi Susu 約 15 分鐘，早餐、麵包、咖啡約 1 小時。", stickers: ["🥐","☕"], mapLink: "Gigi Susu Bali" },
+                    { time: "12:00", type: "hotel", title: "回 Villa 耍廢", desc: "泳池、休息、聊天、放空；這天不要再塞遠景點。", stickers: ["🏊","😌"], mapLink: "https://maps.app.goo.gl/z8PhP6qySCJRA7CB6" },
+                    { time: "15:00", type: "move", title: "前往 Atlas Beach Club", desc: "直接前往 Atlas，不再安排下午景點。", stickers: ["🚗","🌊"], mapLink: "Atlas Beach Club Bali" },
+                    { time: "16:00", type: "spot", title: "Atlas Beach Club", desc: "海灘拍照、喝酒、耍廢、看夕陽；晚餐可在 Atlas 吃或離場後另找。", stickers: ["🍹","🌅","🏖️"], mapLink: "Atlas Beach Club Bali" },
+                    { time: "20:30", type: "shop", title: "超市採買", desc: "買 Day 5 早餐食材、水、飲料、蛋、吐司、水果與部分伴手禮。", note: "先確認營業時間；海鮮不要設為硬需求。", stickers: ["🛒","🍳"], mapLink: "supermarket near Canggu Bali" },
+                    { time: "22:00", type: "hotel", title: "回 Villa 休息", desc: "整理採買物品，Day 5 早上在 Villa 煮早餐。", stickers: ["🏡","🌙"], mapLink: "https://maps.app.goo.gl/z8PhP6qySCJRA7CB6" }
+                ]
+            },
+            {
+                date: "Day 5 (09/22 二)",
+                location: "Umalas・按摩・DPS・返台",
+                summary: "Villa 早餐耍廢後退房，找順路可放行李的按摩店與午餐，14:00 左右前往 DPS 搭 BR256 回台灣。",
+                weather: { high: "30°", low: "23°", feel: "31° / 24°", icon: "⛅", desc: "乾季晴朗・出發前更新", sun: "06:08 / 18:15" },
+                events: [
+                    { time: "08:00", type: "food", title: "Villa 早餐與耍廢", desc: "用 Day 4 採買食材煮早餐，整理行李、泳池邊慢慢收尾。", stickers: ["🍳","🏊"], mapLink: "https://maps.app.goo.gl/z8PhP6qySCJRA7CB6" },
+                    { time: "10:00", type: "hotel", title: "退房", desc: "整理行李、Check-out，接下來行李會跟著大家移動。", stickers: ["🧳","👋"], mapLink: "https://maps.app.goo.gl/z8PhP6qySCJRA7CB6" },
+                    { time: "11:00", type: "spot", title: "按摩", desc: "按摩店待定，建議找 Umalas / Seminyak / Kuta / 機場路線附近，最好可寄放行李。", note: "店家待確認，不公開私人預約資訊。", stickers: ["💆","🌿"], mapLink: "massage near Seminyak Bali" },
+                    { time: "13:00", type: "food", title: "午餐", desc: "餐廳待定，建議選往機場方向順路、不要太遠或太慢。", stickers: ["🍽️","🥤"], mapLink: "restaurants near Kuta Bali" },
+                    { time: "14:00", type: "move", title: "前往 DPS 機場", desc: "預留塞車與報到時間，最晚 14:00 前後出發比較保險。", stickers: ["🚗","🛫"], mapLink: "Ngurah Rai International Airport" },
+                    { time: "16:30", type: "move", flight: true, title: "EVA BR256 回程", desc: "16:30 DPS Ngurah Rai International Terminal → 22:00 TPE (T2)。", stickers: ["✈️","🇹🇼"], mapLink: "Ngurah Rai International Airport" }
+                ]
+            }
+        ];
+
+        const checklistData = {
+            "📂 文件與預約": ["護照", "機票證明", "住宿憑證", "旅遊保險", "船票資訊", "潛水預約憑證", "包車聯絡資訊"],
+            "🏝️ 海島衣物": ["泳衣", "薄外套", "透氣上衣", "短褲", "貼身衣物", "睡衣", "好走拖鞋"],
+            "🤿 潛水與防水": ["防水袋", "毛巾", "換洗衣物", "防曬乳", "暈船藥", "潛水證照資料", "行動防水套"],
+            "🔌 電子用品": ["手機", "行動電源", "充電器", "充電線", "印尼網卡或 eSIM", "轉接頭"],
+            "🧴 個人用品": ["常備藥", "腸胃藥", "蚊蟲藥", "隱形眼鏡", "眼鏡", "保養品", "盥洗用品"],
+            "💰 支付與採買": ["印尼盾現金", "信用卡", "可海外提款卡", "小皮夾", "購物袋", "行李秤"]
+        };
+
+        window.travelPageData = {
+            storageKey: "bali2026",
+            mapRegion: "峇里島",
+            flights: [
+                {
+                    direction: "去程",
+                    date: "2026-09-18",
+                    flightNo: "BR255",
+                    depart: { airport: "TPE", terminal: "T2", time: "09:50" },
+                    arrive: { airport: "DPS", terminal: "Ngurah Rai International Terminal", time: "15:15" },
+                    note: "預定時刻；EVA 桃園使用 T2，DPS 使用 Ngurah Rai International Terminal。"
+                },
+                {
+                    direction: "回程",
+                    date: "2026-09-22",
+                    flightNo: "BR256",
+                    depart: { airport: "DPS", terminal: "Ngurah Rai International Terminal", time: "16:30" },
+                    arrive: { airport: "TPE", terminal: "T2", time: "22:00" },
+                    note: "預定時刻；EVA 桃園使用 T2，DPS 使用 Ngurah Rai International Terminal。"
+                }
+            ],
+            days: itineraryDB,
+            checklist: checklistData,
+            tips: []
+        };
+    </script>
+    <script src="travel-page.js"></script>
+</body>
+</html>
