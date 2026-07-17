@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>釜山盛夏海岸旅行・海雲台松島西面手帖</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --c-bg-top: #dff5ff;
+            --c-bg-bot: #fff2e8;
+            --c-primary: #24536b;
+            --c-food: #ff8a65;
+            --c-spot: #26a69a;
+            --c-move: #5c7c96;
+            --c-shop: #ec6f91;
+            --c-hotel: #7e72c5;
+            --shadow-card: 5px 5px 0 rgba(36, 83, 107, 0.14);
+            --font-main: 'Zen Maru Gothic', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        html { overflow-x: hidden; }
+        body {
+            min-height: 100vh;
+            padding-bottom: 120px;
+            overflow-x: hidden;
+            color: var(--c-primary);
+            font-family: var(--font-main);
+            background:
+                radial-gradient(ellipse at 15% 10%, rgba(255,255,255,0.9) 0 46px, transparent 49px),
+                radial-gradient(ellipse at 82% 13%, rgba(255,255,255,0.82) 0 58px, transparent 61px),
+                linear-gradient(180deg, #b9e8fa 0%, #e8f8ff 31%, #b8e4ed 47%, #fff2d7 72%, #ffd9c5 100%);
+        }
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 31vh 0 auto;
+            z-index: 0;
+            height: 34vh;
+            pointer-events: none;
+            background:
+                repeating-radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.34) 0 2px, transparent 3px 30px),
+                linear-gradient(180deg, rgba(70,190,210,0.36), rgba(15,125,167,0.18));
+            opacity: 0.8;
+        }
+
+        .coast-deco { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+        .coast-item { position: absolute; opacity: 0.5; filter: drop-shadow(0 4px 4px rgba(36,83,107,0.1)); animation: coastFloat 8s ease-in-out infinite; }
+        .c-gull { top: 12%; left: 8%; font-size: 2rem; }
+        .c-wave { top: 39%; right: 7%; font-size: 2.8rem; animation-delay: -2s; }
+        .c-fish { top: 52%; left: 6%; font-size: 2.2rem; animation-delay: -4s; }
+        .c-shell { top: 72%; right: 8%; font-size: 2.2rem; animation-delay: -1s; }
+        @keyframes coastFloat { 0%,100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-14px) rotate(4deg); } }
+
+        .home-btn { position: fixed; top: 20px; left: 20px; z-index: 1000; display: flex; align-items: center; gap: 6px; padding: 10px 18px; border: 2px solid #fff; border-radius: 30px; color: var(--c-primary); background: rgba(255,255,255,0.9); box-shadow: 0 4px 15px rgba(0,0,0,0.1); backdrop-filter: blur(5px); text-decoration: none; font-size: 0.9rem; font-weight: 900; }
+        .home-btn:hover { transform: scale(1.05); background: #fff; }
+        .navbar { position: fixed; bottom: 30px; left: 50%; z-index: 999; display: flex; justify-content: space-evenly; width: 92%; max-width: 420px; padding: 8px 0; border: 2px solid #fff; border-radius: 60px; background: rgba(255,255,255,0.92); box-shadow: 0 10px 25px rgba(36,83,107,0.18); backdrop-filter: blur(12px); transform: translateX(-50%); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; padding: 5px; border-radius: 10px; color: var(--c-primary); text-align: center; text-decoration: none; font-size: 0.8rem; font-weight: 800; }
+        .nav-item:active { background: #e1f5fe; transform: scale(0.95); }
+        .nav-icon { margin-bottom: 2px; font-size: 1.4rem; }
+        .container { position: relative; z-index: 1; width: 100%; max-width: 800px; margin: 0 auto; padding: 20px 20px 60px; }
+        header { padding: 50px 0 30px; text-align: center; }
+        .main-title { margin-bottom: 10px; color: #086788; text-shadow: 3px 3px 0 #fff; font-size: 2.2rem; font-weight: 900; line-height: 1.35; }
+        .sub-title { display: inline-block; padding: 8px 20px; border: 2px solid #74c7d5; border-radius: 30px; color: #e85d75; background: #fff; box-shadow: var(--shadow-card); transform: rotate(-2deg); font-size: 1rem; font-weight: 800; }
+
+        .weather-card { margin-bottom: 30px; padding: 20px; border: 4px solid #fff; border-radius: 20px; background: rgba(255,255,255,0.95); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+        .weather-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; padding-bottom: 15px; border-bottom: 2px dashed #74c7d5; }
+        .w-icon { font-size: 3.5rem; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1)); }
+        .w-temp-group { display: flex; align-items: center; gap: 15px; text-align: right; }
+        .temp-box { text-align: center; }
+        .temp-val { font-size: 1.8rem; font-weight: 900; line-height: 1; }
+        .temp-label { margin-top: 5px; opacity: 0.7; font-size: 0.85rem; font-weight: 700; }
+        .t-high { color: #ef5350; } .t-low { color: #00897b; }
+        .weather-info { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; }
+        .w-badge { display: flex; flex: 1; align-items: center; justify-content: center; gap: 6px; padding: 8px 12px; border-radius: 10px; color: #546e7a; background: #e1f5fe; text-align: center; font-size: 1rem; font-weight: 700; }
+
+        .day-section { margin-bottom: 60px; }
+        .day-title { display: inline-block; max-width: 100%; margin-bottom: 25px; padding: 12px 25px; border-radius: 15px; color: #fff; background: var(--c-primary); box-shadow: 5px 5px 0 rgba(0,0,0,0.2); transform: rotate(-1deg); white-space: normal; font-size: 1.3rem; font-weight: 900; line-height: 1.4; }
+        .timeline-container { width: calc(100% - 15px); margin-left: 15px; padding-left: 25px; border-left: 6px dashed #74c7d5; }
+        .timeline-card { position: relative; width: 100%; margin-bottom: 25px; padding: 18px; overflow: hidden; border: 3px solid transparent; border-radius: 18px; background: #fff; box-shadow: var(--shadow-card); cursor: pointer; }
+        .timeline-card:active { transform: scale(0.98); }
+        .timeline-card::before { content: ''; position: absolute; top: 25px; left: -37px; z-index: 1; width: 18px; height: 18px; border: 4px solid var(--c-primary); border-radius: 50%; background: #fff; }
+        .c-food { border-color: var(--c-food); } .c-food::before { border-color: var(--c-food); background: #ffccbc; }
+        .c-spot { border-color: var(--c-spot); } .c-spot::before { border-color: var(--c-spot); background: #b2dfdb; }
+        .c-move { border-color: var(--c-move); } .c-move::before { border-color: var(--c-move); background: #eceff1; }
+        .c-shop { border-color: var(--c-shop); } .c-shop::before { border-color: var(--c-shop); background: #f8bbd0; }
+        .c-hotel { border-color: var(--c-hotel); } .c-hotel::before { border-color: var(--c-hotel); background: #d1c4e9; }
+        .card-inner { display: flex; align-items: flex-start; gap: 15px; min-width: 0; }
+        .t-time-group { display: flex; flex-direction: column; align-items: center; min-width: 65px; }
+        .t-time-big { color: var(--c-primary); font-size: 1.4rem; font-weight: 900; line-height: 1; }
+        .t-ampm { color: #78909c; font-size: 0.8rem; font-weight: 700; }
+        .t-detail { position: relative; z-index: 2; flex: 1; min-width: 0; }
+        .t-head { margin-bottom: 8px; color: #263238; overflow-wrap: anywhere; font-size: 1.25rem; font-weight: 800; line-height: 1.3; }
+        .t-desc { color: #546e7a; white-space: pre-line; overflow-wrap: anywhere; font-size: 1rem; font-weight: 500; line-height: 1.6; }
+        .t-note-mini { display: inline-block; max-width: 100%; margin-top: 6px; padding: 3px 8px; border-radius: 5px; color: #b23a55; background: #fff0f3; white-space: normal; font-size: 0.8rem; font-weight: 700; }
+        .sticker-box { position: absolute; inset: 0; overflow: hidden; border-radius: 15px; pointer-events: none; }
+        .sticker { position: absolute; opacity: 0.92; filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.1)); font-size: 2.2rem; }
+        .s-pos-1 { top: -10px; right: -2px; transform: rotate(15deg); } .s-pos-2 { right: 10px; bottom: -10px; transform: rotate(-10deg) scale(0.8); } .s-pos-3 { top: 5px; right: 40px; opacity: 0.5; transform: rotate(5deg) scale(0.6); }
+        .checklist-wrapper { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .cl-category { padding: 20px; border-top: 5px solid #ec6f91; border-radius: 15px; background: #fff; box-shadow: var(--shadow-card); }
+        .cl-title { margin-bottom: 15px; color: #086788; font-size: 1.2rem; font-weight: 900; }
+        .cl-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px dashed #eee; color: #546e7a; cursor: pointer; font-size: 1rem; font-weight: 500; }
+        .cl-item.checked { color: #ec6f91; text-decoration: line-through; } .cl-checkbox { font-size: 1.2rem; }
+        .tips-section { margin-top: 40px; padding: 25px; border: 4px solid #74c7d5; border-radius: 20px; background: #fff; box-shadow: var(--shadow-card); }
+        .tips-title { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px dashed #74c7d5; color: #086788; text-align: center; font-size: 1.5rem; font-weight: 900; }
+        .tip-item { position: relative; margin-bottom: 12px; padding-left: 25px; color: #546e7a; font-size: 1rem; font-weight: 500; line-height: 1.6; }
+        .tip-item::before { content: '🌊'; position: absolute; top: 0; left: 0; }
+        .modal-overlay { position: fixed; inset: 0; z-index: 2000; display: none; align-items: center; justify-content: center; padding: 20px; background: rgba(36,83,107,0.9); }
+        .modal-box { position: relative; width: 100%; max-width: 500px; padding: 30px; border-radius: 24px; background: #fff; animation: popUp 0.3s; }
+        @keyframes popUp { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+        .m-map-btn { display: block; margin-top: 20px; padding: 15px; border-radius: 15px; color: #fff; background: #086788; box-shadow: 0 4px 0 #06465c; text-align: center; text-decoration: none; font-size: 1.1rem; font-weight: 900; }
+        @media (max-width: 520px) {
+            .main-title { font-size: 1.9rem; } .sub-title { font-size: 0.92rem; } .day-title { padding: 10px 16px; font-size: 1.05rem; }
+            .weather-card { padding: 16px; } .weather-top { display: grid; grid-template-columns: 1fr; gap: 12px; text-align: center; } .w-temp-group { justify-content: center; }
+            .weather-info { display: grid; grid-template-columns: 1fr; } .timeline-container { width: 100%; margin-left: 0; padding-left: 18px; }
+            .timeline-card { width: calc(100vw - 72px); padding: 16px 14px; } .timeline-card::before { left: -30px; } .card-inner { gap: 12px; }
+            .t-time-group { min-width: 54px; } .t-detail { max-width: calc(100vw - 160px); } .t-head { font-size: 1.15rem; } .sticker { font-size: 1.9rem; }
+            .home-btn { top: 14px; left: 14px; padding: 8px 14px; }
+        }
+    </style>
+    <link rel="stylesheet" href="travel-style.css">
+</head>
+<body>
+    <a href="index.html" class="home-btn"><span>⬅</span> 回首頁</a>
+    <div class="coast-deco" aria-hidden="true">
+        <span class="coast-item c-gull">🕊️</span>
+        <span class="coast-item c-wave">🌊</span>
+        <span class="coast-item c-fish">🐟</span>
+        <span class="coast-item c-shell">🐚</span>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="main-title">🌊 釜山盛夏海岸旅行・<br>海雲台松島西面手帖</div>
+            <div class="sub-title">2026/07/23 - 07/25 (3 Days)</div>
+        </header>
+
+        <div id="itinerary-root"></div>
+
+        <section id="checklist-section" style="margin-top:60px;">
+            <div class="day-title" style="background:#ec6f91; transform:rotate(1deg);">🎒 釜山行李清單</div>
+            <div class="checklist-wrapper" id="checklist-root"></div>
+        </section>
+
+        <section class="tips-section" id="general-tips">
+            <div class="tips-title">📝 釜山銜接提醒</div>
+            <div class="tip-item"><strong>天氣：</strong>本頁於 2026/07/17 更新。三天目前皆有雷陣雨機率，體感最高約 35–37°C，請帶傘、防曬並在出發前一天再確認。</div>
+            <div class="tip-item"><strong>Day 1 固定時間：</strong>13:30 青沙浦天空膠囊已預約，建議 13:05 前完成報到；樂天世界不列正式行程，現場自行看時間。</div>
+            <div class="tip-item"><strong>Day 1 交通：</strong>Maison de Denbast 到 OSIRIA 可比較東海線釜田站直達與田浦站經 BEXCO 轉乘，前一晚依班次選較順的方式。</div>
+            <div class="tip-item"><strong>Day 2 松島：</strong>搭纜車到 Sky Park 上站後走龍宮雲橋，再搭纜車返回；遇強風或雷雨先查是否開放。</div>
+            <div class="tip-item"><strong>Day 3 回程：</strong>回程 22:20 起飛，目標 19:50 抵達機場；18:40 從 Maison de Denbast 拿好行李出發，不建議再往後拖。</div>
+        </section>
+
+        <div style="margin-top:50px; color:#78909c; text-align:center; font-size:0.9rem; font-weight:700;">Created for MikeHsu & Friends 2026</div>
+    </div>
+
+    <nav class="navbar">
+        <a href="#itinerary-root" class="nav-item"><span class="nav-icon">📅</span>行程</a>
+        <a href="#checklist-section" class="nav-item"><span class="nav-icon">🎒</span>清單</a>
+        <a href="#general-tips" class="nav-item"><span class="nav-icon">💡</span>叮嚀</a>
+        <a href="#" class="nav-item" onclick="window.scrollTo(0,0)"><span class="nav-icon">🔝</span>TOP</a>
+    </nav>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal-box">
+            <button onclick="closeModal()" style="position:absolute; right:20px; top:20px; border:none; background:none; font-size:1.5rem; cursor:pointer;">✕</button>
+            <h2 id="m-title" style="margin-bottom:5px; color:#263238; font-size:1.6rem;">標題</h2>
+            <div id="m-time" style="margin-bottom:15px; color:#78909c; font-size:0.9rem; font-weight:700;"></div>
+            <div id="m-desc" style="margin-bottom:15px; padding:15px; border-radius:12px; background:#e1f5fe; white-space:pre-line; font-size:1.05rem; line-height:1.6;">內容</div>
+            <div id="m-note-box" style="display:none; margin-bottom:15px;">
+                <span style="padding:4px 10px; border-radius:8px; color:#b23a55; background:#fff0f3; font-size:0.85rem; font-weight:bold;">重點筆記</span>
+                <p id="m-note" style="margin-top:8px; color:#b23a55; font-weight:700;"></p>
+            </div>
+            <a id="m-map" href="#" target="_blank" class="m-map-btn">📍 Google Maps 導航</a>
+        </div>
+    </div>
+
+    <script>
+        const itineraryDB = [
+            {
+                date: "Day 1 (07/23 四)",
+                location: "金海・田浦・OSIRIA・青沙浦・海雲台",
+                summary: "清晨抵達金海，田浦寄放行李後前往 OSIRIA 玩 Skyline Luge；午後搭青沙浦天空膠囊、海邊散步並吃水邊最高豬肉湯飯，再走 X the Sky、Spa Land。",
+                weather: { high: "29°", low: "25°", feel: "35° / 30°", icon: "⛈️", desc: "雷陣雨・降雨 71%", sun: "05:25 / 19:34" },
+                events: [
+                    { time: "02:40", type: "move", flight: true, title: "易斯達航空 ZE984 出發", desc: "02:40 TPE (T1) → 06:10 PUS 國際航廈。", stickers: ["✈️","🌙"], mapLink: "桃園國際機場 第一航廈" },
+                    { time: "06:10", type: "move", title: "抵達金海國際機場", desc: "入境、領行李，預計 07:15 左右離開機場。", stickers: ["🛬","🧳"], mapLink: "Gimhae International Airport" },
+                    { time: "07:15", type: "move", title: "前往 Maison de Denbast", desc: "機場輕軌到沙上，轉地鐵 2 號線到田浦，再步行前往 Maison de Denbast。", stickers: ["🚈","🗺️"], mapLink: "https://maps.app.goo.gl/wuYuozygAkobenEXA" },
+                    { time: "08:10", type: "hotel", title: "Maison de Denbast 寄放行李", desc: "寄放行李後在便利商店簡單吃早餐，接著前往 OSIRIA。", note: "需確認入住前可寄放行李。", stickers: ["🏨","🥪"], mapLink: "https://maps.app.goo.gl/wuYuozygAkobenEXA" },
+                    { time: "08:50", type: "move", title: "前往 OSIRIA", desc: "依當天班次選東海線釜田站直達，或田浦站到 BEXCO 轉東海線。", stickers: ["🚆","🌊"], mapLink: "OSIRIA Station" },
+                    { time: "10:20", type: "spot", title: "Skyline Luge Busan", desc: "以 2–3 趟為主，結束後往青沙浦移動；現場時間充裕再自行調整。", note: "13:30 天空膠囊為固定預約，不能被前段行程壓縮。", stickers: ["🛷","🏁"], mapLink: "Skyline Luge Busan" },
+                    { time: "13:05", type: "spot", title: "青沙浦報到與拍照", desc: "先完成天空膠囊報到，再利用空檔拍海岸與周邊景色。", note: "天空膠囊已預約，憑證請看私人文件。", stickers: ["📸","🚞"], mapLink: "Cheongsapo Station Haeundae Blueline Park" },
+                    { time: "13:30", type: "move", title: "天空膠囊：青沙浦 → 尾浦", desc: "搭乘海岸天空膠囊前往尾浦，抵達後在海邊散步拍照。", stickers: ["🚞","🌊"], mapLink: "Mipo Station Haeundae Blueline Park" },
+                    { time: "14:40", type: "food", title: "水邊最高豬肉湯飯", desc: "天空膠囊與海邊散步後前往水邊最高豬肉湯飯用餐，約抓 1 小時。", stickers: ["🍲","🥢"], mapLink: "https://maps.app.goo.gl/NA6mkeh5JZrgHB6o8" },
+                    { time: "16:00", type: "spot", title: "BUSAN X the SKY", desc: "海雲台高空景觀，建議停留約 80 分鐘。", stickers: ["🏙️","🔭"], mapLink: "BUSAN X the SKY" },
+                    { time: "18:00", type: "spot", title: "Spa Land Centum City", desc: "泡湯、吃東西與休息，離開時間依當天體力彈性決定。", stickers: ["♨️","😌"], mapLink: "Spa Land Centum City" },
+                    { time: "20:30", type: "shop", title: "回西面自由逛吃", desc: "返回西面／田浦商圈，隨意逛街、吃宵夜後步行回 Maison de Denbast。", stickers: ["🛍️","🍢"], mapLink: "Seomyeon Shopping Street" }
+                ]
+            },
+            {
+                date: "Day 2 (07/24 五)",
+                location: "甘川文化村・松島・南浦洞",
+                summary: "10:00 第一站做 Flipbook 手翻書，再拍小王子與吃早餐；午後搭松島纜車走龍宮雲橋，晚上吃南浦雪濃湯、走釜山塔與 BIFF 廣場。",
+                weather: { high: "29°", low: "25°", feel: "35° / 30°", icon: "⛈️", desc: "雷陣雨・降雨 51%", sun: "05:26 / 19:33" },
+                events: [
+                    { time: "09:00", type: "move", title: "Maison de Denbast 出發", desc: "搭計程車前往甘川文化村，目標 09:40–09:50 抵達。", stickers: ["🚕","🏘️"], mapLink: "Gamcheon Culture Village" },
+                    { time: "10:00", type: "spot", title: "Flipbook Studio 手翻書", desc: "開門後第一站先完成手翻書，再開始文化村散步。", note: "已確認 10:00 營業；票券憑證請看私人文件。", stickers: ["📖","🎞️"], mapLink: "Flipbook Studio Gamcheon" },
+                    { time: "10:30", type: "spot", title: "小王子與甘川文化村", desc: "熱門拍照點、小店散步，途中找咖啡廳吃早餐與休息。", stickers: ["🤴","📸","☕"], mapLink: "Little Prince Statue Gamcheon" },
+                    { time: "12:40", type: "move", title: "前往松島海上纜車", desc: "從甘川文化村搭計程車前往松島纜車下站。", stickers: ["🚕","🚡"], mapLink: "Songdo Bay Station" },
+                    { time: "13:05", type: "spot", title: "松島纜車與龍宮雲橋", desc: "搭纜車到 Sky Park 上站，步行前往龍宮雲橋與周邊景點，再搭纜車返回下站。", note: "龍宮雲橋遇強風、雷雨可能暫停開放，當天先確認。", stickers: ["🚡","🌉","🌊"], mapLink: "Songdo Yonggung Suspension Bridge" },
+                    { time: "16:10", type: "move", title: "前往南浦洞", desc: "抵達後先逛光復路或 BIFF 廣場，再依用餐與天色安排後續。", stickers: ["🚕","🏙️"], mapLink: "Nampo-dong Busan" },
+                    { time: "17:30", type: "food", title: "南浦雪濃湯", desc: "在南浦雪濃湯吃晚餐，約抓 70 分鐘。", stickers: ["🍜","🥢"], mapLink: "https://maps.app.goo.gl/CvoKhCSEprfHA4Wi8" },
+                    { time: "18:40", type: "shop", title: "BIFF 廣場與南浦洞逛街", desc: "小吃、服飾與光復路商圈；釜山塔依當下時間與天色彈性安排。", stickers: ["🛍️","🍡"], mapLink: "BIFF Square" },
+                    { time: "20:00", type: "spot", title: "釜山塔夜景", desc: "龍頭山公園散步並上塔看夜景，時間可和逛街互換。", note: "釜山塔 22:00 關閉，最後入場 21:30。", stickers: ["🗼","🌃"], mapLink: "Busan Tower" },
+                    { time: "21:30", type: "move", title: "返回 Maison de Denbast", desc: "依現場逛街狀況搭地鐵或計程車返回飯店。", stickers: ["🚇","🏨"], mapLink: "https://maps.app.goo.gl/wuYuozygAkobenEXA" }
+                ]
+            },
+            {
+                date: "Day 3 (07/25 六)",
+                location: "西面・田浦・金海・返台",
+                summary: "Maison de Denbast 退房寄行李後留在西面吃喝購物，傍晚提早吃飯、回飯店拿行李，18:40 出發前往金海機場搭 ZE983 回台。",
+                weather: { high: "31°", low: "25°", feel: "37° / 31°", icon: "⛈️", desc: "雷陣雨・降雨 58%", sun: "05:27 / 19:33" },
+                events: [
+                    { time: "10:00", type: "hotel", title: "Maison de Denbast 退房", desc: "整理行李、辦理退房，戰利品與大件行李繼續寄放飯店。", stickers: ["🧳","✅"], mapLink: "https://maps.app.goo.gl/wuYuozygAkobenEXA" },
+                    { time: "10:30", type: "food", title: "西面早午餐", desc: "在西面／田浦找想吃的餐廳，慢慢開始最後一天。", stickers: ["🍳","☕"], mapLink: "Seomyeon restaurants" },
+                    { time: "12:00", type: "shop", title: "西面商圈自由購物", desc: "西面地下街、服飾、美妝與百貨公司，依想買的東西自由安排。", stickers: ["🛍️","👕"], mapLink: "Seomyeon Underground Shopping Center" },
+                    { time: "15:00", type: "spot", title: "田浦咖啡或自由活動", desc: "保留給咖啡廳、補買或臨時想去的近距離地點，不安排遠程景點。", stickers: ["☕","📷"], mapLink: "Jeonpo Cafe Street" },
+                    { time: "17:00", type: "food", title: "提早吃晚餐", desc: "在西面附近吃晚餐，避免進機場後才匆忙找食物。", stickers: ["🍲","🥤"], mapLink: "Seomyeon restaurants" },
+                    { time: "18:10", type: "hotel", title: "回 Maison de Denbast 拿行李", desc: "重新整理戰利品，確認護照、機票與隨身用品。", stickers: ["🧳","⚖️"], mapLink: "https://maps.app.goo.gl/wuYuozygAkobenEXA" },
+                    { time: "18:40", type: "move", title: "前往金海國際機場", desc: "田浦搭地鐵 2 號線到沙上，轉機場輕軌；目標 19:50 抵達國際航廈。", note: "為符合起飛前 2.5 小時抵達，18:40 是正式出發時間。", stickers: ["🚈","🛫"], mapLink: "Gimhae International Airport" },
+                    { time: "19:50", type: "move", title: "報到、托運與出境", desc: "辦理報到、托運、安檢與出境，預留充足緩衝。", stickers: ["🛂","🧳"], mapLink: "Gimhae International Airport International Terminal" },
+                    { time: "22:20", type: "move", flight: true, title: "易斯達航空 ZE983 回程", desc: "22:20 PUS 國際航廈 → 00:20 TPE (T1)，於 07/26 抵達。", stickers: ["✈️","🇹🇼"], mapLink: "Gimhae International Airport International Terminal" }
+                ]
+            }
+        ];
+
+        const checklistData = {
+            "📂 文件與預約": ["護照", "機票證明", "住宿憑證", "旅遊保險", "天空膠囊憑證", "Busan Pass 與景點票券", "手翻書票券"],
+            "👕 盛夏衣物": ["透氣上衣", "短褲或薄長褲", "貼身衣物", "襪子", "睡衣", "薄外套", "舒適防滑鞋"],
+            "⛈️ 防暑雨具": ["防曬乳", "帽子", "墨鏡", "摺疊傘", "隨身水瓶", "涼感用品", "防水袋"],
+            "🔌 電子用品": ["手機", "行動電源", "充電器", "充電線", "韓國網卡或 eSIM", "轉接頭"],
+            "🧴 個人用品": ["常備藥", "腸胃藥", "隱形眼鏡", "眼鏡", "保養品", "盥洗用品"],
+            "💳 支付與購物": ["韓元現金", "信用卡", "T-money", "零錢包", "購物袋", "行李秤"]
+        };
+
+        window.travelPageData = {
+            storageKey: "busan2026",
+            mapRegion: "釜山",
+            flights: [
+                {
+                    direction: "去程",
+                    date: "2026-07-23",
+                    flightNo: "ZE984",
+                    depart: { airport: "TPE", terminal: "T1", time: "02:40" },
+                    arrive: { airport: "PUS", terminal: "International Terminal", time: "06:10" },
+                    note: "預定時刻；易斯達航空由桃園 T1 出發，抵達金海國際航廈。"
+                },
+                {
+                    direction: "回程",
+                    date: "2026-07-25",
+                    flightNo: "ZE983",
+                    depart: { airport: "PUS", terminal: "International Terminal", time: "22:20" },
+                    arrive: { airport: "TPE", terminal: "T1", time: "00:20", date: "2026-07-26" },
+                    note: "預定時刻；易斯達航空由金海國際航廈出發，於 07/26 抵達桃園 T1。"
+                }
+            ],
+            days: itineraryDB,
+            checklist: checklistData,
+            tips: []
+        };
+    </script>
+    <script src="travel-page.js"></script>
+</body>
+</html>

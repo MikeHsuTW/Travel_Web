@@ -238,7 +238,10 @@
             noteBox.style.display = 'none';
         }
         const query = d.mapLink ? d.mapLink : `${d.title || ''} ${data.mapRegion || ''}`;
-        document.getElementById('m-map').href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+        const isDirectLink = /^https?:\/\//i.test(query);
+        document.getElementById('m-map').href = isDirectLink
+            ? query
+            : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
         modal.style.display = 'flex';
     }
 
