@@ -150,6 +150,7 @@
             <div class="tips-title">📝 釜山銜接提醒</div>
             <div class="tip-item"><strong>天氣：</strong>本頁於 2026/07/17 更新。三天目前皆有雷陣雨機率，體感最高約 35–37°C，請帶傘、防曬並在出發前一天再確認。</div>
             <div class="tip-item"><strong>Day 1 固定時間：</strong>13:30 青沙浦天空膠囊已預約，建議 13:05 前完成報到；樂天世界不列正式行程，現場自行看時間。</div>
+            <div class="tip-item"><strong>Day 1 換錢：</strong>西面老奶奶（那英）換錢所 08:00 營業，抵達西面後先換錢，再去 Maison de Denbast 放行李。</div>
             <div class="tip-item"><strong>Day 1 交通：</strong>Maison de Denbast 到 OSIRIA 可比較東海線釜田站直達與田浦站經 BEXCO 轉乘，前一晚依班次選較順的方式。</div>
             <div class="tip-item"><strong>Day 2 松島：</strong>搭纜車到 Sky Park 上站後走龍宮雲橋，再搭纜車返回；遇強風或雷雨先查是否開放。</div>
             <div class="tip-item"><strong>Day 3 回程：</strong>回程 22:20 起飛，目標 19:50 抵達機場；18:40 從 Maison de Denbast 拿好行李出發，不建議再往後拖。</div>
@@ -184,15 +185,17 @@
             {
                 date: "Day 1 (07/23 四)",
                 location: "金海・田浦・OSIRIA・青沙浦・海雲台",
-                summary: "清晨抵達金海，田浦寄放行李後前往 OSIRIA 玩 Skyline Luge；午後搭青沙浦天空膠囊、海邊散步並吃水邊最高豬肉湯飯，再走 X the Sky、Spa Land。",
+                summary: "清晨抵達金海，先到西面老奶奶換錢所換錢，再去 Maison de Denbast 放行李、簡單吃東西；接著前往 OSIRIA 玩 Skyline Luge，午後走青沙浦、海雲台與 Spa Land。",
                 weather: { high: "29°", low: "25°", feel: "35° / 30°", icon: "⛈️", desc: "雷陣雨・降雨 71%", sun: "05:25 / 19:34" },
                 events: [
                     { time: "02:40", type: "move", flight: true, title: "易斯達航空 ZE984 出發", desc: "02:40 TPE (T1) → 06:10 PUS 國際航廈。", stickers: ["✈️","🌙"], mapLink: "桃園國際機場 第一航廈" },
                     { time: "06:10", type: "move", title: "抵達金海國際機場", desc: "入境、領行李，預計 07:15 左右離開機場。", stickers: ["🛬","🧳"], mapLink: "Gimhae International Airport" },
-                    { time: "07:15", type: "move", title: "前往 Maison de Denbast", desc: "機場輕軌到沙上，轉地鐵 2 號線到田浦，再步行前往 Maison de Denbast。", stickers: ["🚈","🗺️"], mapLink: "https://maps.app.goo.gl/wuYuozygAkobenEXA" },
-                    { time: "08:10", type: "hotel", title: "Maison de Denbast 寄放行李", desc: "寄放行李後在便利商店簡單吃早餐，接著前往 OSIRIA。", note: "需確認入住前可寄放行李。", stickers: ["🏨","🥪"], mapLink: "https://maps.app.goo.gl/wuYuozygAkobenEXA" },
-                    { time: "08:50", type: "move", title: "前往 OSIRIA", desc: "依當天班次選東海線釜田站直達，或田浦站到 BEXCO 轉東海線。", stickers: ["🚆","🌊"], mapLink: "OSIRIA Station" },
-                    { time: "10:20", type: "spot", title: "Skyline Luge Busan", desc: "以 2–3 趟為主，結束後往青沙浦移動；現場時間充裕再自行調整。", note: "13:30 天空膠囊為固定預約，不能被前段行程壓縮。", stickers: ["🛷","🏁"], mapLink: "Skyline Luge Busan" },
+                    { time: "07:15", type: "move", title: "前往西面換錢所", desc: "機場輕軌到沙上，轉地鐵 2 號線到西面，預計 08:10 左右抵達換錢所附近。", stickers: ["🚈","🗺️"], mapLink: "https://maps.app.goo.gl/j52o8M1AvSGmoztXA" },
+                    { time: "08:10", type: "shop", title: "西面老奶奶（那英）換錢所", desc: "抵達西面後先兌換韓元，再步行前往 Maison de Denbast 放行李。", note: "已確認 08:00 營業。", stickers: ["💱","💵"], mapLink: "https://maps.app.goo.gl/j52o8M1AvSGmoztXA" },
+                    { time: "08:25", type: "hotel", title: "Maison de Denbast 寄放行李", desc: "辦理行李寄放，約抓 15 分鐘。", note: "需確認入住前可寄放行李。", stickers: ["🏨","🧳"], mapLink: "https://maps.app.goo.gl/wuYuozygAkobenEXA" },
+                    { time: "08:40", type: "food", title: "簡單吃點東西", desc: "在飯店或車站附近便利商店快速吃早餐，09:00 左右往 OSIRIA 出發。", stickers: ["🥪","🥤"] },
+                    { time: "09:00", type: "move", title: "前往 OSIRIA", desc: "依當天班次選東海線釜田站直達，或田浦站到 BEXCO 轉東海線；預計 10:10–10:20 抵達。", stickers: ["🚆","🌊"], mapLink: "OSIRIA Station" },
+                    { time: "10:20", type: "spot", title: "Skyline Luge Busan", desc: "以 2–3 趟為主，約 11:30–12:00 結束後直接往青沙浦移動。", note: "13:30 天空膠囊為固定預約，不能被前段行程壓縮。", stickers: ["🛷","🏁"], mapLink: "Skyline Luge Busan" },
                     { time: "13:05", type: "spot", title: "青沙浦報到與拍照", desc: "先完成天空膠囊報到，再利用空檔拍海岸與周邊景色。", note: "天空膠囊已預約，憑證請看私人文件。", stickers: ["📸","🚞"], mapLink: "Cheongsapo Station Haeundae Blueline Park" },
                     { time: "13:30", type: "move", title: "天空膠囊：青沙浦 → 尾浦", desc: "搭乘海岸天空膠囊前往尾浦，抵達後在海邊散步拍照。", stickers: ["🚞","🌊"], mapLink: "Mipo Station Haeundae Blueline Park" },
                     { time: "14:40", type: "food", title: "水邊最高豬肉湯飯", desc: "天空膠囊與海邊散步後前往水邊最高豬肉湯飯用餐，約抓 1 小時。", stickers: ["🍲","🥢"], mapLink: "https://maps.app.goo.gl/NA6mkeh5JZrgHB6o8" },
