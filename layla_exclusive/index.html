@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex,nofollow,noarchive,nosnippet">
+    <title>Private Space</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="page-shell">
+        <section class="login-panel" id="login-panel" aria-labelledby="login-title">
+            <div class="mark" aria-hidden="true">M <span>♥</span> L</div>
+            <p class="eyebrow">PRIVATE SPACE</p>
+            <h1 id="login-title">Only for us.</h1>
+            <p class="intro">輸入帳號與密碼，開啟屬於 Mike &amp; Layla 的小空間。</p>
+
+            <form id="login-form" novalidate>
+                <label for="username">帳號</label>
+                <input id="username" name="username" type="text" autocomplete="username" autocapitalize="none" required>
+
+                <label for="password">密碼</label>
+                <div class="password-field">
+                    <input id="password" name="password" type="password" autocomplete="current-password" required>
+                    <button class="reveal-button" id="reveal-password" type="button" aria-label="顯示密碼" title="顯示密碼">顯示</button>
+                </div>
+
+                <p class="form-message" id="form-message" role="alert" aria-live="polite"></p>
+                <button class="login-button" id="login-button" type="submit">登入</button>
+            </form>
+
+            <p class="privacy-note">私人內容經加密保存，密碼不會傳送到其他網站。</p>
+        </section>
+
+        <section class="private-panel" id="private-panel" aria-labelledby="private-title" hidden>
+            <button class="logout-button" id="logout-button" type="button">登出</button>
+            <p class="eyebrow">WELCOME HOME</p>
+            <h1 id="private-title"></h1>
+            <p class="private-subtitle" id="private-subtitle"></p>
+            <figure class="keepsake">
+                <img id="private-image" alt="Mike and Layla surrounded by a heart">
+            </figure>
+        </section>
+    </main>
+
+    <script src="vault.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
