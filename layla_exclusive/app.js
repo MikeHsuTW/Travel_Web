@@ -70,14 +70,11 @@
     }
 
     function showPrivateContent(content) {
-        document.getElementById('private-title').textContent = content.title;
-        document.getElementById('private-subtitle').textContent = content.subtitle;
-        const image = document.getElementById('private-image');
-        image.src = content.imageDataUrl;
-        loginPanel.hidden = true;
-        privatePanel.hidden = false;
-        document.title = content.pageTitle;
+        if (!content.pageHtml) throw new Error('CONTENT_UNAVAILABLE');
         passwordInput.value = '';
+        document.open();
+        document.write(content.pageHtml);
+        document.close();
     }
 
     function logout() {
@@ -103,6 +100,8 @@
         loginButton.textContent = '解鎖中...';
         try {
             const content = await decryptContent(usernameInput.value, passwordInput.value);
+            loginButton.disabled = false;
+            loginButton.textContent = '登入';
             showPrivateContent(content);
         } catch (error) {
             message.textContent = error.message === 'VAULT_UNAVAILABLE'
