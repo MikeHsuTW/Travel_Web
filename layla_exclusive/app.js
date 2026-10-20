@@ -70,11 +70,18 @@
     }
 
     function showPrivateContent(content) {
-        if (!content.pageHtml) throw new Error('CONTENT_UNAVAILABLE');
+        if (!content.pageHtml || !content.assets) throw new Error('CONTENT_UNAVAILABLE');
         passwordInput.value = '';
-        document.open();
-        document.write(content.pageHtml);
-        document.close();
+        let page = content.pageHtml;
+        const urls = [];
+        for (const name of Object.keys(content.assets).sort((a,b) => b.length-a.length)) {
+            const asset = content.assets[name];
+            const url = URL.createObjectURL(new Blob([fromBase64(asset.data)], {type: asset.mime}));
+            urls.push(url);
+            page = page.split(name).join(url);
+        }
+        document.open(); document.write(page); document.close();
+        window.addEventListener('pagehide', () => urls.forEach(url => URL.revokeObjectURL(url)), {once: true});
     }
 
     function logout() {

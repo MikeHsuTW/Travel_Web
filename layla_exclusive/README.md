@@ -1,7 +1,7 @@
 # Layla Exclusive
 
-Encrypted local-first memory website. Existing mike and layla accounts retained.
+Encrypted memory website: current chapters 1–4, with the remaining chapters marked as upcoming. Existing account credentials and wrapping records are unchanged.
 
-The vault encrypts the complete page and photos. Login decrypts the page in the browser; logout reloads the public login page. No plaintext media is published.
+The complete HTML/CSS/JS and deduplicated image assets are encrypted in vault.js. After successful browser login, images are materialized as in-memory Blob URLs. No plaintext photos, source references, private notes or backups are published. Logout reloads the login gate.
 
-Account CLI: tools/manage-layla-users.mjs. Payload retains title and imageDataUrl for CLI verification, with pageHtml for the interactive site. Rebuilds are generated locally from LoveWebsite.
+Build: local LoveWebsite/private-analysis/build_publish_current.cjs. Account CLI compatibility is retained via title and imageDataUrl fields.
