@@ -1,6 +1,6 @@
 # Layla Exclusive
 
-Encrypted memory website: current chapters 1–6, with the remaining chapters marked as upcoming. Existing account credentials and wrapping records are unchanged.
+Encrypted memory website: chapters 1–12, with distinct story spaces and explicit button controls. The final shared film is a future addition; local playback stays on the device. Existing account credentials and wrapping records are unchanged.
 
 The complete HTML/CSS/JS and deduplicated image assets are encrypted in vault.js. After successful browser login, images are materialized as in-memory Blob URLs. No plaintext photos, source references, private notes or backups are published. Logout reloads the login gate.
 
