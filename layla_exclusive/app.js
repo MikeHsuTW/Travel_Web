@@ -66,7 +66,7 @@
             contentKey,
             fromBase64(vault.content.ciphertext)
         );
-        return JSON.parse(new TextDecoder().decode(clearContent));
+        return {...JSON.parse(new TextDecoder().decode(clearContent)), filmKey: contentKey};
     }
 
     function showPrivateContent(content) {
@@ -80,6 +80,16 @@
             urls.push(url);
             page = page.split(name).join(url);
         }
+        const mediaBase = new URL('.', location.href);
+        window.__PRIVATE_FILM__ = {
+            manifest: content.film,
+            async read(part, signal) {
+                const response = await fetch(new URL(part.path, mediaBase), {signal});
+                if (!response.ok) throw new Error('FILM_UNAVAILABLE');
+                const encrypted = await response.arrayBuffer();
+                return crypto.subtle.decrypt({name:'AES-GCM', iv:fromBase64(part.iv)}, content.filmKey, encrypted);
+            }
+        };
         document.open(); document.write(page); document.close();
         window.addEventListener('pagehide', () => urls.forEach(url => URL.revokeObjectURL(url)), {once: true});
     }
